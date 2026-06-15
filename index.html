@@ -2,785 +2,764 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Vital Health Network</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Vital · USA</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<script>
+const CONFIG = {
+  SUPABASE_URL:      'https://cglbffkzvjlhfsxwpjbb.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA',
+  STRIPE_LINK:       'https://buy.stripe.com/TU_LINK',
+  WHATSAPP_CENTRAL:  '12093001234',
+  ADMIN_EMAIL:       'oscar8a1985@gmail.com',
+  SITE_URL:          'https://networkvital.com'
+};
+</script>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#0B1626;
-  --navy2:#111f35;
-  --navy3:#0d1a2e;
-  --gold:#C9A24B;
-  --gold2:#dbb95c;
-  --red:#C81E2D;
-  --green:#1DB954;
-  --text:#f0e8d8;
-  --muted:#8a9ab5;
+:root {
+  --navy:   #0B1626;
+  --navy2:  #132033;
+  --navy3:  #1A2D45;
+  --gold:   #C9A24B;
+  --gold2:  #E8BC5A;
+  --red:    #C81E2D;
+  --green:  #1A7A4A;
+  --white:  #FFFFFF;
+  --gray:   #8A96A3;
+  --cream:  #F5F0E8;
+  --font-d: 'Barlow Condensed', sans-serif;
+  --font-b: 'Barlow', sans-serif;
 }
-html,body{background:#050d19;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px 0 40px}
-#app{
-  width:390px;
-  min-width:320px;
-  background:var(--navy);
-  min-height:720px;
-  position:relative;
-  border-radius:24px;
-  overflow:hidden;
-  font-family:'Barlow',sans-serif;
-  color:var(--text);
-  box-shadow:0 32px 80px rgba(0,0,0,0.6);
-}
-.screen{display:none;flex-direction:column;min-height:720px;padding-bottom:68px;overflow-y:auto}
-.screen.active{display:flex}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font-b); background:var(--navy); color:var(--white); min-height:100vh; overflow-x:hidden; }
 
-/* NAV */
-.nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:390px;height:64px;
-  background:rgba(11,22,38,0.98);
-  border-top:1px solid rgba(201,162,75,0.2);
-  display:flex;align-items:center;justify-content:space-around;
-  z-index:200;
-  border-radius:0 0 24px 24px;
+/* ── LOGIN OVERLAY ── */
+#login-overlay {
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(11,22,38,0.97);
+  backdrop-filter:blur(12px);
+  align-items:center; justify-content:center;
 }
-.nav-btn{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;border:none;cursor:pointer;padding:8px 14px;
-  color:var(--muted);font-family:'Barlow',sans-serif;font-size:10px;
-  transition:color 0.2s;
+#login-overlay.show { display:flex; }
+.login-box {
+  background:var(--navy2); border:1px solid rgba(201,162,75,0.25);
+  border-radius:20px; padding:44px 40px; width:100%;
+  max-width:420px; margin:24px; text-align:center;
 }
-.nav-btn.active,.nav-btn:hover{color:var(--gold)}
-.nav-btn i{font-size:24px}
+.login-logo {
+  font-family:var(--font-d); font-size:30px; font-weight:900;
+  letter-spacing:0.04em; margin-bottom:6px;
+}
+.login-logo span { color:var(--gold); }
+.login-tagline { color:var(--gray); font-size:14px; margin-bottom:32px; }
+.login-divider {
+  display:flex; align-items:center; gap:12px;
+  margin:20px 0; color:var(--gray); font-size:12px;
+}
+.login-divider::before, .login-divider::after {
+  content:''; flex:1; height:1px; background:rgba(255,255,255,0.1);
+}
 
-/* SCREEN 1 */
-#s1{
-  background:linear-gradient(160deg,#0B1626 0%,#0e1e38 60%,#0B1626 100%);
-  justify-content:center;align-items:center;text-align:center;
-  padding:48px 28px 84px;gap:0;
+/* Google button */
+.btn-google {
+  width:100%; display:flex; align-items:center; justify-content:center; gap:12px;
+  background:var(--white); color:#1f1f1f;
+  font-family:var(--font-b); font-size:15px; font-weight:600;
+  padding:14px 20px; border-radius:10px; border:none; cursor:pointer;
+  transition:all .2s; margin-bottom:16px;
 }
-.logo-ring{
-  width:96px;height:96px;border-radius:50%;
-  border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:28px;
-  background:rgba(201,162,75,0.07);
-}
-.logo-ring i{font-size:46px;color:var(--gold)}
-.brand-name{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;letter-spacing:5px;color:var(--gold);
-  font-weight:600;text-transform:uppercase;margin-bottom:18px;
-}
-.welcome-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:42px;font-weight:800;line-height:1.0;
-  color:#fff;margin-bottom:12px;
-}
-.welcome-title span{color:var(--gold)}
-.welcome-sub{
-  font-size:14px;color:var(--muted);margin-bottom:44px;line-height:1.7;
-}
-.btn-gold{
-  width:100%;padding:20px 22px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none;border-radius:14px;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:18px;font-weight:700;color:#0B1626;
-  letter-spacing:0.3px;margin-bottom:14px;
-  transition:transform 0.15s;
-  text-align:left;display:flex;align-items:center;gap:14px;
-}
-.btn-gold:hover{transform:scale(1.02)}
-.btn-gold i{font-size:24px;flex-shrink:0}
-.btn-red{
-  width:100%;padding:20px 22px;
-  background:transparent;
-  border:2px solid var(--red);border-radius:14px;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:18px;font-weight:700;color:#fff;
-  letter-spacing:0.3px;
-  transition:transform 0.15s,background 0.2s;
-  text-align:left;display:flex;align-items:center;gap:14px;
-}
-.btn-red:hover{transform:scale(1.02);background:rgba(200,30,45,0.12)}
-.btn-red i{font-size:24px;color:var(--red);flex-shrink:0}
-.stat-row{display:flex;gap:12px;margin-top:36px}
-.stat-box{
-  flex:1;background:rgba(201,162,75,0.07);
-  border:1px solid rgba(201,162,75,0.15);
-  border-radius:10px;padding:12px 8px;text-align:center;
-}
-.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--gold)}
-.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.btn-google:hover { background:#f0f0f0; transform:translateY(-1px); }
+.btn-google svg { width:20px; height:20px; flex-shrink:0; }
 
-/* SCREEN HEADER */
-.screen-header{
-  padding:22px 20px 14px;
-  background:var(--navy);
-  border-bottom:1px solid rgba(201,162,75,0.12);
-  flex-shrink:0;
+/* Email login */
+.login-input {
+  width:100%; background:var(--navy3); border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px; padding:13px 16px; color:var(--white);
+  font-family:var(--font-b); font-size:15px; outline:none; margin-bottom:10px;
+  transition:border-color .2s;
 }
-.screen-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:28px;font-weight:800;color:#fff;margin-bottom:2px;
+.login-input:focus { border-color:var(--gold); }
+.btn-email {
+  width:100%; background:var(--gold); color:var(--navy);
+  font-family:var(--font-d); font-size:17px; font-weight:900;
+  letter-spacing:0.05em; text-transform:uppercase;
+  padding:14px; border-radius:8px; border:none; cursor:pointer;
+  transition:background .2s;
 }
-.screen-title span{color:var(--gold)}
-.screen-sub{font-size:13px;color:var(--muted)}
+.btn-email:hover { background:var(--gold2); }
+.login-msg { font-size:13px; margin-top:12px; min-height:20px; }
+.login-msg.error { color:#f87171; }
+.login-msg.success { color:#4ade80; }
 
-/* SCREEN 2 MAP */
-#s2{padding-bottom:68px}
-.map-container{padding:16px;flex-shrink:0}
-.usa-svg{width:100%;border-radius:12px;overflow:hidden}
-.st-active{fill:var(--gold);cursor:pointer;transition:opacity 0.15s}
-.st-active:hover{opacity:0.8}
-.st-empty{fill:#182c47;cursor:pointer;transition:fill 0.15s}
-.st-empty:hover{fill:#1e3558}
-.state-popup{
-  display:none;background:var(--navy2);
-  border:1px solid rgba(201,162,75,0.3);border-radius:12px;
-  padding:14px 16px;margin:0 16px 12px;
-}
-.popup-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px}
-.popup-dist{font-size:13px;color:var(--text);padding:4px 0;border-bottom:1px solid rgba(201,162,75,0.1)}
-.popup-avail{font-size:13px;color:#ff6b75;font-weight:600}
-.popup-btn{
-  margin-top:10px;background:var(--gold);border:none;border-radius:8px;
-  padding:9px 18px;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#0B1626;
-}
-.city-list{padding:0 16px 16px}
-.zone-header{
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;
-  color:var(--gold);letter-spacing:3px;text-transform:uppercase;
-  margin:18px 0 10px;padding-bottom:6px;
+/* ── USER BAR ── */
+#user-bar {
+  display:none; position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(11,22,38,0.96); backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(201,162,75,0.15);
+  height:52px; align-items:center; justify-content:space-between;
+  padding:0 20px;
 }
-.city-card{
-  background:var(--navy2);border-radius:10px;
-  padding:12px 14px;margin-bottom:8px;
-  display:flex;align-items:center;gap:12px;
-  border:1px solid rgba(201,162,75,0.08);
-  transition:border-color 0.2s;
+#user-bar.show { display:flex; }
+.userbar-logo {
+  font-family:var(--font-d); font-size:20px; font-weight:900;
+  cursor:pointer; letter-spacing:0.04em;
 }
-.city-card:hover{border-color:rgba(201,162,75,0.25)}
-.c-av{
-  width:42px;height:42px;border-radius:50%;flex-shrink:0;
-  background:rgba(201,162,75,0.12);border:1.5px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--gold);
+.userbar-logo span { color:var(--gold); }
+.userbar-right { display:flex; align-items:center; gap:10px; }
+.userbar-email { font-size:12px; color:var(--gray); }
+.userbar-role {
+  font-size:10px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; padding:3px 8px; border-radius:10px;
 }
-.c-info{flex:1}
-.c-name{font-size:14px;font-weight:500;color:#fff}
-.c-loc{font-size:12px;color:var(--muted)}
-.wa-btn{
-  background:var(--green);border:none;border-radius:8px;
-  padding:8px 11px;cursor:pointer;color:#fff;font-size:12px;font-weight:600;
-  display:flex;align-items:center;gap:5px;font-family:'Barlow',sans-serif;
-  flex-shrink:0;transition:transform 0.15s;
+.role-admin { background:rgba(201,162,75,0.2); color:var(--gold); }
+.role-dist  { background:rgba(26,122,74,0.2); color:#4ade80; }
+.role-user  { background:rgba(255,255,255,0.08); color:var(--gray); }
+.userbar-btn {
+  font-size:12px; padding:6px 14px; border-radius:6px;
+  border:1px solid rgba(255,255,255,0.15); background:transparent;
+  color:var(--gray); cursor:pointer; transition:all .15s;
 }
-.wa-btn:hover{transform:scale(1.05)}
-.avail-card{
-  background:rgba(200,30,45,0.06);border:1px dashed rgba(200,30,45,0.35);
-  border-radius:10px;padding:12px 16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:12px;cursor:pointer;
-  transition:background 0.2s;
+.userbar-btn:hover { border-color:var(--red); color:#f87171; }
+.userbar-btn.admin-btn {
+  background:var(--gold); color:var(--navy); font-weight:700;
+  border-color:var(--gold);
 }
-.avail-card:hover{background:rgba(200,30,45,0.1)}
-.avail-card i{font-size:22px;color:var(--red);flex-shrink:0}
-.avail-text{font-size:13px;color:#ff6b75;font-weight:600}
-.avail-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.userbar-btn.admin-btn:hover { background:var(--gold2); color:var(--navy); }
 
-/* SCREEN 3 TEAM */
-#s3{padding-bottom:68px}
-#s3 .inner{padding:0 16px 16px;overflow-y:auto;flex:1}
-.zone-lbl{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;font-weight:700;color:var(--gold);
-  letter-spacing:3px;text-transform:uppercase;
-  margin:18px 0 10px;
+/* ── NAV ── */
+nav {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  z-index:100; background:rgba(11,22,38,0.96);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(201,162,75,0.15);
+  border-radius:20px 20px 0 0;
+  display:flex; align-items:center;
+  padding:0 8px; height:60px; gap:4px;
+  width:min(420px, 100%);
 }
-.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
-.tcard{
-  background:var(--navy2);border-radius:12px;
-  border:1px solid rgba(201,162,75,0.1);
-  padding:16px 12px;text-align:center;cursor:pointer;
-  transition:border-color 0.2s,transform 0.15s;
+.nav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:3px; padding:8px 4px;
+  background:none; border:none; cursor:pointer;
+  font-family:var(--font-b); font-size:10px; color:var(--gray);
+  border-radius:12px; transition:all .15s;
 }
-.tcard:hover,.tcard.open{border-color:var(--gold);transform:scale(1.02)}
-.tav{
-  width:58px;height:58px;border-radius:50%;
-  background:rgba(201,162,75,0.1);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 10px;
-  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--gold);
-}
-.tname{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
-.tcity{font-size:11px;color:var(--muted)}
-.texp{
-  display:none;grid-column:1/-1;
-  background:rgba(201,162,75,0.05);border:1px solid rgba(201,162,75,0.18);
-  border-radius:10px;padding:14px;font-size:13px;color:var(--muted);line-height:1.65;
-  animation:fadeIn 0.25s ease;
-}
-.texp.show{display:block}
-.tadd{
-  border:1.5px dashed rgba(200,30,45,0.35);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:110px;cursor:pointer;
-}
-.tadd:hover{border-color:var(--red);background:rgba(200,30,45,0.05)}
-.join-wrap{padding:16px}
-.btn-join{
-  width:100%;padding:18px;border-radius:12px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:19px;font-weight:700;color:#0B1626;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:transform 0.15s;
-}
-.btn-join:hover{transform:scale(1.02)}
+.nav-btn:hover { background:rgba(255,255,255,0.05); color:var(--white); }
+.nav-btn.active { color:var(--gold); background:rgba(201,162,75,0.1); }
+.nav-icon { font-size:18px; line-height:1; }
 
-/* SCREEN 4 FORM */
-#s4{padding-bottom:68px}
-.form-inner{padding:18px 16px;overflow-y:auto;flex:1}
-.fg{margin-bottom:18px}
-.flabel{
-  font-size:12px;font-weight:600;color:var(--gold);
-  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;display:block;
-}
-.finput{
-  width:100%;padding:14px 16px;
-  background:var(--navy2);
-  border:1px solid rgba(201,162,75,0.18);border-radius:10px;
-  color:#fff;font-family:'Barlow',sans-serif;font-size:14px;
-  outline:none;transition:border-color 0.2s;
-}
-.finput:focus{border-color:var(--gold)}
-.finput::placeholder{color:var(--muted)}
-textarea.finput{resize:none;height:88px;line-height:1.6}
-.btn-submit{
-  width:100%;padding:18px;border-radius:12px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  border:none;cursor:pointer;margin-top:6px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:20px;font-weight:700;color:#0B1626;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:transform 0.15s;
-}
-.btn-submit:hover{transform:scale(1.02)}
-.success{display:none;text-align:center;padding:40px 24px}
-.s-icon{font-size:64px;color:var(--gold);margin-bottom:20px}
-.s-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:32px;font-weight:800;color:#fff;margin-bottom:10px;
-}
-.s-sub{font-size:14px;color:var(--muted);line-height:1.7}
-.s-sub strong{color:var(--gold)}
+/* ── SCREENS ── */
+.screen { display:none; min-height:100vh; padding-top:52px; padding-bottom:72px; }
+.screen.active { display:block; }
 
-/* SCREEN 5 ESPECIALISTA */
-#s5{padding-bottom:68px}
-.esp-inner{padding:20px 16px;overflow-y:auto;flex:1}
-.esp-q{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:26px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;
+/* ── HOME ── */
+#screen-home {
+  background:linear-gradient(160deg, var(--navy) 0%, #0D1E35 60%, #0B1626 100%);
 }
-.esp-hint{font-size:13px;color:var(--muted);margin-bottom:24px}
-.h-opt{
-  background:var(--navy2);border:1.5px solid rgba(201,162,75,0.12);
-  border-radius:12px;padding:16px 18px;margin-bottom:12px;cursor:pointer;
-  display:flex;align-items:center;gap:14px;
-  transition:border-color 0.2s,background 0.2s;
+.hero {
+  min-height:calc(100vh - 124px);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:40px 24px;
+  position:relative; overflow:hidden;
 }
-.h-opt:hover,.h-opt.chosen{border-color:var(--gold);background:rgba(201,162,75,0.06)}
-.h-opt i{font-size:26px;color:var(--gold);flex-shrink:0}
-.ot{font-size:15px;font-weight:600;color:#fff}
-.os{font-size:12px;color:var(--muted);margin-top:2px}
-.spec-card{
-  display:none;background:var(--navy2);
-  border:1.5px solid var(--gold);border-radius:14px;
-  padding:20px;margin-top:20px;
-  animation:fadeIn 0.3s ease;
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,162,75,0.08) 0%, transparent 70%);
+  pointer-events:none;
 }
-.spec-card.show{display:block}
-.sp-hdr{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.sp-av{
-  width:54px;height:54px;border-radius:50%;flex-shrink:0;
-  background:rgba(201,162,75,0.12);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--gold);
+.hero-eyebrow {
+  font-family:var(--font-d); font-size:13px; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:20px;
+  border:1px solid rgba(201,162,75,0.3);
+  padding:6px 16px; border-radius:20px; display:inline-block;
 }
-.sp-name{font-size:16px;font-weight:600;color:#fff}
-.sp-city{font-size:12px;color:var(--muted)}
-.sp-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
-.btn-wa2{
-  width:100%;padding:15px;border-radius:10px;
-  background:var(--green);border:none;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:17px;font-weight:700;color:#fff;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:transform 0.15s;
+.hero-title {
+  font-family:var(--font-d); font-size:clamp(52px,10vw,88px);
+  font-weight:900; line-height:0.92; letter-spacing:-0.01em; margin-bottom:8px;
 }
-.btn-wa2:hover{transform:scale(1.02)}
+.hero-title .gold { color:var(--gold); }
+.hero-sub {
+  font-size:clamp(15px,3vw,19px); color:rgba(255,255,255,0.6);
+  max-width:480px; line-height:1.5; margin:18px auto 36px;
+}
+.hero-ctas {
+  display:flex; gap:12px; flex-wrap:wrap;
+  justify-content:center; margin-bottom:48px;
+}
+.cta-primary {
+  background:var(--gold); color:var(--navy);
+  font-family:var(--font-d); font-size:17px; font-weight:800;
+  letter-spacing:0.04em; text-transform:uppercase;
+  padding:15px 28px; border-radius:8px; border:none; cursor:pointer;
+  transition:all .2s; min-width:180px;
+}
+.cta-primary:hover { background:var(--gold2); transform:translateY(-2px); }
+.cta-secondary {
+  background:transparent; color:var(--white);
+  font-family:var(--font-d); font-size:17px; font-weight:700;
+  letter-spacing:0.04em; text-transform:uppercase;
+  padding:15px 28px; border-radius:8px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.25); transition:all .2s; min-width:180px;
+}
+.cta-secondary:hover { border-color:var(--white); background:rgba(255,255,255,0.05); }
+.stats-row { display:flex; gap:36px; justify-content:center; flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat-num { font-family:var(--font-d); font-size:34px; font-weight:900; color:var(--gold); line-height:1; }
+.stat-label { font-size:11px; color:var(--gray); letter-spacing:0.08em; margin-top:4px; }
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ── MAPA ── */
+#screen-mapa { background:var(--navy); padding-bottom:80px; }
+.page-header { text-align:center; padding:36px 24px 24px; }
+.page-title { font-family:var(--font-d); font-size:clamp(32px,6vw,52px); font-weight:900; }
+.page-title span { color:var(--gold); }
+.page-desc { color:var(--gray); font-size:14px; margin-top:6px; }
+.section-divider { width:40px; height:3px; background:var(--gold); margin:10px auto 0; border-radius:2px; }
+.mapa-legend { display:flex; gap:20px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--gray); }
+.legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.legend-dot.gold { background:var(--gold); }
+.legend-dot.red  { background:var(--red); }
+.legend-dot.dark { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); }
+.mapa-container { max-width:860px; margin:0 auto; padding:0 12px; }
+#usa-svg { width:100%; height:auto; display:block; }
+#usa-svg path { fill:rgba(255,255,255,0.06); stroke:rgba(255,255,255,0.15); stroke-width:0.5; transition:fill .2s; cursor:pointer; }
+#usa-svg path.gold { fill:var(--gold); opacity:0.9; }
+#usa-svg path.red  { fill:var(--red); opacity:0.85; }
+#usa-svg path:hover { opacity:0.7; }
+.estado-popup {
+  display:none; position:fixed; background:var(--navy2);
+  border:1px solid rgba(201,162,75,0.3); border-radius:12px;
+  padding:18px; min-width:220px; z-index:300;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.estado-popup.visible { display:block; }
+.popup-estado { font-family:var(--font-d); font-size:20px; font-weight:800; }
+.popup-slots { margin:6px 0; font-size:13px; color:var(--gray); }
+.popup-slots strong { color:var(--gold); }
+.popup-btn {
+  display:block; width:100%; margin-top:10px;
+  background:var(--gold); color:var(--navy);
+  font-family:var(--font-d); font-size:14px; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.05em;
+  padding:11px; border-radius:6px; border:none; cursor:pointer;
+  text-decoration:none; text-align:center;
+}
+.popup-close { position:absolute; top:10px; right:12px; background:none; border:none; color:var(--gray); font-size:16px; cursor:pointer; }
+
+/* ── EQUIPO ── */
+#screen-equipo { background:var(--navy); }
+.equipo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; padding:0 16px; max-width:1100px; margin:0 auto; }
+.rep-card { background:var(--navy2); border:1px solid rgba(201,162,75,0.12); border-radius:14px; overflow:hidden; transition:transform .2s, border-color .2s; }
+.rep-card:hover { transform:translateY(-3px); border-color:rgba(201,162,75,0.35); }
+.rep-img { width:100%; height:180px; background:linear-gradient(135deg,#132033 0%,#1a2d45 100%); display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:44px; font-weight:900; color:rgba(201,162,75,0.3); }
+.rep-body { padding:14px 18px 18px; }
+.rep-estado { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+.rep-nombre { font-family:var(--font-d); font-size:20px; font-weight:800; }
+.rep-bio { font-size:12px; color:var(--gray); line-height:1.5; margin:6px 0 12px; }
+.rep-wa { display:flex; align-items:center; gap:8px; background:#25D366; color:white; padding:9px 14px; border-radius:7px; font-size:13px; font-weight:600; text-decoration:none; transition:opacity .2s; }
+.rep-wa:hover { opacity:0.85; }
+
+/* ── SCANNER ── */
+#screen-scanner { background:var(--navy); }
+.form-wrap { max-width:520px; margin:0 auto; padding:0 20px; }
+.scanner-features { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:28px; }
+.feature-item { background:var(--navy2); border:1px solid rgba(201,162,75,0.1); border-radius:10px; padding:12px 14px; display:flex; align-items:flex-start; gap:8px; }
+.feature-icon { font-size:18px; flex-shrink:0; }
+.feature-text { font-size:12px; color:var(--cream); line-height:1.4; }
+.feature-text strong { color:var(--gold); display:block; font-size:11px; margin-bottom:1px; }
+.form-field { margin-bottom:14px; }
+.form-label { display:block; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gray); margin-bottom:5px; }
+.form-input, .form-select, .form-textarea { width:100%; background:var(--navy2); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px 14px; color:var(--white); font-family:var(--font-b); font-size:14px; transition:border-color .2s; outline:none; -webkit-appearance:none; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--gold); }
+.form-select option { background:var(--navy2); }
+.form-textarea { resize:vertical; min-height:80px; }
+.form-submit { width:100%; background:var(--gold); color:var(--navy); font-family:var(--font-d); font-size:19px; font-weight:900; letter-spacing:0.06em; text-transform:uppercase; padding:16px; border-radius:10px; border:none; cursor:pointer; transition:all .2s; margin-top:6px; }
+.form-submit:hover { background:var(--gold2); }
+.form-success { display:none; text-align:center; padding:40px 20px; }
+.form-success .icon { font-size:48px; margin-bottom:14px; }
+.form-success h3 { font-family:var(--font-d); font-size:28px; font-weight:900; color:var(--gold); margin-bottom:6px; }
+.form-success p { color:var(--gray); font-size:14px; line-height:1.6; }
+
+/* ── ÚNETE ── */
+#screen-unete { background:var(--navy); }
+.unete-hero { background:linear-gradient(135deg,#0D1E35 0%,#132033 100%); border-bottom:1px solid rgba(201,162,75,0.12); padding:32px 20px; text-align:center; }
+.unete-precio { font-family:var(--font-d); font-size:clamp(52px,10vw,76px); font-weight:900; color:var(--gold); line-height:1; }
+.unete-precio span { font-size:22px; vertical-align:top; margin-top:10px; display:inline-block; }
+.unete-precio-label { color:var(--gray); font-size:13px; margin-top:3px; }
+.beneficios-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:600px; margin:24px auto; padding:0 20px; }
+.beneficio { background:var(--navy2); border:1px solid rgba(201,162,75,0.1); border-radius:10px; padding:14px; display:flex; align-items:flex-start; gap:8px; }
+.beneficio-check { width:20px; height:20px; border-radius:50%; background:rgba(201,162,75,0.12); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--gold); }
+.beneficio-texto { font-size:12px; color:var(--cream); line-height:1.4; }
+.slots-counter { text-align:center; padding:20px; border:1px solid rgba(201,162,75,0.18); border-radius:12px; max-width:360px; margin:0 auto 24px; }
+.slots-num { font-family:var(--font-d); font-size:48px; font-weight:900; color:var(--red); line-height:1; }
+.slots-label { color:var(--gray); font-size:12px; margin-top:3px; }
+.stripe-btn { display:block; max-width:360px; margin:0 auto; background:var(--gold); color:var(--navy); font-family:var(--font-d); font-size:19px; font-weight:900; text-align:center; letter-spacing:0.05em; text-transform:uppercase; padding:18px 28px; border-radius:10px; text-decoration:none; transition:all .2s; }
+.stripe-btn:hover { background:var(--gold2); transform:translateY(-2px); }
+.unete-note { text-align:center; color:var(--gray); font-size:11px; margin-top:10px; max-width:360px; margin-left:auto; margin-right:auto; }
+
+/* ── PERFIL (distribuidor) ── */
+#screen-perfil { background:var(--navy); }
+.perfil-card { max-width:500px; margin:0 auto; padding:0 20px; }
+.perfil-avatar { width:80px; height:80px; border-radius:50%; background:rgba(201,162,75,0.15); display:flex; align-items:center; justify-content:center; font-family:var(--font-d); font-size:32px; font-weight:900; color:var(--gold); margin:0 auto 16px; }
+.perfil-nombre { font-family:var(--font-d); font-size:28px; font-weight:900; text-align:center; }
+.perfil-email { color:var(--gray); font-size:13px; text-align:center; margin-bottom:24px; }
+.perfil-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px; }
+.perfil-stat { background:var(--navy2); border:1px solid rgba(201,162,75,0.1); border-radius:10px; padding:16px; text-align:center; }
+.perfil-stat-num { font-family:var(--font-d); font-size:32px; font-weight:900; color:var(--gold); }
+.perfil-stat-label { font-size:11px; color:var(--gray); margin-top:3px; }
+
+.wa-float { position:fixed; bottom:76px; right:18px; z-index:90; background:#25D366; color:white; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; text-decoration:none; box-shadow:0 4px 20px rgba(37,211,102,0.4); transition:transform .2s; }
+.wa-float:hover { transform:scale(1.08); }
+.loading-text { text-align:center; padding:40px; color:var(--gray); font-size:14px; }
+
+@media(max-width:480px) {
+  .hero-ctas { flex-direction:column; align-items:center; }
+  .cta-primary, .cta-secondary { width:100%; max-width:300px; }
+  .scanner-features { grid-template-columns:1fr; }
+  .beneficios-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
-<div id="app">
 
-<!-- SCREEN 1: BIENVENIDA -->
-<div class="screen active" id="s1">
-  <div class="logo-ring">
-    <i class="ti ti-leaf" aria-hidden="true"></i>
-  </div>
-  <div class="brand-name">Vital Health Network</div>
-  <h1 class="welcome-title">La Red que<br><span>Transforma</span><br>Vidas</h1>
-  <p class="welcome-sub">Distribuidores certificados de productos<br>naturales en todo Estados Unidos.<br>Salud. Libertad. Comunidad.</p>
-  <button class="btn-gold" onclick="goTo('s4')">
-    <i class="ti ti-certificate" aria-hidden="true"></i>
-    <span>Quiero ser Distribuidor Certificado</span>
-  </button>
-  <button class="btn-red" onclick="goTo('s5')">
-    <i class="ti ti-stethoscope" aria-hidden="true"></i>
-    <span>Conectar con un Especialista en Salud</span>
-  </button>
-  <div class="stat-row">
-    <div class="stat-box">
-      <div class="stat-num">6</div>
-      <div class="stat-lbl">Estados activos</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num">40K+</div>
-      <div class="stat-lbl">Comunidad</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-num">1M+</div>
-      <div class="stat-lbl">Alcance mensual</div>
-    </div>
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">NETWORK <span>VITAL</span></div>
+    <div class="login-tagline">Entra para acceder a tu cuenta</div>
+
+    <button class="btn-google" onclick="loginConGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Entrar con Google
+    </button>
+
+    <div class="login-divider">o usa tu email</div>
+
+    <input type="email" class="login-input" id="login-email" placeholder="tu@email.com">
+    <input type="password" class="login-input" id="login-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter') loginConEmail()">
+    <button class="btn-email" onclick="loginConEmail()">Entrar →</button>
+
+    <div class="login-msg" id="login-msg"></div>
   </div>
 </div>
 
-<!-- SCREEN 2: MAPA -->
-<div class="screen" id="s2">
-  <div class="screen-header">
-    <div class="screen-title">Mapa de <span>Distribuidores</span></div>
-    <div class="screen-sub">Toca un estado para ver detalles · Dorado = activo</div>
-  </div>
-  <div class="map-container">
-    <svg class="usa-svg" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg">
-      <rect width="460" height="280" fill="#0d1a2e" rx="10"/>
-      <!-- Row 1 -->
-      <rect class="st-active" x="12" y="22" width="52" height="32" rx="5" onclick="popState('wa')"/><text x="38" y="42" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">WA</text>
-      <rect class="st-empty" x="68" y="22" width="48" height="32" rx="5" onclick="popState('mt')"/><text x="92" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MT</text>
-      <rect class="st-empty" x="120" y="22" width="48" height="32" rx="5" onclick="popState('nd')"/><text x="144" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">ND</text>
-      <rect class="st-empty" x="172" y="22" width="42" height="32" rx="5" onclick="popState('mn')"/><text x="193" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MN</text>
-      <rect class="st-empty" x="218" y="22" width="38" height="32" rx="5" onclick="popState('wi')"/><text x="237" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">WI</text>
-      <rect class="st-empty" x="260" y="22" width="38" height="32" rx="5" onclick="popState('mi')"/><text x="279" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MI</text>
-      <rect class="st-empty" x="302" y="22" width="34" height="32" rx="5" onclick="popState('pa')"/><text x="319" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">PA</text>
-      <rect class="st-active" x="340" y="22" width="42" height="32" rx="5" onclick="popState('ny')"/><text x="361" y="42" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">NY</text>
-      <rect class="st-empty" x="386" y="22" width="30" height="15" rx="4" onclick="popState('me')"/><text x="401" y="33" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="9" font-weight="700">ME</text>
-      <!-- Row 2 -->
-      <rect class="st-active" x="12" y="58" width="52" height="60" rx="5" onclick="popState('or')"/><text x="38" y="92" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">OR</text>
-      <rect class="st-empty" x="68" y="58" width="48" height="32" rx="5" onclick="popState('wy')"/><text x="92" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">WY</text>
-      <rect class="st-empty" x="120" y="58" width="48" height="32" rx="5" onclick="popState('sd')"/><text x="144" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">SD</text>
-      <rect class="st-empty" x="172" y="58" width="42" height="32" rx="5" onclick="popState('ia')"/><text x="193" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IA</text>
-      <rect class="st-empty" x="218" y="58" width="38" height="32" rx="5" onclick="popState('il')"/><text x="237" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IL</text>
-      <rect class="st-empty" x="260" y="58" width="38" height="32" rx="5" onclick="popState('in')"/><text x="279" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IN</text>
-      <rect class="st-empty" x="302" y="58" width="34" height="32" rx="5" onclick="popState('oh')"/><text x="319" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">OH</text>
-      <rect class="st-empty" x="340" y="58" width="42" height="32" rx="5" onclick="popState('nj')"/><text x="361" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NJ</text>
-      <rect class="st-empty" x="386" y="42" width="30" height="50" rx="4" onclick="popState('ne2')"/><text x="401" y="70" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="9" font-weight="700">NE</text>
-      <!-- Row 3 -->
-      <rect class="st-active" x="12" y="122" width="52" height="80" rx="5" onclick="popState('ca')"/><text x="38" y="166" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">CA</text>
-      <rect class="st-empty" x="68" y="94" width="48" height="60" rx="5" onclick="popState('nv')"/><text x="92" y="128" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NV</text>
-      <rect class="st-empty" x="120" y="94" width="48" height="32" rx="5" onclick="popState('co')"/><text x="144" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">CO</text>
-      <rect class="st-empty" x="172" y="94" width="42" height="32" rx="5" onclick="popState('mo')"/><text x="193" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MO</text>
-      <rect class="st-empty" x="218" y="94" width="38" height="32" rx="5" onclick="popState('ky')"/><text x="237" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">KY</text>
-      <rect class="st-empty" x="260" y="94" width="38" height="32" rx="5" onclick="popState('va')"/><text x="279" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">VA</text>
-      <rect class="st-empty" x="302" y="94" width="34" height="32" rx="5" onclick="popState('md')"/><text x="319" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MD</text>
-      <rect class="st-empty" x="340" y="94" width="42" height="32" rx="5" onclick="popState('de')"/><text x="361" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">DE</text>
-      <!-- Row 4 -->
-      <rect class="st-empty" x="68" y="158" width="48" height="32" rx="5" onclick="popState('az')"/><text x="92" y="178" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">AZ</text>
-      <rect class="st-empty" x="120" y="130" width="48" height="32" rx="5" onclick="popState('nm')"/><text x="144" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NM</text>
-      <rect class="st-active" x="120" y="166" width="110" height="55" rx="5" onclick="popState('tx')"/><text x="175" y="197" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="13" font-weight="700">TX</text>
-      <rect class="st-empty" x="234" y="130" width="40" height="32" rx="5" onclick="popState('ar')"/><text x="254" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">AR</text>
-      <rect class="st-empty" x="278" y="130" width="40" height="32" rx="5" onclick="popState('tn')"/><text x="298" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">TN</text>
-      <rect class="st-empty" x="234" y="166" width="40" height="35" rx="5" onclick="popState('la')"/><text x="254" y="187" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">LA</text>
-      <rect class="st-empty" x="278" y="166" width="40" height="35" rx="5" onclick="popState('ms')"/><text x="298" y="187" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MS</text>
-      <rect class="st-empty" x="322" y="130" width="40" height="35" rx="5" onclick="popState('nc')"/><text x="342" y="151" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NC</text>
-      <rect class="st-empty" x="322" y="169" width="40" height="32" rx="5" onclick="popState('sc')"/><text x="342" y="189" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">SC</text>
-      <rect class="st-empty" x="322" y="205" width="40" height="32" rx="5" onclick="popState('ga')"/><text x="342" y="225" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">GA</text>
-      <rect class="st-active" x="366" y="190" width="56" height="55" rx="5" onclick="popState('fl')"/><text x="394" y="221" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">FL</text>
-      <!-- Alaska Hawaii -->
-      <rect class="st-empty" x="12" y="218" width="46" height="34" rx="5" onclick="popState('ak')"/><text x="35" y="239" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="10" font-weight="700">AK</text>
-      <rect class="st-empty" x="62" y="218" width="46" height="34" rx="5" onclick="popState('hi')"/><text x="85" y="239" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="10" font-weight="700">HI</text>
-      <!-- Legend -->
-      <rect x="12" y="258" width="10" height="10" rx="2" fill="#C9A24B"/>
-      <text x="26" y="267" fill="#8a9ab5" font-family="Barlow" font-size="10">Distribuidor activo</text>
-      <rect x="140" y="258" width="10" height="10" rx="2" fill="#182c47"/>
-      <text x="154" y="267" fill="#8a9ab5" font-family="Barlow" font-size="10">Zona disponible</text>
-    </svg>
-  </div>
-  <div class="state-popup" id="state-popup">
-    <div id="popup-content"></div>
-  </div>
-  <div class="city-list">
-    <div class="zone-header">⬡ California Norte</div>
-    <div class="city-card">
-      <div class="c-av">OO</div>
-      <div class="c-info"><div class="c-name">Oscar Ochoa</div><div class="c-loc">Modesto, CA</div></div>
-      <button class="wa-btn" onclick="openWA('Oscar Ochoa','Modesto')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="city-card">
-      <div class="c-av">MR</div>
-      <div class="c-info"><div class="c-name">María Ramírez</div><div class="c-loc">Sacramento, CA</div></div>
-      <button class="wa-btn" onclick="openWA('María Ramírez','Sacramento')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="zone-header">⬡ California Sur</div>
-    <div class="city-card">
-      <div class="c-av">JL</div>
-      <div class="c-info"><div class="c-name">José López</div><div class="c-loc">Los Ángeles, CA</div></div>
-      <button class="wa-btn" onclick="openWA('José López','Los Ángeles')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="city-card">
-      <div class="c-av">DH</div>
-      <div class="c-info"><div class="c-name">Diana Herrera</div><div class="c-loc">San Diego, CA</div></div>
-      <button class="wa-btn" onclick="openWA('Diana Herrera','San Diego')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="zone-header">⬡ Texas</div>
-    <div class="city-card">
-      <div class="c-av">AG</div>
-      <div class="c-info"><div class="c-name">Ana González</div><div class="c-loc">Houston, TX</div></div>
-      <button class="wa-btn" onclick="openWA('Ana González','Houston')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="city-card">
-      <div class="c-av">PS</div>
-      <div class="c-info"><div class="c-name">Pedro Soto</div><div class="c-loc">Dallas, TX</div></div>
-      <button class="wa-btn" onclick="openWA('Pedro Soto','Dallas')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="zone-header">⬡ Florida</div>
-    <div class="city-card">
-      <div class="c-av">CM</div>
-      <div class="c-info"><div class="c-name">Carlos Morales</div><div class="c-loc">Miami, FL</div></div>
-      <button class="wa-btn" onclick="openWA('Carlos Morales','Miami')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="city-card">
-      <div class="c-av">DR</div>
-      <div class="c-info"><div class="c-name">Diana Ríos</div><div class="c-loc">Orlando, FL</div></div>
-      <button class="wa-btn" onclick="openWA('Diana Ríos','Orlando')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="zone-header">⬡ Washington · New York</div>
-    <div class="city-card">
-      <div class="c-av">LV</div>
-      <div class="c-info"><div class="c-name">Laura Vargas</div><div class="c-loc">Seattle, WA</div></div>
-      <button class="wa-btn" onclick="openWA('Laura Vargas','Seattle')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="city-card">
-      <div class="c-av">RC</div>
-      <div class="c-info"><div class="c-name">Ramón Cruz</div><div class="c-loc">Nueva York, NY</div></div>
-      <button class="wa-btn" onclick="openWA('Ramón Cruz','Nueva York')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
-    </div>
-    <div class="zone-header">⬡ Zonas disponibles</div>
-    <div class="avail-card" onclick="goTo('s4')">
-      <i class="ti ti-map-pin-plus" aria-hidden="true"></i>
-      <div>
-        <div class="avail-text">Colorado · Nevada · Arizona</div>
-        <div class="avail-sub">Zona disponible — Sé el primero en tu ciudad</div>
-      </div>
-    </div>
-    <div class="avail-card" onclick="goTo('s4')">
-      <i class="ti ti-map-pin-plus" aria-hidden="true"></i>
-      <div>
-        <div class="avail-text">Illinois · Georgia · Virginia</div>
-        <div class="avail-sub">Zona disponible — Sé el primero en tu ciudad</div>
-      </div>
-    </div>
+<!-- USER BAR -->
+<div id="user-bar">
+  <div class="userbar-logo" onclick="showScreen('home')">NV <span>·</span></div>
+  <div class="userbar-right">
+    <span class="userbar-email" id="ub-email"></span>
+    <span class="userbar-role" id="ub-role"></span>
+    <button class="userbar-btn admin-btn" id="ub-admin-btn" style="display:none" onclick="showScreen('admin')">Dashboard</button>
+    <button class="userbar-btn" onclick="cerrarSesion()">Salir</button>
   </div>
 </div>
 
-<!-- SCREEN 3: EQUIPO -->
-<div class="screen" id="s3">
-  <div class="screen-header">
-    <div class="screen-title">Nuestro <span>Equipo</span></div>
-    <div class="screen-sub">Toca una tarjeta para conocer su historia</div>
-  </div>
-  <div class="inner">
-    <div class="zone-lbl">🌊 Zona Oeste</div>
-    <div class="tgrid">
-      <div class="tcard" onclick="expandTeam(this,'Oscar es el fundador de The Master Center en Modesto, CA. Con más de 20 años de experiencia emprendedora, lidera la red en California Norte y es speaker en desarrollo humano y marketing digital.')">
-        <div class="tav">OO</div>
-        <div class="tname">Oscar Ochoa</div>
-        <div class="tcity">Modesto, CA</div>
-      </div>
-      <div class="tcard" onclick="expandTeam(this,'María construyó su negocio desde cero en Sacramento. Hoy lidera su zona con más de 50 clientes activos y organiza eventos de salud cada mes en su comunidad.')">
-        <div class="tav">MR</div>
-        <div class="tname">María Ramírez</div>
-        <div class="tcity">Sacramento, CA</div>
-      </div>
-      <div class="texp"></div>
-      <div class="tcard" onclick="expandTeam(this,'José es el distribuidor más activo en el sur de California. Su comunidad en Los Ángeles crece cada semana con nuevos clientes satisfechos y distribuidores en entrenamiento.')">
-        <div class="tav">JL</div>
-        <div class="tname">José López</div>
-        <div class="tcity">Los Ángeles, CA</div>
-      </div>
-      <div class="tcard" onclick="expandTeam(this,'Laura lidera Washington con pasión por el bienestar natural. Conecta con la comunidad latina de Seattle cada semana y ha formado un equipo de 8 distribuidores activos.')">
-        <div class="tav">LV</div>
-        <div class="tname">Laura Vargas</div>
-        <div class="tcity">Seattle, WA</div>
-      </div>
-      <div class="texp"></div>
-    </div>
-    <div class="zone-lbl">🌞 Zona Sur</div>
-    <div class="tgrid">
-      <div class="tcard" onclick="expandTeam(this,'Ana es una de las líderes más consistentes en Texas. Desde Houston coordina eventos de salud masivos y ha reclutado a más de 15 nuevos distribuidores en el último año.')">
-        <div class="tav">AG</div>
-        <div class="tname">Ana González</div>
-        <div class="tcity">Houston, TX</div>
-      </div>
-      <div class="tcard" onclick="expandTeam(this,'Carlos llegó a Miami con un sueño y hoy tiene una de las redes más grandes en Florida. Es speaker en eventos regionales y mentor de nuevos distribuidores.')">
-        <div class="tav">CM</div>
-        <div class="tname">Carlos Morales</div>
-        <div class="tcity">Miami, FL</div>
-      </div>
-      <div class="texp"></div>
-      <div class="tcard" onclick="expandTeam(this,'Pedro es el referente en Dallas. Su red crece con fuerza en la comunidad hispana de North Texas, combinando eventos presenciales y estrategia digital.')">
-        <div class="tav">PS</div>
-        <div class="tname">Pedro Soto</div>
-        <div class="tcity">Dallas, TX</div>
-      </div>
-      <div class="tcard" onclick="expandTeam(this,'Diana coordina Orlando con energía y consistencia. Es la líder que más testimonios de salud ha documentado en su zona, inspirando a cientos de personas.')">
-        <div class="tav">DR</div>
-        <div class="tname">Diana Ríos</div>
-        <div class="tcity">Orlando, FL</div>
-      </div>
-      <div class="texp"></div>
-    </div>
-    <div class="zone-lbl">🗽 Zona Este</div>
-    <div class="tgrid">
-      <div class="tcard" onclick="expandTeam(this,'Ramón representa la comunidad latina en Nueva York. Su red en el Bronx y Queens es un modelo a seguir para toda la red nacional.')">
-        <div class="tav">RC</div>
-        <div class="tname">Ramón Cruz</div>
-        <div class="tcity">Nueva York, NY</div>
-      </div>
-      <div class="tcard tadd" onclick="goTo('s4')">
-        <i class="ti ti-plus" style="font-size:30px;color:var(--red)" aria-hidden="true"></i>
-        <div class="tname" style="font-size:12px;color:var(--red);margin-top:6px">Tu zona aquí</div>
-        <div class="tcity">Únete ahora</div>
-      </div>
-      <div class="texp"></div>
-    </div>
-    <div class="join-wrap">
-      <button class="btn-join" onclick="goTo('s4')">
-        <i class="ti ti-star" aria-hidden="true"></i>
-        Únete a este equipo
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- SCREEN 4: FORMULARIO -->
-<div class="screen" id="s4">
-  <div class="screen-header">
-    <div class="screen-title">Hazte <span>Distribuidor</span></div>
-    <div class="screen-sub">Completa el formulario · Te contactamos en 24 hrs</div>
-  </div>
-  <div class="form-inner">
-    <div id="form-fields">
-      <div class="fg">
-        <label class="flabel">Nombre completo</label>
-        <input class="finput" type="text" placeholder="Tu nombre y apellido" id="f-name"/>
-      </div>
-      <div class="fg">
-        <label class="flabel">Ciudad y estado</label>
-        <input class="finput" type="text" placeholder="Ej: Modesto, California" id="f-city"/>
-      </div>
-      <div class="fg">
-        <label class="flabel">WhatsApp</label>
-        <input class="finput" type="tel" placeholder="+1 (209) 000-0000" id="f-phone"/>
-      </div>
-      <div class="fg">
-        <label class="flabel">¿Por qué quieres ser distribuidor?</label>
-        <textarea class="finput" placeholder="Cuéntanos tu motivación en pocas palabras..." id="f-why"></textarea>
-      </div>
-      <button class="btn-submit" onclick="submitForm()">
-        <i class="ti ti-send" aria-hidden="true"></i>
-        Enviar mi solicitud
-      </button>
-    </div>
-    <div class="success" id="success-msg">
-      <div class="s-icon"><i class="ti ti-circle-check" aria-label="Éxito"></i></div>
-      <div class="s-title">¡Solicitud enviada!</div>
-      <p class="s-sub">Gracias por dar el primer paso.<br><br>Un líder de zona se pondrá en<br>contacto contigo en las próximas<br>24 horas.<br><br><strong>¡Bienvenido a la familia<br>Vital Health Network!</strong></p>
-      <button class="btn-gold" style="margin-top:28px;justify-content:center;border-radius:12px" onclick="resetForm()">
-        <i class="ti ti-home" aria-hidden="true"></i>
-        Volver al inicio
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- SCREEN 5: ESPECIALISTA -->
-<div class="screen" id="s5">
-  <div class="screen-header">
-    <div class="screen-title">Tu <span>Especialista</span></div>
-    <div class="screen-sub">Elige tu objetivo para encontrar al experto ideal</div>
-  </div>
-  <div class="esp-inner">
-    <div class="esp-q">¿Cuál es tu objetivo<br>principal de salud?</div>
-    <div class="esp-hint">Selecciona una opción a continuación</div>
-    <div class="h-opt" onclick="pickHealth(this,'peso')">
-      <i class="ti ti-chart-line-down" aria-hidden="true"></i>
-      <div>
-        <div class="ot">Bajar de peso</div>
-        <div class="os">Planes personalizados con nutrición natural</div>
-      </div>
-    </div>
-    <div class="h-opt" onclick="pickHealth(this,'energia')">
-      <i class="ti ti-bolt" aria-hidden="true"></i>
-      <div>
-        <div class="ot">Más energía y vitalidad</div>
-        <div class="os">Rendimiento y bienestar diario</div>
-      </div>
-    </div>
-    <div class="h-opt" onclick="pickHealth(this,'digestiva')">
-      <i class="ti ti-leaf" aria-hidden="true"></i>
-      <div>
-        <div class="ot">Salud digestiva</div>
-        <div class="os">Bienestar intestinal y detox natural</div>
-      </div>
-    </div>
-    <div class="h-opt" onclick="pickHealth(this,'general')">
-      <i class="ti ti-heart" aria-hidden="true"></i>
-      <div>
-        <div class="ot">Bienestar general</div>
-        <div class="os">Equilibrio total cuerpo y mente</div>
-      </div>
-    </div>
-    <div class="spec-card" id="spec-card"></div>
-  </div>
-</div>
-
-<!-- NAV BAR -->
-<nav class="nav" role="navigation" aria-label="Navegación principal">
-  <button class="nav-btn active" id="nav-s1" onclick="goTo('s1')" aria-label="Inicio">
-    <i class="ti ti-home" aria-hidden="true"></i>Inicio
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span>Inicio
   </button>
-  <button class="nav-btn" id="nav-s2" onclick="goTo('s2')" aria-label="Mapa">
-    <i class="ti ti-map-2" aria-hidden="true"></i>Mapa
+  <button class="nav-btn" onclick="showScreen('mapa')" id="nav-mapa">
+    <span class="nav-icon">🗺️</span>Mapa
   </button>
-  <button class="nav-btn" id="nav-s3" onclick="goTo('s3')" aria-label="Equipo">
-    <i class="ti ti-users" aria-hidden="true"></i>Equipo
+  <button class="nav-btn" onclick="showScreen('equipo')" id="nav-equipo">
+    <span class="nav-icon">👥</span>Equipo
   </button>
-  <button class="nav-btn" id="nav-s4" onclick="goTo('s4')" aria-label="Unirse">
-    <i class="ti ti-user-plus" aria-hidden="true"></i>Unirse
+  <button class="nav-btn" onclick="showScreen('scanner')" id="nav-scanner">
+    <span class="nav-icon">🔬</span>Scanner
+  </button>
+  <button class="nav-btn" onclick="showScreen('unete')" id="nav-unete">
+    <span class="nav-icon">⭐</span>Únete
   </button>
 </nav>
 
+<!-- PANTALLA HOME -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="hero-eyebrow">USA · 50 estados · 255 representantes</div>
+    <h1 class="hero-title">NETWORK<br><span class="gold">VITAL</span></h1>
+    <p class="hero-sub">La red que conecta tu salud con quienes saben cuidarla.</p>
+    <div class="hero-ctas">
+      <button class="cta-primary" onclick="showScreen('scanner')">Quiero mi scanner →</button>
+      <button class="cta-secondary" onclick="showScreen('unete')">Quiero distribuir</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num" id="stat-reps">—</div><div class="stat-label">REPRESENTANTES</div></div>
+      <div class="stat"><div class="stat-num">50</div><div class="stat-label">ESTADOS USA</div></div>
+      <div class="stat"><div class="stat-num" id="stat-slots">—</div><div class="stat-label">SLOTS LIBRES</div></div>
+    </div>
+  </div>
 </div>
 
-<script>
-const stateInfo={
-  wa:{name:'Washington',active:true,list:['Laura Vargas — Seattle']},
-  ca:{name:'California',active:true,list:['Oscar Ochoa — Modesto','María Ramírez — Sacramento','José López — Los Ángeles','Diana Herrera — San Diego']},
-  tx:{name:'Texas',active:true,list:['Ana González — Houston','Pedro Soto — Dallas']},
-  fl:{name:'Florida',active:true,list:['Carlos Morales — Miami','Diana Ríos — Orlando']},
-  ny:{name:'Nueva York',active:true,list:['Ramón Cruz — Nueva York']},
-  or:{name:'Oregon',active:false},
-};
+<!-- PANTALLA MAPA -->
+<div id="screen-mapa" class="screen">
+  <div class="page-header">
+    <h2 class="page-title">Red <span>Nacional</span></h2>
+    <div class="section-divider"></div>
+    <p class="page-desc">Toca tu estado para contactar al representante</p>
+  </div>
+  <div class="mapa-legend">
+    <div class="legend-item"><div class="legend-dot gold"></div><span>Activo</span></div>
+    <div class="legend-item"><div class="legend-dot red"></div><span>Disponible</span></div>
+    <div class="legend-item"><div class="legend-dot dark"></div><span>Próximamente</span></div>
+  </div>
+  <div class="mapa-container">
+    <svg id="usa-svg" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
+      <path id="CA" d="M 85 220 L 100 480 L 155 450 L 175 390 L 160 300 L 140 240 Z" data-estado="California" data-slots="2" onclick="openPopup(this,event)"/>
+      <path id="TX" d="M 380 370 L 540 380 L 545 470 L 490 530 L 400 510 L 370 450 Z" data-estado="Texas" data-slots="3" onclick="openPopup(this,event)"/>
+      <path id="FL" d="M 710 400 L 760 410 L 780 470 L 740 530 L 700 490 L 695 440 Z" data-estado="Florida" data-slots="1" onclick="openPopup(this,event)"/>
+      <path id="NY" d="M 790 130 L 850 120 L 870 170 L 840 190 L 800 180 Z" data-estado="New York" data-slots="4" onclick="openPopup(this,event)"/>
+      <path id="WA" d="M 100 80 L 230 75 L 225 140 L 110 145 Z" data-estado="Washington" data-slots="0" onclick="openPopup(this,event)"/>
+      <path id="IL" d="M 620 200 L 660 195 L 665 300 L 630 310 L 615 270 Z" data-estado="Illinois" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="AZ" d="M 185 295 L 290 295 L 295 410 L 210 415 Z" data-estado="Arizona" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="GA" d="M 680 340 L 730 335 L 735 400 L 695 405 Z" data-estado="Georgia" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="CO" d="M 320 220 L 450 215 L 452 295 L 322 298 Z" data-estado="Colorado" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="NV" d="M 155 165 L 225 150 L 240 280 L 185 295 L 160 230 Z" data-estado="Nevada" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="OR" d="M 100 145 L 225 140 L 220 215 L 140 220 L 102 200 Z" data-estado="Oregon" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="AK" d="M 60 490 L 160 490 L 160 570 L 60 570 Z" data-estado="Alaska" data-slots="5" onclick="openPopup(this,event)"/>
+      <path id="HI" d="M 200 510 L 300 510 L 300 570 L 200 570 Z" data-estado="Hawaii" data-slots="5" onclick="openPopup(this,event)"/>
+      <text x="110" y="535" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="Barlow Condensed" pointer-events="none">Alaska</text>
+      <text x="250" y="535" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="Barlow Condensed" pointer-events="none">Hawaii</text>
+    </svg>
+  </div>
+</div>
+<div class="estado-popup" id="estado-popup">
+  <button class="popup-close" onclick="closePopup()">✕</button>
+  <div class="popup-estado" id="popup-nombre">—</div>
+  <div class="popup-slots" id="popup-slots">—</div>
+  <a id="popup-wa" class="popup-btn" target="_blank">Contactar →</a>
+</div>
 
-const specs={
-  peso:{av:'AG',name:'Ana González',city:'Houston, TX',desc:'Especialista en nutrición y control de peso. Ha guiado a más de 200 personas a alcanzar su peso ideal con protocolos naturales de Vital Health.',msg:'Hola Ana! Vi tu perfil en Vital Health Network. Me interesa el programa para bajar de peso 🌿'},
-  energia:{av:'OO',name:'Oscar Ochoa',city:'Modesto, CA',desc:'Experto en vitalidad y rendimiento diario. Su programa de energía natural ha transformado la vida de emprendedores y profesionales en toda California.',msg:'Hola Oscar! Vi tu perfil en Vital Health Network. Quiero información sobre los productos de energía y vitalidad ⚡'},
-  digestiva:{av:'LV',name:'Laura Vargas',city:'Seattle, WA',desc:'Especialista en salud digestiva y detox. Maneja protocolos de microbioma y bienestar intestinal con enfoque 100% natural y personalizado.',msg:'Hola Laura! Vi tu perfil en Vital Health Network. Me interesa mejorar mi salud digestiva 🌿'},
-  general:{av:'MR',name:'María Ramírez',city:'Sacramento, CA',desc:'Consultora de bienestar integral. Trabaja con familias para construir hábitos saludables sostenibles que duran toda la vida.',msg:'Hola María! Vi tu perfil en Vital Health Network. Me gustaría conocer el programa de bienestar general ❤️'},
-};
+<!-- PANTALLA EQUIPO -->
+<div id="screen-equipo" class="screen">
+  <div class="page-header">
+    <h2 class="page-title">Nuestro <span>Equipo</span></h2>
+    <div class="section-divider"></div>
+    <p class="page-desc">Representantes certificados en todo USA</p>
+  </div>
+  <div class="equipo-grid" id="equipo-grid">
+    <div class="loading-text">Cargando representantes...</div>
+  </div>
+</div>
 
-function goTo(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const nb=document.getElementById('nav-'+id);
-  if(nb)nb.classList.add('active');
-}
-
-function popState(code){
-  const d=stateInfo[code];
-  const popup=document.getElementById('state-popup');
-  const content=document.getElementById('popup-content');
-  if(d&&d.active){
-    let html=`<div class="popup-title">${d.name} — ${d.list.length} distribuidor${d.list.length>1?'es':''}</div>`;
-    d.list.forEach(x=>{html+=`<div class="popup-dist">${x}</div>`;});
-    content.innerHTML=html;
-  } else {
-    const name=d?d.name:'Este estado';
-    content.innerHTML=`<div style="text-align:center;padding:6px 0">
-      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">${name}</div>
-      <div class="popup-avail" style="margin-bottom:12px">Zona disponible — ¡Sé el primero!</div>
-      <button class="popup-btn" onclick="goTo('s4')">Aplicar ahora</button>
-    </div>`;
-  }
-  popup.style.display='block';
-  popup.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function openWA(name,city){
-  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Vital Health Network. Soy de ${city} y me interesa conocer los productos 🌿`);
-  window.open(`https://wa.me/?text=${msg}`,'_blank');
-}
-
-let openTeamCard=null;
-function expandTeam(el,story){
-  const grid=el.closest('.tgrid');
-  const allCards=Array.from(grid.querySelectorAll('.tcard:not(.tadd)'));
-  const allExps=Array.from(grid.querySelectorAll('.texp'));
-  const idx=allCards.indexOf(el);
-  const expIdx=Math.floor(idx/2);
-  const expEl=allExps[expIdx];
-  allCards.forEach(c=>c.classList.remove('open'));
-  if(openTeamCard===el){
-    allExps.forEach(e=>{e.textContent='';e.classList.remove('show')});
-    openTeamCard=null;return;
-  }
-  allExps.forEach(e=>{e.textContent='';e.classList.remove('show')});
-  el.classList.add('open');
-  if(expEl){expEl.textContent=story;expEl.classList.add('show');}
-  openTeamCard=el;
-}
-
-function submitForm(){
-  const n=document.getElementById('f-name').value.trim();
-  if(!n){alert('Por favor ingresa tu nombre completo');return;}
-  document.getElementById('form-fields').style.display='none';
-  document.getElementById('success-msg').style.display='block';
-}
-
-function resetForm(){
-  document.getElementById('form-fields').style.display='block';
-  document.getElementById('success-msg').style.display='none';
-  ['f-name','f-city','f-phone','f-why'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  goTo('s1');
-}
-
-function pickHealth(el,type){
-  document.querySelectorAll('.h-opt').forEach(o=>o.classList.remove('chosen'));
-  el.classList.add('chosen');
-  const s=specs[type];
-  const card=document.getElementById('spec-card');
-  const msgEnc=encodeURIComponent(s.msg);
-  card.innerHTML=`
-    <div class="sp-hdr">
-      <div class="sp-av">${s.av}</div>
-      <div><div class="sp-name">${s.name}</div><div class="sp-city">${s.city}</div></div>
+<!-- PANTALLA SCANNER -->
+<div id="screen-scanner" class="screen">
+  <div class="page-header">
+    <h2 class="page-title">Scanner <span>Corporal IA</span></h2>
+    <div class="section-divider"></div>
+    <p class="page-desc">5 min · 45 sistemas · 128 páginas</p>
+  </div>
+  <div class="form-wrap">
+    <div class="scanner-features">
+      <div class="feature-item"><div class="feature-icon">⚡</div><div class="feature-text"><strong>5 Minutos</strong>Sin agujas ni dolor</div></div>
+      <div class="feature-item"><div class="feature-icon">🔬</div><div class="feature-text"><strong>45 Sistemas</strong>Análisis completo</div></div>
+      <div class="feature-item"><div class="feature-icon">📋</div><div class="feature-text"><strong>128 Páginas</strong>Reporte detallado</div></div>
+      <div class="feature-item"><div class="feature-icon">🌿</div><div class="feature-text"><strong>Plan Natural</strong>Suplementación</div></div>
     </div>
-    <div class="sp-desc">${s.desc}</div>
-    <button class="btn-wa2" onclick="window.open('https://wa.me/?text=${msgEnc}','_blank')">
-      <i class="ti ti-brand-whatsapp" style="font-size:22px" aria-hidden="true"></i>
-      Contactar por WhatsApp
-    </button>`;
-  card.classList.add('show');
-  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+    <div id="scanner-form">
+      <div class="form-field"><label class="form-label">Nombre completo</label><input type="text" class="form-input" id="f-nombre" placeholder="Nombre Apellido"></div>
+      <div class="form-field"><label class="form-label">WhatsApp</label><input type="tel" class="form-input" id="f-telefono" placeholder="+1 209 555 0000"></div>
+      <div class="form-field">
+        <label class="form-label">Tu estado</label>
+        <select class="form-select" id="f-estado">
+          <option value="">Selecciona...</option>
+          <option>California</option><option>Texas</option><option>Florida</option>
+          <option>New York</option><option>Washington</option><option>Illinois</option>
+          <option>Arizona</option><option>Georgia</option><option>Colorado</option>
+          <option>Nevada</option><option>Oregon</option><option>Otro estado</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">¿Qué quieres mejorar? (opcional)</label><textarea class="form-textarea" id="f-mensaje" placeholder="Energía, sueño, peso..."></textarea></div>
+      <button class="form-submit" onclick="enviarScanner()">Quiero mi scanner →</button>
+    </div>
+    <div class="form-success" id="scanner-success">
+      <div class="icon">✅</div>
+      <h3>¡Listo!</h3>
+      <p>Un representante de tu zona te contactará por WhatsApp pronto.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PANTALLA ÚNETE -->
+<div id="screen-unete" class="screen">
+  <div class="unete-hero">
+    <div class="page-title" style="margin-bottom:14px">Sé parte de la <span style="color:var(--gold)">Red</span></div>
+    <div class="unete-precio"><span>$</span>49<span style="font-size:18px">/mes</span></div>
+    <div class="unete-precio-label">Membresía de representante activo</div>
+  </div>
+  <div style="max-width:600px;margin:0 auto;padding:24px 20px 0">
+    <div class="slots-counter">
+      <div class="slots-num" id="unete-slots">—</div>
+      <div class="slots-label">slots disponibles en USA ahora mismo</div>
+    </div>
+    <div class="beneficios-grid">
+      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Perfil activo en el mapa nacional</div></div>
+      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Clientes directo a tu WhatsApp</div></div>
+      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">$50 por cada escaneo</div></div>
+      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Máximo 5 por estado</div></div>
+    </div>
+    <a id="stripe-btn" class="stripe-btn" target="_blank">Reservar mi lugar →</a>
+    <p class="unete-note">Pago seguro con Stripe · Cancela cuando quieras</p>
+    <div style="margin-top:24px;padding:18px;background:var(--navy2);border-radius:12px;text-align:center">
+      <div style="font-size:12px;color:var(--gray);margin-bottom:8px">¿Tienes preguntas?</div>
+      <a id="unete-wa" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px">💬 WhatsApp directo</a>
+    </div>
+  </div>
+</div>
+
+<!-- PANTALLA PERFIL (distribuidor) -->
+<div id="screen-perfil" class="screen">
+  <div class="page-header">
+    <h2 class="page-title">Mi <span>Perfil</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="perfil-card">
+    <div class="perfil-avatar" id="perfil-inicial">—</div>
+    <div class="perfil-nombre" id="perfil-nombre">—</div>
+    <div class="perfil-email" id="perfil-email">—</div>
+    <div class="perfil-stat-grid">
+      <div class="perfil-stat"><div class="perfil-stat-num" id="perfil-estado">—</div><div class="perfil-stat-label">ESTADO</div></div>
+      <div class="perfil-stat"><div class="perfil-stat-num" id="perfil-status">—</div><div class="perfil-stat-label">MEMBRESÍA</div></div>
+    </div>
+    <a id="perfil-wa" href="#" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:white;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:15px;margin-bottom:12px">💬 Mi WhatsApp de contacto</a>
+    <button onclick="showScreen('scanner')" style="width:100%;background:transparent;border:1px solid rgba(201,162,75,0.3);color:var(--gold);padding:12px;border-radius:10px;font-family:var(--font-d);font-size:16px;font-weight:700;cursor:pointer">Ver solicitudes de scanner</button>
+  </div>
+</div>
+
+<a id="wa-float" class="wa-float" target="_blank">💬</a>
+
+<script>
+let sb = null;
+let currentUser = null;
+let currentRole = null;
+let distribuidores = [];
+let clientes = [];
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('stripe-btn').href = CONFIG.STRIPE_LINK;
+  document.getElementById('wa-float').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}`;
+  document.getElementById('unete-wa').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}?text=Hola%2C%20quiero%20info%20para%20unirme%20a%20Network%20Vital`;
+
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+  // Escuchar cambios de sesión (incluyendo callback de OAuth)
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      await procesarUsuario(session.user);
+    } else {
+      mostrarLoginOverlay();
+    }
+  });
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    await procesarUsuario(session.user);
+  } else {
+    mostrarLoginOverlay();
+    cargarDemoData();
+  }
+});
+
+// ── MOSTRAR LOGIN ──
+function mostrarLoginOverlay() {
+  document.getElementById('login-overlay').classList.add('show');
+  document.getElementById('user-bar').classList.remove('show');
+}
+
+// ── LOGIN GOOGLE ──
+async function loginConGoogle() {
+  setMsg('Redirigiendo a Google...', 'success');
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: CONFIG.SITE_URL }
+  });
+  if (error) setMsg('Error: ' + error.message, 'error');
+}
+
+// ── LOGIN EMAIL ──
+async function loginConEmail() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { setMsg('Completa email y contraseña', 'error'); return; }
+  setMsg('Verificando...', 'success');
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) setMsg('Credenciales incorrectas', 'error');
+}
+
+function setMsg(txt, type) {
+  const el = document.getElementById('login-msg');
+  el.textContent = txt;
+  el.className = 'login-msg ' + type;
+}
+
+// ── CERRAR SESIÓN ──
+async function cerrarSesion() {
+  await sb.auth.signOut();
+  currentUser = null; currentRole = null;
+  mostrarLoginOverlay();
+}
+
+// ── PROCESAR USUARIO ──
+async function procesarUsuario(user) {
+  currentUser = user;
+  document.getElementById('login-overlay').classList.remove('show');
+  document.getElementById('user-bar').classList.add('show');
+  document.getElementById('ub-email').textContent = user.email;
+
+  // Determinar rol
+  if (user.email === CONFIG.ADMIN_EMAIL) {
+    currentRole = 'admin';
+    document.getElementById('ub-role').textContent = 'Admin';
+    document.getElementById('ub-role').className = 'userbar-role role-admin';
+    document.getElementById('ub-admin-btn').style.display = 'block';
+  } else {
+    // Verificar si es distribuidor
+    const { data } = await sb.from('distribuidores').select('*').eq('email', user.email).single();
+    if (data) {
+      currentRole = 'distribuidor';
+      document.getElementById('ub-role').textContent = 'Distribuidor';
+      document.getElementById('ub-role').className = 'userbar-role role-dist';
+      cargarPerfilDistribuidor(user, data);
+    } else {
+      currentRole = 'usuario';
+      document.getElementById('ub-role').textContent = 'Usuario';
+      document.getElementById('ub-role').className = 'userbar-role role-user';
+    }
+  }
+
+  await cargarDatos();
+}
+
+// ── CARGAR DATOS ──
+async function cargarDatos() {
+  if (!sb) { cargarDemoData(); return; }
+  const { data: dist } = await sb.from('distribuidores').select('*').eq('activo', true);
+  const { data: cli  } = await sb.from('clientes').select('*');
+  distribuidores = dist || [];
+  clientes = cli || [];
+  renderTodo();
+}
+
+function cargarDemoData() {
+  distribuidores = [
+    { nombre:'María González', estado:'California', whatsapp:'12095550001', bio:'Especialista en nutrición y bienestar.', email:'maria@email.com', activo:true },
+    { nombre:'Carlos Mendez',  estado:'Texas',      whatsapp:'12815550002', bio:'Distribuidor certificado.',             email:'carlos@email.com', activo:true },
+    { nombre:'Ana Rodríguez',  estado:'Florida',    whatsapp:'13055550003', bio:'Consultora de bienestar.',              email:'ana@email.com',    activo:true },
+    { nombre:'Luis Herrera',   estado:'New York',   whatsapp:'17185550004', bio:'Emprendedor de salud en NYC.',          email:'luis@email.com',   activo:true },
+  ];
+  clientes = [];
+  renderTodo();
+}
+
+function renderTodo() {
+  renderStats();
+  renderEquipo();
+  colorearMapa();
+}
+
+function renderStats() {
+  const activos = distribuidores.length;
+  document.getElementById('stat-reps').textContent = activos;
+  document.getElementById('stat-slots').textContent = 255 - activos;
+  document.getElementById('unete-slots').textContent = 255 - activos;
+}
+
+function renderEquipo() {
+  const grid = document.getElementById('equipo-grid');
+  grid.innerHTML = distribuidores.length ? distribuidores.map(d => `
+    <div class="rep-card">
+      <div class="rep-img">${d.nombre.charAt(0)}</div>
+      <div class="rep-body">
+        <div class="rep-estado">${d.estado}</div>
+        <div class="rep-nombre">${d.nombre}</div>
+        <div class="rep-bio">${d.bio||''}</div>
+        <a class="rep-wa" href="https://wa.me/${d.whatsapp}" target="_blank">💬 Contactar</a>
+      </div>
+    </div>`).join('') : '<div class="loading-text">Próximamente representantes en tu zona.</div>';
+}
+
+function colorearMapa() {
+  const activos = distribuidores.map(d => d.estado);
+  document.querySelectorAll('#usa-svg path[data-estado]').forEach(p => {
+    const slots = parseInt(p.getAttribute('data-slots') || '5');
+    if (activos.includes(p.getAttribute('data-estado'))) p.classList.add('gold');
+    else if (slots > 0) p.classList.add('red');
+  });
+}
+
+// ── POPUP MAPA ──
+function openPopup(path, event) {
+  const estado = path.getAttribute('data-estado');
+  const slots  = parseInt(path.getAttribute('data-slots') || '5');
+  const rep    = distribuidores.find(d => d.estado === estado);
+  const popup  = document.getElementById('estado-popup');
+  document.getElementById('popup-nombre').textContent = estado;
+  if (rep) {
+    document.getElementById('popup-slots').innerHTML = `<strong>${rep.nombre}</strong>`;
+    document.getElementById('popup-wa').href = `https://wa.me/${rep.whatsapp}`;
+    document.getElementById('popup-wa').textContent = 'Contactar por WhatsApp →';
+  } else if (slots > 0) {
+    document.getElementById('popup-slots').innerHTML = `<strong style="color:var(--red)">${slots} slots disponibles</strong>`;
+    document.getElementById('popup-wa').href = CONFIG.STRIPE_LINK;
+    document.getElementById('popup-wa').textContent = 'Reservar mi lugar →';
+  } else {
+    document.getElementById('popup-slots').innerHTML = 'Estado completo';
+    document.getElementById('popup-wa').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}`;
+    document.getElementById('popup-wa').textContent = 'Lista de espera →';
+  }
+  popup.style.left = Math.min(event.clientX + 10, window.innerWidth - 240) + 'px';
+  popup.style.top  = Math.min(event.clientY - 10, window.innerHeight - 180) + 'px';
+  popup.classList.add('visible');
+}
+function closePopup() { document.getElementById('estado-popup').classList.remove('visible'); }
+document.addEventListener('click', e => {
+  if (!e.target.closest('#estado-popup') && !e.target.closest('#usa-svg')) closePopup();
+});
+
+// ── SCANNER ──
+async function enviarScanner() {
+  const nombre   = document.getElementById('f-nombre').value.trim();
+  const telefono = document.getElementById('f-telefono').value.trim();
+  const estado   = document.getElementById('f-estado').value;
+  const mensaje  = document.getElementById('f-mensaje').value.trim();
+  if (!nombre || !telefono || !estado) { alert('Completa nombre, teléfono y estado.'); return; }
+  if (sb) await sb.from('clientes').insert({ nombre, telefono, estado, mensaje, fecha: new Date().toISOString() });
+  const rep = distribuidores.find(d => d.estado === estado);
+  const waNum = rep ? rep.whatsapp : CONFIG.WHATSAPP_CENTRAL;
+  const waMsg = encodeURIComponent(`Hola, soy ${nombre} de ${estado}. Quiero mi scanner. Tel: ${telefono}. ${mensaje}`);
+  document.getElementById('scanner-form').style.display = 'none';
+  document.getElementById('scanner-success').style.display = 'block';
+  setTimeout(() => window.open(`https://wa.me/${waNum}?text=${waMsg}`, '_blank'), 800);
+}
+
+// ── PERFIL DISTRIBUIDOR ──
+function cargarPerfilDistribuidor(user, data) {
+  document.getElementById('perfil-inicial').textContent = user.email.charAt(0).toUpperCase();
+  document.getElementById('perfil-nombre').textContent = data.nombre || user.email;
+  document.getElementById('perfil-email').textContent = user.email;
+  document.getElementById('perfil-estado').textContent = data.estado || '—';
+  document.getElementById('perfil-status').textContent = data.activo ? 'Activo ✓' : 'Pendiente';
+  document.getElementById('perfil-wa').href = `https://wa.me/${data.whatsapp}`;
+}
+
+// ── NAVEGACIÓN ──
+function showScreen(id) {
+  if (id === 'admin') {
+    window.open('vital-admin-dashboard.html', '_blank'); return;
+  }
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+  const screen = document.getElementById('screen-' + id);
+  const navBtn = document.getElementById('nav-' + id);
+  if (screen) screen.classList.add('active');
+  if (navBtn) navBtn.classList.add('active');
+  window.scrollTo(0, 0);
 }
 </script>
 </body>
