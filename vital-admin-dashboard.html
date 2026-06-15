@@ -769,15 +769,15 @@ async function initApp() {
 async function loadAll() {
   try {
     allDist  = await sb.get('membresias', 'order=created_at.desc');
-  } catch { allDist = getSampleDist(); }
+  } catch(e) { console.error("Dist error:",e); allDist = []; }
 
   try {
     allCli   = await sb.get('solicitudes_scanner', 'order=created_at.desc');
-  } catch { allCli = getSampleCli(); }
+  } catch(e) { console.error("Cli error:",e); allCli = []; }
 
   try {
     allPagos = await sb.get('pagos', 'order=created_at.desc&limit=50');
-  } catch { allPagos = getSamplePagos(); }
+  } catch(e) { console.error("Pagos error:",e); allPagos = []; }
 
   renderOverview();
   renderDistribuidores();
