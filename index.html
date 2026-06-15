@@ -3,781 +3,738 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Network Vital · USA</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<title>Vital Health Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const CONFIG = {
-  SUPABASE_URL:      'https://cglbffkzvjlhfsxwpjbb.supabase.co',
-  SUPABASE_ANON_KEY: 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA',
-  STRIPE_LINK:       'https://buy.stripe.com/TU_LINK',
-  WHATSAPP_CENTRAL:  '12093001234',
-  ADMIN_EMAIL:       'oscar8a1985@gmail.com',
-  SITE_URL:          'https://networkvital.com'
-};
+  // ─── CONFIGURACIÓN — CAMBIA ESTOS 3 VALORES ────────────────
+  const SUPABASE_URL      = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
+  const YOUR_WHATSAPP     = '12099717638';
+  // ────────────────────────────────────────────────────────────
 </script>
+
 <style>
-:root {
-  --navy:#0B1626; --navy2:#132033; --navy3:#1A2D45;
-  --gold:#C9A24B; --gold2:#E8BC5A; --red:#C81E2D;
-  --white:#FFFFFF; --gray:#8A96A3; --cream:#F5F0E8;
-  --font-d:'Barlow Condensed',sans-serif;
-  --font-b:'Barlow',sans-serif;
+:root{
+  --navy:#0B1626;--navy2:#1E2D45;--navy3:#162038;
+  --gold:#C9A24B;--slate:#2A3F5C;--muted:#7A8FA6;
+  --white:#fff;--wa:#25D366;--crimson:#C81E2D;
+  --green:#1D9E75;--border:rgba(201,162,75,0.18);
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--font-b);background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;}
 
-/* ══ TOP BAR ══ */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  background:rgba(11,22,38,0.96);backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(201,162,75,0.15);
-  height:56px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 20px;
-}
-.topbar-logo{
-  font-family:var(--font-d);font-size:22px;font-weight:900;
-  letter-spacing:0.04em;cursor:pointer;
-}
-.topbar-logo span{color:var(--gold);}
-.topbar-right{display:flex;align-items:center;gap:10px;}
+/* LOADING */
+#loading{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.4s;}
+#loading.hidden{opacity:0;pointer-events:none;}
+.ld-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:18px;}
+.ld-logo span{color:var(--white);}
+.ld-bar{width:120px;height:2px;background:rgba(201,162,75,0.2);}
+.ld-fill{height:100%;width:0;background:var(--gold);animation:ld 1.2s ease forwards;}
+@keyframes ld{to{width:100%;}}
+.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
 
-/* Account icon button */
-.account-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.25);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:18px;transition:all .2s;position:relative;
-}
-.account-btn:hover{background:rgba(201,162,75,0.2);border-color:var(--gold);}
-.account-dot{
-  position:absolute;top:0;right:0;width:10px;height:10px;
-  border-radius:50%;background:var(--gold);border:2px solid var(--navy);
-  display:none;
-}
-.account-dot.show{display:block;}
+/* SCREENS */
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
 
-/* Account dropdown */
-.account-dropdown{
-  position:absolute;top:52px;right:16px;z-index:300;
-  background:var(--navy2);border:1px solid rgba(201,162,75,0.2);
-  border-radius:14px;padding:16px;min-width:220px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
-  display:none;
-}
-.account-dropdown.open{display:block;}
-.acc-header{text-align:center;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:12px;}
-.acc-avatar{
-  width:52px;height:52px;border-radius:50%;
-  background:rgba(201,162,75,0.15);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-d);font-size:22px;font-weight:900;color:var(--gold);
-  margin:0 auto 8px;
-}
-.acc-name{font-size:14px;font-weight:600;}
-.acc-email{font-size:11px;color:var(--gray);margin-top:2px;}
-.acc-role{
-  display:inline-block;font-size:10px;font-weight:700;
-  letter-spacing:0.08em;text-transform:uppercase;
-  padding:3px 10px;border-radius:10px;margin-top:6px;
-}
-.role-admin{background:rgba(201,162,75,0.2);color:var(--gold);}
-.role-dist{background:rgba(26,122,74,0.2);color:#4ade80;}
-.role-user{background:rgba(255,255,255,0.08);color:var(--gray);}
-.acc-menu-btn{
-  width:100%;text-align:left;padding:10px 12px;
-  background:transparent;border:none;color:var(--white);
-  font-family:var(--font-b);font-size:13px;cursor:pointer;
-  border-radius:8px;transition:background .15s;display:flex;
-  align-items:center;gap:8px;
-}
-.acc-menu-btn:hover{background:rgba(255,255,255,0.06);}
-.acc-menu-btn.gold{color:var(--gold);font-weight:600;}
-.acc-menu-btn.danger{color:#f87171;}
-.acc-divider{height:1px;background:rgba(255,255,255,0.08);margin:6px 0;}
+/* HEADER */
+.hdr{background:var(--navy);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;color:var(--gold);}
+.logo span{color:var(--white);}
+.pill{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:3px 9px;text-transform:uppercase;}
 
-/* Guest state (no sesión) */
-.acc-guest{text-align:center;padding:4px 0 8px;}
-.acc-guest-title{font-size:13px;font-weight:600;margin-bottom:4px;}
-.acc-guest-sub{font-size:11px;color:var(--gray);margin-bottom:14px;}
-.btn-google-small{
-  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
-  background:var(--white);color:#1f1f1f;
-  font-family:var(--font-b);font-size:13px;font-weight:600;
-  padding:10px 16px;border-radius:8px;border:none;cursor:pointer;
-  transition:all .2s;margin-bottom:8px;
-}
-.btn-google-small:hover{background:#f0f0f0;}
-.btn-google-small svg{width:16px;height:16px;flex-shrink:0;}
-.acc-or{font-size:11px;color:var(--gray);text-align:center;margin:6px 0;}
-.acc-input{
-  width:100%;background:var(--navy3);border:1px solid rgba(255,255,255,0.1);
-  border-radius:7px;padding:9px 12px;color:var(--white);
-  font-family:var(--font-b);font-size:13px;outline:none;margin-bottom:6px;
-  transition:border-color .2s;
-}
-.acc-input:focus{border-color:var(--gold);}
-.btn-email-small{
-  width:100%;background:var(--gold);color:var(--navy);
-  font-family:var(--font-d);font-size:15px;font-weight:900;
-  letter-spacing:0.05em;text-transform:uppercase;
-  padding:10px;border-radius:7px;border:none;cursor:pointer;
-  transition:background .2s;
-}
-.btn-email-small:hover{background:var(--gold2);}
-.acc-msg{font-size:11px;margin-top:6px;text-align:center;min-height:16px;}
-.acc-msg.error{color:#f87171;}
-.acc-msg.ok{color:#4ade80;}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy2);border-top:1px solid var(--border);display:flex;z-index:200;}
+.nb{flex:1;padding:10px 4px 14px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.15s;}
+.nb svg{width:19px;height:19px;}
+.nb.active{color:var(--gold);}
 
-/* ══ NAV BOTTOM ══ */
-nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:100;
-  background:rgba(11,22,38,0.96);backdrop-filter:blur(12px);
-  border:1px solid rgba(201,162,75,0.15);border-radius:20px 20px 0 0;
-  display:flex;align-items:center;padding:0 8px;height:60px;gap:4px;
-  width:min(480px,100%);
-}
-.nav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:3px;padding:8px 4px;
-  background:none;border:none;cursor:pointer;
-  font-family:var(--font-b);font-size:10px;color:var(--gray);
-  border-radius:12px;transition:all .15s;
-}
-.nav-btn:hover{background:rgba(255,255,255,0.05);color:var(--white);}
-.nav-btn.active{color:var(--gold);background:rgba(201,162,75,0.1);}
-.nav-icon{font-size:20px;line-height:1;}
+/* HELPERS */
+.eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1.05;}
+@keyframes pulse{0%,100%{border-color:rgba(201,162,75,0.3);}50%{border-color:rgba(201,162,75,0.85);}}
 
-/* ══ SCREENS ══ */
-.screen{display:none;min-height:100vh;padding-top:56px;padding-bottom:72px;}
-.screen.active{display:block;}
-
-/* ══ HOME ══ */
-#screen-home{background:linear-gradient(160deg,var(--navy) 0%,#0D1E35 60%,#0B1626 100%);}
-.hero{
-  min-height:calc(100vh - 128px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:40px 24px;position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(201,162,75,0.08) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-eyebrow{
-  font-family:var(--font-d);font-size:13px;font-weight:600;
-  letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);
-  margin-bottom:20px;border:1px solid rgba(201,162,75,0.3);
-  padding:6px 16px;border-radius:20px;display:inline-block;
-}
-.hero-title{
-  font-family:var(--font-d);font-size:clamp(52px,10vw,88px);
-  font-weight:900;line-height:0.92;letter-spacing:-0.01em;margin-bottom:8px;
-}
+/* ─── HOME ─── */
+.hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:32px 22px 28px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,0.1) 0%,transparent 70%);pointer-events:none;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;line-height:0.92;letter-spacing:-0.5px;margin-bottom:14px;}
 .hero-title .gold{color:var(--gold);}
-.hero-sub{
-  font-size:clamp(15px,3vw,19px);color:rgba(255,255,255,0.6);
-  max-width:480px;line-height:1.5;margin:18px auto 36px;
-}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;}
-.cta-primary{
-  background:var(--gold);color:var(--navy);
-  font-family:var(--font-d);font-size:17px;font-weight:800;
-  letter-spacing:0.04em;text-transform:uppercase;
-  padding:15px 28px;border-radius:8px;border:none;cursor:pointer;
-  transition:all .2s;min-width:180px;
-}
-.cta-primary:hover{background:var(--gold2);transform:translateY(-2px);}
-.cta-secondary{
-  background:transparent;color:var(--white);
-  font-family:var(--font-d);font-size:17px;font-weight:700;
-  letter-spacing:0.04em;text-transform:uppercase;
-  padding:15px 28px;border-radius:8px;cursor:pointer;
-  border:1px solid rgba(255,255,255,0.25);transition:all .2s;min-width:180px;
-}
-.cta-secondary:hover{border-color:var(--white);background:rgba(255,255,255,0.05);}
-.stats-row{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;}
-.stat{text-align:center;}
-.stat-num{font-family:var(--font-d);font-size:34px;font-weight:900;color:var(--gold);line-height:1;}
-.stat-label{font-size:11px;color:var(--gray);letter-spacing:0.08em;margin-top:4px;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.55;margin-bottom:24px;}
+.stats-row{display:grid;grid-template-columns:1fr 1px 1fr;background:rgba(201,162,75,0.07);border:1px solid rgba(201,162,75,0.2);padding:14px 0;margin-bottom:24px;}
+.stat-item{text-align:center;padding:0 14px;}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;line-height:1;color:var(--gold);}
+.stat-num.cr{color:var(--crimson);}
+.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.dots{display:flex;gap:4px;justify-content:center;margin-top:6px;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.on{background:var(--gold);}
+.dot.off{background:transparent;border:1.5px solid rgba(201,162,75,0.4);animation:pulse 2s infinite;}
+.ctas{display:grid;gap:12px;padding:0 20px 28px;}
+.cta{background:var(--slate);border:1px solid rgba(201,162,75,0.12);padding:20px;cursor:pointer;transition:transform 0.15s;position:relative;text-align:left;}
+.cta:active{transform:scale(0.98);}
+.cta.primary{background:var(--gold);border-color:var(--gold);}
+.cta.primary .cta-ey,.cta.primary .cta-de{color:rgba(11,22,38,0.6);}
+.cta.primary .cta-ti{color:var(--navy);}
+.cta.primary .arr{color:var(--navy);}
+.cta-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
+.cta-ti{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;line-height:1.1;margin-bottom:5px;}
+.cta-de{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.45;}
+.arr{position:absolute;top:20px;right:20px;font-size:22px;opacity:0.6;color:var(--gold);}
 
-/* ══ PAGE HEADER ══ */
-.page-header{text-align:center;padding:36px 24px 24px;}
-.page-title{font-family:var(--font-d);font-size:clamp(32px,6vw,52px);font-weight:900;}
-.page-title span{color:var(--gold);}
-.page-desc{color:var(--gray);font-size:14px;margin-top:6px;}
-.section-divider{width:40px;height:3px;background:var(--gold);margin:10px auto 0;border-radius:2px;}
+/* ─── MAP ─── */
+.mhdr{padding:20px 20px 8px;}
+.legend{display:flex;gap:14px;padding:6px 20px 12px;}
+.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
+.ld2{width:10px;height:10px;border-radius:50%;}
+.ld2.full{background:var(--gold);}
+.ld2.partial{background:rgba(201,162,75,0.4);}
+.ld2.open{background:transparent;border:1.5px solid rgba(255,255,255,0.25);}
+.map-wrap{padding:0 10px;}
+svg.usa{width:100%;height:auto;}
+.st{stroke:var(--navy);stroke-width:1.5;cursor:pointer;fill:var(--slate);transition:opacity 0.15s;}
+.st.full{fill:var(--gold);}
+.st.partial{fill:rgba(201,162,75,0.45);}
+.st:active{opacity:0.7;}
+.spop{margin:10px 16px 0;padding:16px;background:var(--navy2);border:1px solid rgba(201,162,75,0.25);display:none;}
+.spop.vis{display:block;}
+.spop-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;margin-bottom:10px;}
+.spop-slots{display:flex;gap:5px;margin-bottom:10px;}
+.spop-slot{flex:1;height:28px;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.spop-slot.on{background:var(--gold);color:var(--navy);font-weight:700;}
+.spop-slot.off{background:transparent;border:1.5px dashed rgba(201,162,75,0.35);animation:pulse 2.2s infinite;}
+.spop-status{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.rep-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,0.05);}
+.rep-av{width:38px;height:38px;border-radius:50%;background:var(--slate);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.rep-nm{font-size:14px;font-weight:600;}
+.rep-ci{font-size:12px;color:var(--muted);}
+.wac{width:36px;height:36px;border-radius:50%;background:var(--wa);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:auto;}
+.pop-btn{width:100%;margin-top:12px;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
 
-/* ══ MAPA ══ */
-#screen-mapa{background:var(--navy);}
-.mapa-legend{display:flex;gap:20px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray);}
-.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.legend-dot.gold{background:var(--gold);}
-.legend-dot.red{background:var(--red);}
-.legend-dot.dark{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);}
-.mapa-container{max-width:860px;margin:0 auto;padding:0 12px;}
-#usa-svg{width:100%;height:auto;display:block;}
-#usa-svg path{fill:rgba(255,255,255,0.06);stroke:rgba(255,255,255,0.15);stroke-width:0.5;transition:fill .2s;cursor:pointer;}
-#usa-svg path.gold{fill:var(--gold);opacity:0.9;}
-#usa-svg path.red{fill:var(--red);opacity:0.85;}
-#usa-svg path:hover{opacity:0.7;}
-.estado-popup{
-  display:none;position:fixed;background:var(--navy2);
-  border:1px solid rgba(201,162,75,0.3);border-radius:12px;
-  padding:18px;min-width:220px;z-index:300;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
-}
-.estado-popup.visible{display:block;}
-.popup-estado{font-family:var(--font-d);font-size:20px;font-weight:800;}
-.popup-slots{margin:6px 0;font-size:13px;color:var(--gray);}
-.popup-btn{
-  display:block;width:100%;margin-top:10px;
-  background:var(--gold);color:var(--navy);
-  font-family:var(--font-d);font-size:14px;font-weight:800;
-  text-transform:uppercase;padding:11px;border-radius:6px;
-  border:none;cursor:pointer;text-decoration:none;text-align:center;
-}
-.popup-close{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;}
+/* ─── FORMS ─── */
+.fbody{padding:20px;flex:1;padding-bottom:90px;}
+.info-box{background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.18);padding:16px;margin-bottom:22px;}
+.info-box-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:7px;}
+.info-box p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;}
+.alert-box{background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.28);padding:12px 16px;margin-bottom:20px;display:flex;gap:10px;align-items:center;}
+.alert-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
+.alert-s{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.fg{margin-bottom:16px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.fi,.fs{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.18);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fs option{background:var(--navy2);}
+.wa-btn{width:100%;background:var(--wa);color:#fff;border:none;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
+.disc{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.55;}
 
-/* ══ EQUIPO ══ */
-#screen-equipo{background:var(--navy);}
-.equipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 16px;max-width:1100px;margin:0 auto;}
-.rep-card{background:var(--navy2);border:1px solid rgba(201,162,75,0.12);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s;}
-.rep-card:hover{transform:translateY(-3px);border-color:rgba(201,162,75,0.35);}
-.rep-img{width:100%;height:180px;background:linear-gradient(135deg,#132033,#1a2d45);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:44px;font-weight:900;color:rgba(201,162,75,0.3);}
-.rep-body{padding:14px 18px 18px;}
-.rep-estado{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
-.rep-nombre{font-family:var(--font-d);font-size:20px;font-weight:800;}
-.rep-bio{font-size:12px;color:var(--gray);line-height:1.5;margin:6px 0 12px;}
-.rep-wa{display:flex;align-items:center;gap:8px;background:#25D366;color:white;padding:9px 14px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s;}
-.rep-wa:hover{opacity:0.85;}
+/* ─── MEMBRESÍA / PAGO ─── */
+.price-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.price-hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,0.12) 0%,transparent 70%);pointer-events:none;}
+.price-num{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;}
+.price-per{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:6px;}
+.price-d{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;margin-top:8px;}
+.benefits{padding:16px 20px;}
+.ben-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ben-item:last-child{border-bottom:none;}
+.ben-ico{width:32px;height:32px;border-radius:50%;background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ben-ti{font-size:14px;font-weight:600;margin-bottom:2px;}
+.ben-su{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
+.urgency{margin:0 18px 16px;background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.25);padding:10px 14px;display:flex;gap:8px;align-items:center;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
+.urg-s{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;}
+.pay-btn{width:100%;padding:18px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;transition:opacity 0.2s;}
+.pay-btn.loading{opacity:0.6;pointer-events:none;}
+.secure-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);}
+.stripe-b{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.1);padding:1px 6px;}
 
-/* ══ SCANNER ══ */
-#screen-scanner{background:var(--navy);}
-.form-wrap{max-width:520px;margin:0 auto;padding:0 20px;}
-.scanner-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
-.feature-item{background:var(--navy2);border:1px solid rgba(201,162,75,0.1);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:8px;}
-.feature-icon{font-size:18px;flex-shrink:0;}
-.feature-text{font-size:12px;color:var(--cream);line-height:1.4;}
-.feature-text strong{color:var(--gold);display:block;font-size:11px;margin-bottom:1px;}
-.form-field{margin-bottom:14px;}
-.form-label{display:block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray);margin-bottom:5px;}
-.form-input,.form-select,.form-textarea{width:100%;background:var(--navy2);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 14px;color:var(--white);font-family:var(--font-b);font-size:14px;transition:border-color .2s;outline:none;-webkit-appearance:none;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
-.form-select option{background:var(--navy2);}
-.form-textarea{resize:vertical;min-height:80px;}
-.form-submit{width:100%;background:var(--gold);color:var(--navy);font-family:var(--font-d);font-size:19px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;padding:16px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;margin-top:6px;}
-.form-submit:hover{background:var(--gold2);}
-.form-success{display:none;text-align:center;padding:40px 20px;}
-.form-success .icon{font-size:48px;margin-bottom:14px;}
-.form-success h3{font-family:var(--font-d);font-size:28px;font-weight:900;color:var(--gold);margin-bottom:6px;}
-.form-success p{color:var(--gray);font-size:14px;line-height:1.6;}
+/* ─── PERFIL DISTRIBUIDOR (después de login) ─── */
+.profile-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;position:relative;overflow:hidden;}
+.profile-av{width:72px;height:72px;border-radius:50%;background:var(--slate);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-bottom:14px;}
+.profile-name{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin-bottom:2px;}
+.profile-location{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:2px;}
+.status-pill.activa{background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
+.status-pill.pendiente{background:rgba(201,162,75,0.15);color:var(--gold);border:1px solid rgba(201,162,75,0.3);}
+.status-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.profile-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 20px 0;}
+.pcard{background:var(--navy2);border:1px solid var(--border);padding:14px;}
+.pcard-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.pcard-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.pcard-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.profile-section{padding:20px 20px 0;}
+.profile-section-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.client-card{background:var(--slate);border:1px solid rgba(255,255,255,0.06);padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;}
+.client-av{width:36px;height:36px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0;}
+.client-name{font-size:14px;font-weight:600;}
+.client-sub{font-size:11px;color:var(--muted);}
+.edit-field{margin-bottom:12px;}
+.edit-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:block;}
+.edit-input{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.18);color:var(--white);padding:10px 12px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.edit-input:focus{border-color:var(--gold);}
+.save-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
 
-/* ══ ÚNETE ══ */
-#screen-unete{background:var(--navy);}
-.unete-hero{background:linear-gradient(135deg,#0D1E35,#132033);border-bottom:1px solid rgba(201,162,75,0.12);padding:32px 20px;text-align:center;}
-.unete-precio{font-family:var(--font-d);font-size:clamp(52px,10vw,76px);font-weight:900;color:var(--gold);line-height:1;}
-.unete-precio span{font-size:22px;vertical-align:top;margin-top:10px;display:inline-block;}
-.unete-precio-label{color:var(--gray);font-size:13px;margin-top:3px;}
-.beneficios-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:600px;margin:24px auto;padding:0 20px;}
-.beneficio{background:var(--navy2);border:1px solid rgba(201,162,75,0.1);border-radius:10px;padding:14px;display:flex;align-items:flex-start;gap:8px;}
-.beneficio-check{width:20px;height:20px;border-radius:50%;background:rgba(201,162,75,0.12);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gold);}
-.beneficio-texto{font-size:12px;color:var(--cream);line-height:1.4;}
-.slots-counter{text-align:center;padding:20px;border:1px solid rgba(201,162,75,0.18);border-radius:12px;max-width:360px;margin:0 auto 24px;}
-.slots-num{font-family:var(--font-d);font-size:48px;font-weight:900;color:var(--red);line-height:1;}
-.slots-label{color:var(--gray);font-size:12px;margin-top:3px;}
-.stripe-btn{display:block;max-width:360px;margin:0 auto;background:var(--gold);color:var(--navy);font-family:var(--font-d);font-size:19px;font-weight:900;text-align:center;letter-spacing:0.05em;text-transform:uppercase;padding:18px 28px;border-radius:10px;text-decoration:none;transition:all .2s;}
-.stripe-btn:hover{background:var(--gold2);transform:translateY(-2px);}
-.unete-note{text-align:center;color:var(--gray);font-size:11px;margin-top:10px;max-width:360px;margin-left:auto;margin-right:auto;}
+/* ─── LOGIN ─── */
+.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(ellipse at 30% 30%,rgba(201,162,75,0.06) 0%,transparent 60%),var(--navy);}
+.login-logo{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;text-align:center;}
+.login-logo span{color:var(--white);}
+.login-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:32px;}
+.login-card{width:100%;max-width:380px;border:1px solid var(--border);padding:28px;}
+.login-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.login-err{color:#E85C6A;font-size:13px;margin-top:10px;text-align:center;display:none;}
+.login-link{text-align:center;margin-top:14px;font-size:13px;color:var(--muted);}
+.login-link a{color:var(--gold);text-decoration:none;}
 
-/* ══ MI CUENTA ══ */
-#screen-cuenta{background:var(--navy);}
-.cuenta-wrap{max-width:480px;margin:0 auto;padding:0 20px;}
-.cuenta-avatar{width:80px;height:80px;border-radius:50%;background:rgba(201,162,75,0.12);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:32px;font-weight:900;color:var(--gold);margin:0 auto 14px;}
-.cuenta-nombre{font-family:var(--font-d);font-size:26px;font-weight:900;text-align:center;}
-.cuenta-email{color:var(--gray);font-size:13px;text-align:center;margin-bottom:24px;}
-.cuenta-card{background:var(--navy2);border:1px solid rgba(201,162,75,0.1);border-radius:12px;padding:18px;margin-bottom:12px;}
-.cuenta-card-title{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
-.cuenta-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.cuenta-row:last-child{border:none;}
-.cuenta-key{font-size:13px;color:var(--gray);}
-.cuenta-val{font-size:13px;font-weight:600;}
-.cuenta-action{
-  width:100%;padding:13px;border-radius:8px;
-  font-family:var(--font-d);font-size:16px;font-weight:800;
-  letter-spacing:0.04em;text-transform:uppercase;
-  cursor:pointer;transition:all .2s;margin-bottom:10px;
-}
-.cuenta-action.primary{background:var(--gold);color:var(--navy);border:none;}
-.cuenta-action.primary:hover{background:var(--gold2);}
-.cuenta-action.ghost{background:transparent;color:var(--gray);border:1px solid rgba(255,255,255,0.12);}
-.cuenta-action.ghost:hover{border-color:var(--red);color:#f87171;}
-
-/* ══ WA FLOAT ══ */
-.wa-float{position:fixed;bottom:76px;right:18px;z-index:90;background:#25D366;color:white;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:transform .2s;}
-.wa-float:hover{transform:scale(1.08);}
-.loading-text{text-align:center;padding:40px;color:var(--gray);font-size:14px;}
-
-@media(max-width:480px){
-  .hero-ctas{flex-direction:column;align-items:center;}
-  .cta-primary,.cta-secondary{width:100%;max-width:300px;}
-  .scanner-features{grid-template-columns:1fr;}
-  .beneficios-grid{grid-template-columns:1fr;}
-}
+/* ─── ÉXITO PAGO ─── */
+.success-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;text-align:center;}
+.check-circle{width:76px;height:76px;border-radius:50%;background:rgba(29,158,117,0.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:22px;}
+.suc-t{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;margin-bottom:8px;}
+.suc-t span{color:var(--gold);}
+.suc-s{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.65;margin-bottom:24px;}
+.suc-info{width:100%;background:rgba(201,162,75,0.07);border:1px solid rgba(201,162,75,0.2);padding:12px 16px;text-align:left;margin-bottom:10px;}
+.suc-info-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:3px;}
+.suc-info-v{font-size:14px;font-weight:500;}
+.suc-wa{width:100%;background:var(--wa);color:#fff;border:none;padding:14px;margin-top:14px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.suc-back{width:100%;background:none;border:1px solid rgba(201,162,75,0.3);color:var(--gold);padding:11px;margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;}
+.pb90{padding-bottom:90px;}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="topbar-logo" onclick="showScreen('home')">NETWORK <span>VITAL</span></div>
-  <div class="topbar-right">
-    <!-- Botón cuenta -->
-    <div class="account-btn" onclick="toggleDropdown()" id="acc-btn" title="Mi cuenta">
-      <span id="acc-icon">👤</span>
-      <div class="account-dot" id="acc-dot"></div>
+<!-- LOADING -->
+<div id="loading">
+  <div class="ld-logo">VITAL<span> HEALTH</span></div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+  <div class="ld-txt">Iniciando sistema…</div>
+</div>
+
+<!-- ══════════ HOME ══════════ -->
+<div id="s-home" class="screen active">
+  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">USA Network</div></div>
+  <div style="overflow-y:auto;flex:1;padding-bottom:70px;">
+    <div class="hero">
+      <div class="eyebrow">🌿 Red Nacional de Bienestar</div>
+      <div class="hero-title">Tu salud,<br><span class="gold">tu red,</span><br>tu futuro.</div>
+      <div class="hero-sub">Conectamos personas que quieren mejorar su salud con especialistas certificados en todo EE.UU.</div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num" id="cnt-a">—</div>
+          <div class="stat-lbl">Miembros activos</div>
+          <div class="dots" id="dots-a"></div>
+        </div>
+        <div style="background:rgba(201,162,75,0.2);"></div>
+        <div class="stat-item">
+          <div class="stat-num cr" id="cnt-o">—</div>
+          <div class="stat-lbl">Espacios disponibles</div>
+          <div class="dots" id="dots-o"></div>
+        </div>
+      </div>
     </div>
+    <div class="ctas">
+      <div class="cta primary" onclick="goTo('s-scan')">
+        <div class="cta-ey">Para tu salud</div>
+        <div class="cta-ti">Quiero conocer mi cuerpo</div>
+        <div class="cta-de" style="color:rgba(11,22,38,0.6)">Escáner corporal con especialista en tu zona.</div>
+        <div class="arr" style="color:var(--navy);">→</div>
+      </div>
+      <div class="cta" onclick="goTo('s-membresia')">
+        <div class="cta-ey">Oportunidad · $49/mes</div>
+        <div class="cta-ti">Reservar mi espacio en la red</div>
+        <div class="cta-de">Sé representante certificado en tu estado.</div>
+        <div class="arr">→</div>
+      </div>
+    </div>
+    <div style="padding:0 20px 20px;text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">¿Ya eres miembro?</div>
+      <button onclick="goTo('s-login')" style="background:none;border:1px solid var(--border);color:var(--gold);padding:10px 24px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Iniciar sesión →</button>
+    </div>
+  </div>
+  <nav class="bnav" id="bnav-home">
+    <button class="nb active" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/mes</button>
+    <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
+  </nav>
+</div>
+
+<!-- ══════════ MAPA ══════════ -->
+<div id="s-map" class="screen">
+  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Mapa USA</div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
+    <div class="mhdr">
+      <div class="eyebrow">Disponibilidad por estado</div>
+      <div class="sec-title">Encuentra tu zona</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:3px;">Toca un estado para ver representantes</div>
+    </div>
+    <div class="legend">
+      <div class="li"><div class="ld2 full"></div>Completo</div>
+      <div class="li"><div class="ld2 partial"></div>Parcial</div>
+      <div class="li"><div class="ld2 open"></div>Disponible</div>
+    </div>
+    <div class="map-wrap">
+      <svg class="usa" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
+        <path class="st" id="WA" d="M100,50L220,50L225,90L185,95L160,110L100,100Z"/>
+        <path class="st" id="OR" d="M100,100L185,95L190,170L100,175Z"/>
+        <path class="st" id="CA" d="M100,175L190,170L195,290L155,330L90,300Z"/>
+        <path class="st" id="NV" d="M190,170L245,165L250,255L195,290Z"/>
+        <path class="st" id="ID" d="M185,95L255,90L260,160L245,165L190,170Z"/>
+        <path class="st" id="MT" d="M220,50L370,50L375,120L255,125L225,90Z"/>
+        <path class="st" id="WY" d="M255,125L375,120L380,195L260,200Z"/>
+        <path class="st" id="UT" d="M245,165L260,200L265,270L210,275L195,230L195,165Z"/>
+        <path class="st" id="AZ" d="M195,230L265,270L270,330L200,340L175,310Z"/>
+        <path class="st" id="CO" d="M260,200L380,195L385,260L265,265Z"/>
+        <path class="st" id="NM" d="M265,265L385,260L390,330L270,335Z"/>
+        <path class="st" id="ND" d="M370,50L510,48L515,115L375,120Z"/>
+        <path class="st" id="SD" d="M375,120L515,115L520,185L380,190Z"/>
+        <path class="st" id="NE" d="M380,190L520,185L525,240L385,245Z"/>
+        <path class="st" id="KS" d="M385,245L525,240L530,290L390,295Z"/>
+        <path class="st" id="OK" d="M390,295L530,290L535,335L395,340Z"/>
+        <path class="st" id="TX" d="M390,335L535,335L545,420L480,450L420,430L380,395Z"/>
+        <path class="st" id="MN" d="M510,48L590,48L595,145L515,148Z"/>
+        <path class="st" id="IA" d="M515,148L595,145L600,200L520,205Z"/>
+        <path class="st" id="MO" d="M520,205L600,200L610,265L525,270Z"/>
+        <path class="st" id="AR" d="M525,270L610,265L615,315L530,320Z"/>
+        <path class="st" id="LA" d="M530,315L615,315L620,360L550,370L530,360Z"/>
+        <path class="st" id="WI" d="M590,48L650,50L655,140L595,145Z"/>
+        <path class="st" id="IL" d="M595,145L655,140L660,215L600,220Z"/>
+        <path class="st" id="MS" d="M600,265L615,265L620,335L605,350L595,320L595,265Z"/>
+        <path class="st" id="MI" d="M650,50L720,55L710,110L655,115Z"/>
+        <path class="st" id="IN" d="M655,140L710,135L715,200L660,205Z"/>
+        <path class="st" id="OH" d="M710,135L765,130L770,195L715,200Z"/>
+        <path class="st" id="KY" d="M660,205L770,200L775,240L660,250Z"/>
+        <path class="st" id="TN" d="M615,250L775,245L775,275L615,280Z"/>
+        <path class="st" id="AL" d="M615,280L665,275L670,345L620,350L615,335Z"/>
+        <path class="st" id="GA" d="M665,275L720,270L730,345L670,355Z"/>
+        <path class="st" id="FL" d="M670,350L730,345L745,390L720,430L680,440L660,400Z"/>
+        <path class="st" id="SC" d="M720,270L765,265L760,310L725,315Z"/>
+        <path class="st" id="NC" d="M720,245L800,240L795,270L720,270Z"/>
+        <path class="st" id="VA" d="M765,210L820,205L815,245L765,245Z"/>
+        <path class="st" id="WV" d="M765,195L800,190L805,215L770,215Z"/>
+        <path class="st" id="PA" d="M770,155L840,148L845,190L765,192Z"/>
+        <path class="st" id="NY" d="M800,105L875,100L875,155L770,158L770,130Z"/>
+        <path class="st" id="NJ" d="M840,148L870,145L868,180L842,182Z"/>
+        <path class="st" id="MD" d="M800,192L845,190L845,210L800,212Z"/>
+        <path class="st" id="MA" d="M840,105L900,102L898,128L838,130Z"/>
+        <path class="st" id="ME" d="M878,50L910,48L905,100L876,102Z"/>
+        <text x="152" y="78" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">WA</text>
+        <text x="143" y="138" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">OR</text>
+        <text x="140" y="248" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">CA</text>
+        <text x="462" y="388" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">TX</text>
+        <text x="700" y="392" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">FL</text>
+        <text x="835" y="130" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">NY</text>
+        <text x="805" y="170" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">PA</text>
+      </svg>
+    </div>
+    <div id="spop" class="spop pb90">
+      <div class="spop-name" id="spop-name">—</div>
+      <div class="spop-slots" id="spop-slots"></div>
+      <div class="spop-status" id="spop-status"></div>
+      <div id="spop-reps"></div>
+      <button class="pop-btn" id="spop-btn">—</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="nb active" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/mes</button>
+    <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
+  </nav>
+</div>
+
+<!-- ══════════ ESCÁNER ══════════ -->
+<div id="s-scan" class="screen">
+  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Escáner</div></div>
+  <div class="fbody">
+    <div class="eyebrow" style="margin-bottom:6px;">Para tu salud</div>
+    <div class="sec-title" style="margin-bottom:6px;">Conoce<br>tu cuerpo</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:22px;">Te conectamos con un especialista en tu estado de inmediato.</div>
+    <div class="info-box"><div class="info-box-t">¿Qué es el escáner?</div><p>Evaluación corporal rápida y no invasiva. Analiza nutrición, inflamación y bienestar para un plan 100% personalizado.</p></div>
+    <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
+    <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
+    <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select></div>
+    <div class="fg"><label class="fl">¿Qué te preocupa más?</label>
+      <select class="fs" id="sc-goal">
+        <option value="">Elige una opción</option>
+        <option>Bajar de peso</option><option>Más energía</option>
+        <option>Salud digestiva</option><option>Dolor e inflamación</option>
+        <option>Sueño y descanso</option><option>Salud en general</option>
+      </select>
+    </div>
+    <button class="wa-btn" onclick="submitScan()"><?xml version="1.0"?><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Conectar con mi especialista</button>
+    <div class="disc">Un especialista de tu zona te responderá en WhatsApp de inmediato.</div>
   </div>
 </div>
 
-<!-- ACCOUNT DROPDOWN -->
-<div class="account-dropdown" id="acc-dropdown">
-
-  <!-- Estado: no sesión -->
-  <div id="acc-guest-view">
-    <div class="acc-guest">
-      <div class="acc-guest-title">Accede a tu cuenta</div>
-      <div class="acc-guest-sub">Distribuidores · Admin · Clientes</div>
+<!-- ══════════ MEMBRESÍA ══════════ -->
+<div id="s-membresia" class="screen">
+  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Membresía</div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
+    <div class="price-hero">
+      <div class="eyebrow" style="margin-bottom:10px;">Reserva tu espacio</div>
+      <div class="price-num">$49</div>
+      <div class="price-per">dólares / mes</div>
+      <div class="price-d">Perfil activo en el mapa nacional · Cancela cuando quieras.</div>
     </div>
-    <button class="btn-google-small" onclick="loginConGoogle()">
-      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Entrar con Google
-    </button>
-    <div class="acc-or">o con email</div>
-    <input type="email" class="acc-input" id="acc-email" placeholder="tu@email.com">
-    <input type="password" class="acc-input" id="acc-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')loginConEmail()">
-    <button class="btn-email-small" onclick="loginConEmail()">Entrar →</button>
-    <div class="acc-msg" id="acc-msg"></div>
-  </div>
-
-  <!-- Estado: con sesión -->
-  <div id="acc-user-view" style="display:none">
-    <div class="acc-header">
-      <div class="acc-avatar" id="acc-avatar">—</div>
-      <div class="acc-name" id="acc-name">—</div>
-      <div class="acc-email" id="acc-email-display">—</div>
-      <span class="acc-role" id="acc-role-badge">—</span>
+    <div class="benefits">
+      <div class="ben-item"><div class="ben-ico">🗺️</div><div><div class="ben-ti">Perfil en el mapa USA</div><div class="ben-su">Tu WhatsApp visible para clientes de tu zona.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">📲</div><div><div class="ben-ti">Clientes directos</div><div class="ben-su">Te contactan por WhatsApp sin intermediarios.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🌿</div><div><div class="ben-ti">Red de 255 líderes</div><div class="ben-su">Comunidad activa y soporte de zona.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🔒</div><div><div class="ben-ti">Pago seguro con Stripe</div><div class="ben-su">Visa, MC, Amex, Apple Pay, Google Pay.</div></div></div>
     </div>
-    <button class="acc-menu-btn gold" id="acc-dashboard-btn" onclick="irDashboard()" style="display:none">
-      ⚡ Abrir dashboard
-    </button>
-    <button class="acc-menu-btn" onclick="showScreen('cuenta');cerrarDropdown()">
-      👤 Mi cuenta
-    </button>
-    <div class="acc-divider"></div>
-    <button class="acc-menu-btn danger" onclick="cerrarSesion()">
-      → Cerrar sesión
-    </button>
-  </div>
-
-</div>
-
-<!-- NAV BOTTOM -->
-<nav>
-  <button class="nav-btn active" onclick="showScreen('home')" id="nav-home"><span class="nav-icon">🏠</span>Inicio</button>
-  <button class="nav-btn" onclick="showScreen('mapa')" id="nav-mapa"><span class="nav-icon">🗺️</span>Mapa</button>
-  <button class="nav-btn" onclick="showScreen('equipo')" id="nav-equipo"><span class="nav-icon">👥</span>Equipo</button>
-  <button class="nav-btn" onclick="showScreen('scanner')" id="nav-scanner"><span class="nav-icon">🔬</span>Scanner</button>
-  <button class="nav-btn" onclick="showScreen('unete')" id="nav-unete"><span class="nav-icon">⭐</span>Únete</button>
-</nav>
-
-<!-- HOME -->
-<div id="screen-home" class="screen active">
-  <div class="hero">
-    <div class="hero-eyebrow">USA · 50 estados · 255 representantes</div>
-    <h1 class="hero-title">NETWORK<br><span class="gold">VITAL</span></h1>
-    <p class="hero-sub">La red que conecta tu salud con quienes saben cuidarla.</p>
-    <div class="hero-ctas">
-      <button class="cta-primary" onclick="showScreen('scanner')">Quiero mi scanner →</button>
-      <button class="cta-secondary" onclick="showScreen('unete')">Quiero distribuir</button>
+    <div class="urgency">
+      <div style="font-size:18px;">⚡</div>
+      <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="memb-avail">5 por estado · 255 en total</div></div>
     </div>
-    <div class="stats-row">
-      <div class="stat"><div class="stat-num" id="stat-reps">—</div><div class="stat-label">REPRESENTANTES</div></div>
-      <div class="stat"><div class="stat-num">50</div><div class="stat-label">ESTADOS USA</div></div>
-      <div class="stat"><div class="stat-num" id="stat-slots">—</div><div class="stat-label">SLOTS LIBRES</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- MAPA -->
-<div id="screen-mapa" class="screen">
-  <div class="page-header">
-    <h2 class="page-title">Red <span>Nacional</span></h2>
-    <div class="section-divider"></div>
-    <p class="page-desc">Toca tu estado para contactar al representante</p>
-  </div>
-  <div class="mapa-legend">
-    <div class="legend-item"><div class="legend-dot gold"></div><span>Activo</span></div>
-    <div class="legend-item"><div class="legend-dot red"></div><span>Disponible</span></div>
-    <div class="legend-item"><div class="legend-dot dark"></div><span>Próximamente</span></div>
-  </div>
-  <div class="mapa-container">
-    <svg id="usa-svg" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
-      <path id="CA" d="M 85 220 L 100 480 L 155 450 L 175 390 L 160 300 L 140 240 Z" data-estado="California" data-slots="2" onclick="openPopup(this,event)"/>
-      <path id="TX" d="M 380 370 L 540 380 L 545 470 L 490 530 L 400 510 L 370 450 Z" data-estado="Texas" data-slots="3" onclick="openPopup(this,event)"/>
-      <path id="FL" d="M 710 400 L 760 410 L 780 470 L 740 530 L 700 490 L 695 440 Z" data-estado="Florida" data-slots="1" onclick="openPopup(this,event)"/>
-      <path id="NY" d="M 790 130 L 850 120 L 870 170 L 840 190 L 800 180 Z" data-estado="New York" data-slots="4" onclick="openPopup(this,event)"/>
-      <path id="WA" d="M 100 80 L 230 75 L 225 140 L 110 145 Z" data-estado="Washington" data-slots="0" onclick="openPopup(this,event)"/>
-      <path id="IL" d="M 620 200 L 660 195 L 665 300 L 630 310 L 615 270 Z" data-estado="Illinois" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="AZ" d="M 185 295 L 290 295 L 295 410 L 210 415 Z" data-estado="Arizona" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="GA" d="M 680 340 L 730 335 L 735 400 L 695 405 Z" data-estado="Georgia" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="CO" d="M 320 220 L 450 215 L 452 295 L 322 298 Z" data-estado="Colorado" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="NV" d="M 155 165 L 225 150 L 240 280 L 185 295 L 160 230 Z" data-estado="Nevada" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="OR" d="M 100 145 L 225 140 L 220 215 L 140 220 L 102 200 Z" data-estado="Oregon" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="AK" d="M 60 490 L 160 490 L 160 570 L 60 570 Z" data-estado="Alaska" data-slots="5" onclick="openPopup(this,event)"/>
-      <path id="HI" d="M 200 510 L 300 510 L 300 570 L 200 570 Z" data-estado="Hawaii" data-slots="5" onclick="openPopup(this,event)"/>
-      <text x="110" y="535" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="Barlow Condensed" pointer-events="none">Alaska</text>
-      <text x="250" y="535" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle" font-family="Barlow Condensed" pointer-events="none">Hawaii</text>
-    </svg>
-  </div>
-</div>
-<div class="estado-popup" id="estado-popup">
-  <button class="popup-close" onclick="closePopup()">✕</button>
-  <div class="popup-estado" id="popup-nombre">—</div>
-  <div class="popup-slots" id="popup-slots">—</div>
-  <a id="popup-wa" class="popup-btn" target="_blank">Contactar →</a>
-</div>
-
-<!-- EQUIPO -->
-<div id="screen-equipo" class="screen">
-  <div class="page-header">
-    <h2 class="page-title">Nuestro <span>Equipo</span></h2>
-    <div class="section-divider"></div>
-    <p class="page-desc">Representantes certificados en todo USA</p>
-  </div>
-  <div class="equipo-grid" id="equipo-grid">
-    <div class="loading-text">Cargando...</div>
-  </div>
-</div>
-
-<!-- SCANNER -->
-<div id="screen-scanner" class="screen">
-  <div class="page-header">
-    <h2 class="page-title">Scanner <span>Corporal IA</span></h2>
-    <div class="section-divider"></div>
-    <p class="page-desc">5 min · 45 sistemas · 128 páginas</p>
-  </div>
-  <div class="form-wrap">
-    <div class="scanner-features">
-      <div class="feature-item"><div class="feature-icon">⚡</div><div class="feature-text"><strong>5 Minutos</strong>Sin agujas ni dolor</div></div>
-      <div class="feature-item"><div class="feature-icon">🔬</div><div class="feature-text"><strong>45 Sistemas</strong>Análisis completo</div></div>
-      <div class="feature-item"><div class="feature-icon">📋</div><div class="feature-text"><strong>128 Páginas</strong>Reporte detallado</div></div>
-      <div class="feature-item"><div class="feature-icon">🌿</div><div class="feature-text"><strong>Plan Natural</strong>Suplementación</div></div>
-    </div>
-    <div id="scanner-form">
-      <div class="form-field"><label class="form-label">Nombre completo</label><input type="text" class="form-input" id="f-nombre" placeholder="Nombre Apellido"></div>
-      <div class="form-field"><label class="form-label">WhatsApp</label><input type="tel" class="form-input" id="f-telefono" placeholder="+1 209 555 0000"></div>
-      <div class="form-field">
-        <label class="form-label">Tu estado</label>
-        <select class="form-select" id="f-estado">
-          <option value="">Selecciona...</option>
-          <option>California</option><option>Texas</option><option>Florida</option>
-          <option>New York</option><option>Washington</option><option>Illinois</option>
-          <option>Arizona</option><option>Georgia</option><option>Colorado</option>
-          <option>Nevada</option><option>Oregon</option><option>Otro estado</option>
+    <div class="fbody" style="padding-top:0;">
+      <div class="eyebrow" style="margin-bottom:14px;">Tus datos para el perfil</div>
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" type="text" id="m-nombre" placeholder="Como aparecerá en el mapa"></div>
+      <div class="fg"><label class="fl">Correo electrónico</label><input class="fi" type="email" id="m-email" placeholder="Recibirás tus credenciales aquí"></div>
+      <div class="fg"><label class="fl">WhatsApp</label><input class="fi" type="tel" id="m-whatsapp" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu estado</label>
+        <select class="fs" id="m-estado">
+          <option value="">Selecciona tu estado</option>
+          <option value="AL|Alabama">Alabama</option><option value="AK|Alaska">Alaska</option>
+          <option value="AZ|Arizona">Arizona</option><option value="AR|Arkansas">Arkansas</option>
+          <option value="CA|California">California</option><option value="CO|Colorado">Colorado</option>
+          <option value="CT|Connecticut">Connecticut</option><option value="DE|Delaware">Delaware</option>
+          <option value="FL|Florida">Florida</option><option value="GA|Georgia">Georgia</option>
+          <option value="HI|Hawaii">Hawaii</option><option value="ID|Idaho">Idaho</option>
+          <option value="IL|Illinois">Illinois</option><option value="IN|Indiana">Indiana</option>
+          <option value="IA|Iowa">Iowa</option><option value="KS|Kansas">Kansas</option>
+          <option value="KY|Kentucky">Kentucky</option><option value="LA|Louisiana">Louisiana</option>
+          <option value="ME|Maine">Maine</option><option value="MD|Maryland">Maryland</option>
+          <option value="MA|Massachusetts">Massachusetts</option><option value="MI|Michigan">Michigan</option>
+          <option value="MN|Minnesota">Minnesota</option><option value="MS|Mississippi">Mississippi</option>
+          <option value="MO|Missouri">Missouri</option><option value="MT|Montana">Montana</option>
+          <option value="NE|Nebraska">Nebraska</option><option value="NV|Nevada">Nevada</option>
+          <option value="NH|New Hampshire">New Hampshire</option><option value="NJ|New Jersey">New Jersey</option>
+          <option value="NM|New Mexico">New Mexico</option><option value="NY|New York">New York</option>
+          <option value="NC|North Carolina">North Carolina</option><option value="ND|North Dakota">North Dakota</option>
+          <option value="OH|Ohio">Ohio</option><option value="OK|Oklahoma">Oklahoma</option>
+          <option value="OR|Oregon">Oregon</option><option value="PA|Pennsylvania">Pennsylvania</option>
+          <option value="RI|Rhode Island">Rhode Island</option><option value="SC|South Carolina">South Carolina</option>
+          <option value="SD|South Dakota">South Dakota</option><option value="TN|Tennessee">Tennessee</option>
+          <option value="TX|Texas">Texas</option><option value="UT|Utah">Utah</option>
+          <option value="VT|Vermont">Vermont</option><option value="VA|Virginia">Virginia</option>
+          <option value="WA|Washington">Washington</option><option value="WV|West Virginia">West Virginia</option>
+          <option value="WI|Wisconsin">Wisconsin</option><option value="WY|Wyoming">Wyoming</option>
         </select>
       </div>
-      <div class="form-field"><label class="form-label">¿Qué quieres mejorar?</label><textarea class="form-textarea" id="f-mensaje" placeholder="Energía, sueño, peso..."></textarea></div>
-      <button class="form-submit" onclick="enviarScanner()">Quiero mi scanner →</button>
-    </div>
-    <div class="form-success" id="scanner-success">
-      <div class="icon">✅</div>
-      <h3>¡Listo!</h3>
-      <p>Un representante de tu zona te contactará pronto por WhatsApp.</p>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="m-ciudad" placeholder="Ciudad donde operas"></div>
+      <div class="fg"><label class="fl">Mini bio (opcional)</label><input class="fi" type="text" id="m-bio" placeholder="Ej: Especialista en bienestar digestivo"></div>
+      <button class="pay-btn" id="pay-btn" onclick="iniciarPago()">🔒 Pagar $49 / mes</button>
+      <div class="secure-row"><span>🔐 Seguro</span><div class="stripe-b">POWERED BY STRIPE</div><span>PCI-DSS</span></div>
+      <div class="disc">Al pagar recibirás tus credenciales por email para acceder a tu perfil.</div>
     </div>
   </div>
 </div>
 
-<!-- ÚNETE -->
-<div id="screen-unete" class="screen">
-  <div class="unete-hero">
-    <div class="page-title" style="margin-bottom:14px">Sé parte de la <span style="color:var(--gold)">Red</span></div>
-    <div class="unete-precio"><span>$</span>49<span style="font-size:18px">/mes</span></div>
-    <div class="unete-precio-label">Membresía de representante activo</div>
-  </div>
-  <div style="max-width:600px;margin:0 auto;padding:24px 20px 0">
-    <div class="slots-counter">
-      <div class="slots-num" id="unete-slots">—</div>
-      <div class="slots-label">slots disponibles en USA ahora mismo</div>
-    </div>
-    <div class="beneficios-grid">
-      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Perfil activo en el mapa nacional</div></div>
-      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Clientes directo a tu WhatsApp</div></div>
-      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">$50 por cada escaneo</div></div>
-      <div class="beneficio"><div class="beneficio-check">✓</div><div class="beneficio-texto">Máximo 5 por estado</div></div>
-    </div>
-    <a id="stripe-btn" class="stripe-btn" target="_blank">Reservar mi lugar →</a>
-    <p class="unete-note">Pago seguro con Stripe · Cancela cuando quieras</p>
-    <div style="margin-top:24px;padding:18px;background:var(--navy2);border-radius:12px;text-align:center">
-      <div style="font-size:12px;color:var(--gray);margin-bottom:8px">¿Tienes preguntas?</div>
-      <a id="unete-wa" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px">💬 WhatsApp directo</a>
+<!-- ══════════ LOGIN ══════════ -->
+<div id="s-login" class="screen">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" class="login-wrap">
+    <div class="login-logo">VITAL<span> HEALTH</span></div>
+    <div class="login-sub">Portal del Distribuidor</div>
+    <div class="login-card">
+      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="l-email" placeholder="tu@email.com" style="margin-bottom:0;"></div>
+      <div class="fg" style="margin-top:12px;"><label class="fl">Contraseña</label><input class="fi" type="password" id="l-pass" placeholder="••••••••" style="margin-bottom:0;"></div>
+      <button class="login-btn" onclick="doLogin()" style="margin-top:16px;">Entrar a mi perfil</button>
+      <div class="login-err" id="login-err">Email o contraseña incorrectos.</div>
+      <div class="login-link">¿Aún no eres miembro? <a onclick="goTo('s-membresia')" style="cursor:pointer;">Únete por $49/mes →</a></div>
     </div>
   </div>
 </div>
 
-<!-- MI CUENTA -->
-<div id="screen-cuenta" class="screen">
-  <div class="page-header">
-    <h2 class="page-title">Mi <span>Cuenta</span></h2>
-    <div class="section-divider"></div>
-  </div>
-  <div class="cuenta-wrap">
-    <div class="cuenta-avatar" id="cnt-avatar">—</div>
-    <div class="cuenta-nombre" id="cnt-nombre">—</div>
-    <div class="cuenta-email" id="cnt-email">—</div>
-    <div class="cuenta-card">
-      <div class="cuenta-card-title">Información</div>
-      <div class="cuenta-row"><span class="cuenta-key">Rol</span><span class="cuenta-val" id="cnt-rol">—</span></div>
-      <div class="cuenta-row"><span class="cuenta-key">Estado</span><span class="cuenta-val" id="cnt-estado">—</span></div>
-      <div class="cuenta-row"><span class="cuenta-key">Membresía</span><span class="cuenta-val" id="cnt-membresia">—</span></div>
+<!-- ══════════ PERFIL DISTRIBUIDOR ══════════ -->
+<div id="s-perfil" class="screen">
+  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><button onclick="doLogout()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--muted);padding:5px 12px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">Salir</button></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:20px;">
+    <div class="profile-hero">
+      <div class="profile-av" id="p-av">—</div>
+      <div class="profile-name" id="p-name">Cargando…</div>
+      <div class="profile-location" id="p-location"></div>
+      <div class="status-pill activa" id="p-status-pill">Membresía activa</div>
     </div>
-    <button class="cuenta-action primary" id="cnt-dashboard-btn" onclick="irDashboard()" style="display:none">⚡ Ir al Dashboard</button>
-    <button class="cuenta-action ghost" onclick="cerrarSesion()">Cerrar sesión</button>
+    <div class="profile-cards">
+      <div class="pcard"><div class="pcard-lbl">Renovación</div><div class="pcard-val" id="p-renov" style="font-size:16px;">—</div><div class="pcard-sub">próximo cobro</div></div>
+      <div class="pcard"><div class="pcard-lbl">Tu slot</div><div class="pcard-val" id="p-slot">—</div><div class="pcard-sub">de 5 en tu estado</div></div>
+    </div>
+    <div class="profile-section" style="margin-top:16px;">
+      <div class="profile-section-title">Clientes de tu zona</div>
+      <div id="p-clients"><div style="font-size:13px;color:var(--muted);padding:8px 0;">Cargando clientes…</div></div>
+    </div>
+    <div class="profile-section" style="margin-top:16px;">
+      <div class="profile-section-title">Editar mi perfil</div>
+      <div class="edit-field"><label class="edit-label">Mi bio</label><input class="edit-input" type="text" id="e-bio" placeholder="Cuéntale a tus clientes sobre ti"></div>
+      <div class="edit-field"><label class="edit-label">Mi ciudad</label><input class="edit-input" type="text" id="e-ciudad"></div>
+      <div class="edit-field"><label class="edit-label">Mi WhatsApp</label><input class="edit-input" type="tel" id="e-whatsapp"></div>
+      <button class="save-btn" onclick="saveProfile()">Guardar cambios</button>
+    </div>
+    <div style="padding:20px;margin-top:8px;">
+      <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.6;">
+        Para cancelar tu membresía visita stripe.com/billing<br>
+        Soporte: <span style="color:var(--gold);">soporte@vitalhealthnetwork.com</span>
+      </div>
+    </div>
   </div>
 </div>
-
-<a id="wa-float" class="wa-float" target="_blank" title="WhatsApp">💬</a>
 
 <script>
-let sb = null;
-let currentUser = null;
-let currentRole = null;
-let distribuidores = [];
-let dropdownOpen = false;
+// ── INIT SUPABASE ─────────────────────────────────────────────
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-document.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById('stripe-btn').href = CONFIG.STRIPE_LINK;
-  document.getElementById('wa-float').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}`;
-  document.getElementById('unete-wa').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}?text=Hola%2C%20info%20para%20unirme%20a%20Network%20Vital`;
+const US_STATES = [
+  {c:'AL',n:'Alabama'},{c:'AK',n:'Alaska'},{c:'AZ',n:'Arizona'},{c:'AR',n:'Arkansas'},
+  {c:'CA',n:'California'},{c:'CO',n:'Colorado'},{c:'CT',n:'Connecticut'},{c:'DE',n:'Delaware'},
+  {c:'FL',n:'Florida'},{c:'GA',n:'Georgia'},{c:'HI',n:'Hawaii'},{c:'ID',n:'Idaho'},
+  {c:'IL',n:'Illinois'},{c:'IN',n:'Indiana'},{c:'IA',n:'Iowa'},{c:'KS',n:'Kansas'},
+  {c:'KY',n:'Kentucky'},{c:'LA',n:'Louisiana'},{c:'ME',n:'Maine'},{c:'MD',n:'Maryland'},
+  {c:'MA',n:'Massachusetts'},{c:'MI',n:'Michigan'},{c:'MN',n:'Minnesota'},{c:'MS',n:'Mississippi'},
+  {c:'MO',n:'Missouri'},{c:'MT',n:'Montana'},{c:'NE',n:'Nebraska'},{c:'NV',n:'Nevada'},
+  {c:'NH',n:'New Hampshire'},{c:'NJ',n:'New Jersey'},{c:'NM',n:'New Mexico'},{c:'NY',n:'New York'},
+  {c:'NC',n:'North Carolina'},{c:'ND',n:'North Dakota'},{c:'OH',n:'Ohio'},{c:'OK',n:'Oklahoma'},
+  {c:'OR',n:'Oregon'},{c:'PA',n:'Pennsylvania'},{c:'RI',n:'Rhode Island'},{c:'SC',n:'South Carolina'},
+  {c:'SD',n:'South Dakota'},{c:'TN',n:'Tennessee'},{c:'TX',n:'Texas'},{c:'UT',n:'Utah'},
+  {c:'VT',n:'Vermont'},{c:'VA',n:'Virginia'},{c:'WA',n:'Washington'},{c:'WV',n:'West Virginia'},
+  {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
+];
 
-  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+let allReps=[], stateMap={}, currentUser=null, currentMember=null;
 
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (session?.user) await procesarUsuario(session.user);
-    else mostrarEstadoGuest();
+// ── LOAD DATA ─────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const { data } = await sb.from('membresias').select('*').eq('status','activa');
+    allReps = data || [];
+  } catch { allReps = []; }
+
+  stateMap = {};
+  allReps.forEach(r => {
+    if(!stateMap[r.estado_codigo]) stateMap[r.estado_codigo]=[];
+    stateMap[r.estado_codigo].push(r);
   });
 
+  renderHome(); renderMap(); fillDropdowns();
+  updateMembAvail();
+}
+
+// ── AUTH ──────────────────────────────────────────────────────
+async function checkSession() {
   const { data: { session } } = await sb.auth.getSession();
-  if (session?.user) await procesarUsuario(session.user);
-  else mostrarEstadoGuest();
+  if(session?.user) {
+    currentUser = session.user;
+    await loadMemberProfile();
+  }
+}
 
-  cargarDatos();
-});
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('login-err');
 
-// ── DROPDOWN ──
-function toggleDropdown() {
-  dropdownOpen = !dropdownOpen;
-  document.getElementById('acc-dropdown').classList.toggle('open', dropdownOpen);
-}
-function cerrarDropdown() {
-  dropdownOpen = false;
-  document.getElementById('acc-dropdown').classList.remove('open');
-}
-document.addEventListener('click', e => {
-  if (!e.target.closest('#acc-btn') && !e.target.closest('#acc-dropdown')) cerrarDropdown();
-});
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if(error) { err.style.display='block'; return; }
 
-// ── AUTH ──
-async function loginConGoogle() {
-  setAccMsg('Redirigiendo...', 'ok');
-  await sb.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: CONFIG.SITE_URL } });
+  err.style.display='none';
+  currentUser = data.user;
+  await loadMemberProfile();
+  goTo('s-perfil');
 }
-async function loginConEmail() {
-  const email = document.getElementById('acc-email').value.trim();
-  const pass  = document.getElementById('acc-pass').value;
-  if (!email || !pass) { setAccMsg('Completa los campos', 'error'); return; }
-  setAccMsg('Verificando...', 'ok');
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (error) setAccMsg('Credenciales incorrectas', 'error');
-}
-function setAccMsg(txt, type) {
-  const el = document.getElementById('acc-msg');
-  el.textContent = txt;
-  el.className = 'acc-msg ' + type;
-}
-async function cerrarSesion() {
+
+async function doLogout() {
   await sb.auth.signOut();
-  currentUser = null; currentRole = null;
-  mostrarEstadoGuest();
-  cerrarDropdown();
-  showScreen('home');
+  currentUser = null; currentMember = null;
+  goTo('s-home');
 }
 
-// ── ESTADOS UI ──
-function mostrarEstadoGuest() {
-  document.getElementById('acc-guest-view').style.display = 'block';
-  document.getElementById('acc-user-view').style.display = 'none';
-  document.getElementById('acc-dot').classList.remove('show');
-  document.getElementById('acc-icon').textContent = '👤';
+async function loadMemberProfile() {
+  if(!currentUser) return;
+  const { data } = await sb.from('membresias').select('*').eq('user_id', currentUser.id).single();
+  currentMember = data;
+  if(data) renderProfile(data);
 }
 
-async function procesarUsuario(user) {
-  currentUser = user;
-  let rol = 'Usuario';
-  let rolClass = 'role-user';
-  let estadoDist = '—';
-  let membresia = '—';
+// ── RENDER PROFILE ────────────────────────────────────────────
+function renderProfile(m) {
+  document.getElementById('p-av').textContent      = ini(m.nombre);
+  document.getElementById('p-name').textContent    = m.nombre;
+  document.getElementById('p-location').textContent= `${m.ciudad} · ${m.estado_nombre}`;
+  document.getElementById('p-slot').textContent    = m.slot || '1';
+  document.getElementById('p-renov').textContent   = m.fecha_renovacion
+    ? new Date(m.fecha_renovacion).toLocaleDateString('es-US',{month:'short',day:'numeric'}) : '—';
 
-  if (user.email === CONFIG.ADMIN_EMAIL) {
-    currentRole = 'admin'; rol = 'Admin'; rolClass = 'role-admin';
-    document.getElementById('acc-dashboard-btn').style.display = 'flex';
-    document.getElementById('cnt-dashboard-btn').style.display = 'block';
-  } else if (sb) {
-    const { data } = await sb.from('distribuidores').select('*').eq('email', user.email).single();
-    if (data) {
-      currentRole = 'distribuidor'; rol = 'Distribuidor'; rolClass = 'role-dist';
-      estadoDist = data.estado || '—';
-      membresia = data.activo ? 'Activo ✓' : 'Pendiente';
-    } else {
-      currentRole = 'usuario';
-    }
+  const pill = document.getElementById('p-status-pill');
+  pill.className = `status-pill ${m.status}`;
+  pill.textContent = m.status === 'activa' ? 'Membresía activa' : 'Membresía ' + m.status;
+
+  document.getElementById('e-bio').value     = m.bio || '';
+  document.getElementById('e-ciudad').value  = m.ciudad || '';
+  document.getElementById('e-whatsapp').value= m.whatsapp || '';
+
+  loadMyClients(m.id);
+}
+
+async function loadMyClients(membresiaId) {
+  const { data } = await sb.from('solicitudes_scanner')
+    .select('*').eq('rep_asignado_id', membresiaId).order('created_at',{ascending:false});
+
+  const el = document.getElementById('p-clients');
+  if(!data?.length) {
+    el.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px 0;line-height:1.6;">Aún no tienes clientes asignados.<br>Cuando alguien solicite un escáner en ${currentMember?.estado_nombre||'tu estado'} aparecerán aquí.</div>`;
+    return;
   }
-
-  const inicial = (user.user_metadata?.full_name || user.email).charAt(0).toUpperCase();
-  const nombre  = user.user_metadata?.full_name || user.email.split('@')[0];
-
-  // Dropdown
-  document.getElementById('acc-guest-view').style.display = 'none';
-  document.getElementById('acc-user-view').style.display = 'block';
-  document.getElementById('acc-avatar').textContent = inicial;
-  document.getElementById('acc-name').textContent = nombre;
-  document.getElementById('acc-email-display').textContent = user.email;
-  document.getElementById('acc-role-badge').textContent = rol;
-  document.getElementById('acc-role-badge').className = 'acc-role ' + rolClass;
-  document.getElementById('acc-icon').textContent = inicial;
-  document.getElementById('acc-dot').classList.add('show');
-
-  // Pantalla cuenta
-  document.getElementById('cnt-avatar').textContent = inicial;
-  document.getElementById('cnt-nombre').textContent = nombre;
-  document.getElementById('cnt-email').textContent = user.email;
-  document.getElementById('cnt-rol').textContent = rol;
-  document.getElementById('cnt-estado').textContent = estadoDist;
-  document.getElementById('cnt-membresia').textContent = membresia;
-
-  if (currentRole === 'admin') {
-    document.getElementById('acc-dashboard-btn').style.display = 'flex';
-    document.getElementById('cnt-dashboard-btn').style.display = 'block';
-  }
-}
-
-function irDashboard() {
-  cerrarDropdown();
-  window.open('vital-admin-dashboard.html', '_blank');
-}
-
-// ── DATOS ──
-async function cargarDatos() {
-  if (!sb) { cargarDemo(); return; }
-  const { data } = await sb.from('distribuidores').select('*').eq('activo', true);
-  distribuidores = data || [];
-  if (!distribuidores.length) cargarDemo();
-  else renderTodo();
-}
-
-function cargarDemo() {
-  distribuidores = [
-    { nombre:'María González', estado:'California', whatsapp:'12095550001', bio:'Especialista en nutrición.', activo:true },
-    { nombre:'Carlos Mendez',  estado:'Texas',      whatsapp:'12815550002', bio:'Distribuidor certificado.', activo:true },
-    { nombre:'Ana Rodríguez',  estado:'Florida',    whatsapp:'13055550003', bio:'Consultora de bienestar.',  activo:true },
-    { nombre:'Luis Herrera',   estado:'New York',   whatsapp:'17185550004', bio:'Emprendedor de salud.',     activo:true },
-  ];
-  renderTodo();
-}
-
-function renderTodo() {
-  const n = distribuidores.length;
-  document.getElementById('stat-reps').textContent = n;
-  document.getElementById('stat-slots').textContent = 255 - n;
-  document.getElementById('unete-slots').textContent = 255 - n;
-  document.getElementById('equipo-grid').innerHTML = distribuidores.map(d => `
-    <div class="rep-card">
-      <div class="rep-img">${d.nombre.charAt(0)}</div>
-      <div class="rep-body">
-        <div class="rep-estado">${d.estado}</div>
-        <div class="rep-nombre">${d.nombre}</div>
-        <div class="rep-bio">${d.bio||''}</div>
-        <a class="rep-wa" href="https://wa.me/${d.whatsapp}" target="_blank">💬 Contactar</a>
+  el.innerHTML = data.map(c=>`
+    <div class="client-card">
+      <div class="client-av">${ini(c.nombre)}</div>
+      <div style="flex:1;">
+        <div class="client-name">${c.nombre}</div>
+        <div class="client-sub">${c.objetivo||'Escáner general'} · ${fmtDate(c.created_at)}</div>
       </div>
+      <a href="https://wa.me/${c.telefono?.replace(/\D/g,'')}" target="_blank">
+        <button style="background:var(--wa);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${waIcon()}</button>
+      </a>
     </div>`).join('');
-  distribuidores.forEach(d => {
-    const el = document.querySelector(`#usa-svg path[data-estado="${d.estado}"]`);
-    if (el) { el.classList.remove('red'); el.classList.add('gold'); }
-  });
-  document.querySelectorAll('#usa-svg path[data-estado]').forEach(p => {
-    if (!p.classList.contains('gold')) {
-      const slots = parseInt(p.getAttribute('data-slots')||'5');
-      if (slots > 0) p.classList.add('red');
-    }
+}
+
+async function saveProfile() {
+  if(!currentUser || !currentMember) return;
+  const bio      = document.getElementById('e-bio').value.trim();
+  const ciudad   = document.getElementById('e-ciudad').value.trim();
+  const whatsapp = document.getElementById('e-whatsapp').value.trim();
+
+  const { error } = await sb.from('membresias')
+    .update({ bio, ciudad, whatsapp })
+    .eq('user_id', currentUser.id);
+
+  showToast(error ? 'Error al guardar' : '¡Perfil actualizado ✓', !error);
+  if(!error) Object.assign(currentMember, { bio, ciudad, whatsapp });
+}
+
+// ── HOME ──────────────────────────────────────────────────────
+function renderHome() {
+  const total=allReps.length, open=255-total;
+  document.getElementById('cnt-a').textContent=total;
+  document.getElementById('cnt-o').textContent=open;
+  const t=Math.min(5,Math.round((total/255)*5));
+  document.getElementById('dots-a').innerHTML=Array.from({length:5},(_,i)=>`<div class="dot ${i<t?'on':'off'}"></div>`).join('');
+  document.getElementById('dots-o').innerHTML=Array.from({length:5},(_,i)=>`<div class="dot ${i>=t?'off':'on'}"></div>`).join('');
+}
+
+// ── MAP ───────────────────────────────────────────────────────
+function renderMap() {
+  document.querySelectorAll('.st').forEach(p=>{
+    const code=p.id, reps=stateMap[code]||[], n=reps.length;
+    p.classList.remove('full','partial');
+    if(n>=5) p.classList.add('full');
+    else if(n>0) p.classList.add('partial');
+    p.onclick=()=>showState(code);
   });
 }
 
-// ── MAPA POPUP ──
-function openPopup(path, event) {
-  const estado = path.getAttribute('data-estado');
-  const slots  = parseInt(path.getAttribute('data-slots')||'5');
-  const rep    = distribuidores.find(d => d.estado === estado);
-  document.getElementById('popup-nombre').textContent = estado;
-  if (rep) {
-    document.getElementById('popup-slots').innerHTML = `<strong>${rep.nombre}</strong> · representante activo`;
-    document.getElementById('popup-wa').href = `https://wa.me/${rep.whatsapp}`;
-    document.getElementById('popup-wa').textContent = 'Contactar por WhatsApp →';
-  } else if (slots > 0) {
-    document.getElementById('popup-slots').innerHTML = `<strong style="color:var(--red)">${slots} slots disponibles</strong>`;
-    document.getElementById('popup-wa').href = CONFIG.STRIPE_LINK;
-    document.getElementById('popup-wa').textContent = 'Reservar mi lugar →';
-  } else {
-    document.getElementById('popup-slots').textContent = 'Estado completo';
-    document.getElementById('popup-wa').href = `https://wa.me/${CONFIG.WHATSAPP_CENTRAL}`;
-    document.getElementById('popup-wa').textContent = 'Lista de espera →';
+function showState(code) {
+  const reps=stateMap[code]||[], name=US_STATES.find(s=>s.c===code)?.n||code;
+  const taken=reps.length, avail=5-taken;
+  document.getElementById('spop-name').textContent=name;
+  document.getElementById('spop-slots').innerHTML=Array.from({length:5},(_,i)=>
+    `<div class="spop-slot ${i<taken?'on':'off'}">${i<taken?'✓':''}</div>`).join('');
+  document.getElementById('spop-status').textContent=avail===0
+    ?'ZONA COMPLETA · 5/5 activos'
+    :`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/mes`;
+  document.getElementById('spop-reps').innerHTML=reps.length
+    ?reps.map(r=>`<div class="rep-row">
+        <div class="rep-av">${ini(r.nombre)}</div>
+        <div style="flex:1;"><div class="rep-nm">${r.nombre}</div><div class="rep-ci">${r.ciudad}</div></div>
+        <button class="wac" onclick="openWA('${r.whatsapp}','${r.nombre.replace(/'/g,"\\'")}' )">${waIcon()}</button>
+      </div>`).join('')
+    :`<p style="font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.6;">Sé el primero en ${name} · $49/mes</p>`;
+  const btn=document.getElementById('spop-btn');
+  btn.textContent=avail>0?`Reservar espacio en ${name} →`:'Solicitar escáner aquí →';
+  btn.onclick=()=>goTo(avail>0?'s-membresia':'s-scan');
+  const pop=document.getElementById('spop');
+  pop.classList.add('vis');
+  setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+}
+
+// ── SCANNER FORM ──────────────────────────────────────────────
+async function submitScan() {
+  const nombre=document.getElementById('sc-nombre').value.trim();
+  const phone=document.getElementById('sc-phone').value.trim();
+  const code=document.getElementById('sc-estado').value;
+  const goal=document.getElementById('sc-goal').value;
+  if(!nombre||!phone||!code||!goal){alert('Completa todos los campos.');return;}
+
+  // Guardar en Supabase
+  const sname=US_STATES.find(s=>s.c===code)?.n||code;
+  await sb.from('solicitudes_scanner').insert({
+    nombre, telefono:phone, estado_codigo:code, estado_nombre:sname, objetivo:goal
+  });
+
+  // WhatsApp con el rep del estado
+  const reps=stateMap[code]||[];
+  const target=reps.length>0?reps[0].whatsapp:YOUR_WHATSAPP;
+  const msg=encodeURIComponent(`Hola! Vengo de Vital Health Network 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nMeta: ${goal}\nTeléfono: ${phone}\n\nMe interesa hacer mi escáner.`);
+  window.open(`https://wa.me/${target}?text=${msg}`,'_blank');
+}
+
+// ── PAGO ──────────────────────────────────────────────────────
+async function iniciarPago() {
+  const nombre=document.getElementById('m-nombre').value.trim();
+  const email=document.getElementById('m-email').value.trim();
+  const whatsapp=document.getElementById('m-whatsapp').value.trim();
+  const estadoRaw=document.getElementById('m-estado').value;
+  const ciudad=document.getElementById('m-ciudad').value.trim();
+  const bio=document.getElementById('m-bio').value.trim();
+  if(!nombre||!email||!whatsapp||!estadoRaw||!ciudad){alert('Completa todos los campos.');return;}
+  const [estado_codigo,estado_nombre]=estadoRaw.split('|');
+  const btn=document.getElementById('pay-btn');
+  btn.classList.add('loading'); btn.textContent='Procesando…';
+  try {
+    const res=await fetch('/api/create-checkout',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nombre,email,whatsapp,estado_codigo,estado_nombre,ciudad,bio})
+    });
+    const data=await res.json();
+    if(data.url) window.location.href=data.url;
+    else { alert(data.error||'Error. Intenta de nuevo.'); btn.classList.remove('loading'); btn.textContent='🔒 Pagar $49 / mes'; }
+  } catch(e) {
+    alert('Error de conexión.'); btn.classList.remove('loading'); btn.textContent='🔒 Pagar $49 / mes';
   }
-  const popup = document.getElementById('estado-popup');
-  popup.style.left = Math.min(event.clientX+10, window.innerWidth-240)+'px';
-  popup.style.top  = Math.min(event.clientY-10, window.innerHeight-180)+'px';
-  popup.classList.add('visible');
 }
-function closePopup() { document.getElementById('estado-popup').classList.remove('visible'); }
-document.addEventListener('click', e => {
-  if (!e.target.closest('#estado-popup') && !e.target.closest('#usa-svg')) closePopup();
+
+// ── HELPERS ───────────────────────────────────────────────────
+function fillDropdowns() {
+  const opts=US_STATES.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+opts;
+}
+function updateMembAvail() {
+  document.getElementById('memb-avail').textContent=`${255-allReps.length} de 255 posiciones disponibles`;
+}
+function openWA(number,name) {
+  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Vital Health Network. Me interesa el escáner corporal 🌿`);
+  window.open(`https://wa.me/${number}?text=${msg}`,'_blank');
+}
+function ini(name=''){return name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('es-US',{month:'short',day:'numeric'});}
+function waIcon(){return`<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function showToast(msg,ok){
+  let t=document.getElementById('toast-el');
+  if(!t){t=document.createElement('div');t.id='toast-el';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 20px;font-size:14px;font-family:Barlow,sans-serif;z-index:999;border-radius:2px;';document.body.appendChild(t);}
+  t.style.background=ok?'#1D9E75':'#C81E2D'; t.style.color='#fff'; t.textContent=msg;
+  t.style.display='block'; setTimeout(()=>{t.style.display='none';},3000);
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async()=>{
+  await loadData();
+  await checkSession();
+  // Si ya hay sesión activa, muestra el perfil
+  if(currentUser && currentMember) goTo('s-perfil');
+  setTimeout(()=>document.getElementById('loading').classList.add('hidden'),1200);
 });
-
-// ── SCANNER ──
-async function enviarScanner() {
-  const nombre   = document.getElementById('f-nombre').value.trim();
-  const telefono = document.getElementById('f-telefono').value.trim();
-  const estado   = document.getElementById('f-estado').value;
-  const mensaje  = document.getElementById('f-mensaje').value.trim();
-  if (!nombre || !telefono || !estado) { alert('Completa nombre, teléfono y estado.'); return; }
-  if (sb) await sb.from('clientes').insert({ nombre, telefono, estado, mensaje, fecha: new Date().toISOString() }).catch(()=>{});
-  const rep = distribuidores.find(d => d.estado === estado);
-  const waNum = rep ? rep.whatsapp : CONFIG.WHATSAPP_CENTRAL;
-  const waMsg = encodeURIComponent(`Hola, soy ${nombre} de ${estado}. Quiero mi scanner. Tel: ${telefono}. ${mensaje}`);
-  document.getElementById('scanner-form').style.display = 'none';
-  document.getElementById('scanner-success').style.display = 'block';
-  setTimeout(() => window.open(`https://wa.me/${waNum}?text=${waMsg}`, '_blank'), 800);
-}
-
-// ── NAVEGACIÓN ──
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-  const s = document.getElementById('screen-'+id);
-  const n = document.getElementById('nav-'+id);
-  if (s) s.classList.add('active');
-  if (n) n.classList.add('active');
-  window.scrollTo(0,0);
-}
 </script>
 </body>
 </html>
