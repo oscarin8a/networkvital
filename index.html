@@ -1,1 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Tu Red Vital · USA</title>
+<link rel="icon" href="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SB_URL  = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
+const SB_KEY  = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
+const WA      = '12099717638';
+const STRIPE  = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
+const LOGO    = '/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png';
+</script>
+<style>
+:root{
+  --navy:#0B1626;--navy2:#1E2D45;--navy3:#0D1B2A;
+  --gold:#C9A24B;--muted:#7A8FA6;--white:#fff;
+  --wa:#25D366;--border:rgba(201,162,75,0.15);
+  --red:#C81E2D;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);}
+#app{position:fixed;inset:0;overflow:hidden;max-width:430px;margin:0 auto;}
+
+/* ── SCREENS ── */
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  background:var(--navy);overflow:hidden;
+}
+.screen.active{transform:translateX(0);}
+.screen.prev{transform:translateX(-25%);}
+
+/* ── TOPBAR ── */
+.top{
+  flex-shrink:0;height:52px;
+  background:rgba(11,22,38,0.97);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;z-index:10;
+}
+.top-left{display:flex;align-items:center;gap:10px;}
+.back{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.3);
+  color:var(--gold);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.logo-img{width:30px;height:30px;object-fit:contain;}
+.brand{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;}
+.brand span{color:var(--gold);}
+.top-right{display:flex;align-items:center;gap:8px;}
+.login-btn{
+  display:flex;align-items:center;gap:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);
+  background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.25);
+  padding:5px 10px;cursor:pointer;
+}
+.login-btn svg{width:14px;height:14px;}
+
+/* ── SCROLL ── */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  flex-shrink:0;height:58px;
+  background:var(--navy2);border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.bn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;transition:color 0.15s;
+}
+.bn svg{width:20px;height:20px;}
+.bn.on{color:var(--gold);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;padding:32px 18px 24px;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(150deg,#091420 0%,#0f2038 55%,#091420 100%);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 15% 50%,rgba(201,162,75,0.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 20%,rgba(29,158,117,0.07) 0%,transparent 50%);
+}
+.hero-logo{width:80px;height:80px;object-fit:contain;position:relative;z-index:1;margin-bottom:14px;filter:drop-shadow(0 0 18px rgba(201,162,75,0.35));}
+.hero-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1;}
+.hero-t{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;line-height:0.92;letter-spacing:-1px;position:relative;z-index:1;}
+.hero-t .g{color:var(--gold);}
+.hero-s{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.55;margin-top:10px;position:relative;z-index:1;}
+
+/* ── 2 BIG BUTTONS ── */
+.big-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;}
+.big-btn{padding:18px 14px;border:1px solid;cursor:pointer;position:relative;transition:opacity 0.15s;text-align:left;}
+.big-btn:active{opacity:0.85;}
+.big-btn.gold{background:var(--gold);border-color:var(--gold);}
+.big-btn.dark{background:var(--navy2);border-color:rgba(201,162,75,0.2);}
+.bb-ey{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.big-btn.gold .bb-ey{color:rgba(11,22,38,0.6);}
+.big-btn.dark .bb-ey{color:var(--gold);}
+.bb-t{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;line-height:1.1;}
+.big-btn.gold .bb-t{color:var(--navy);}
+.big-btn.dark .bb-t{color:var(--white);}
+.bb-arr{position:absolute;top:12px;right:12px;font-size:18px;opacity:0.5;}
+.big-btn.gold .bb-arr{color:var(--navy);}
+.big-btn.dark .bb-arr{color:var(--gold);}
+
+/* ── SECTION ── */
+.sec{padding:0 14px 14px;}
+.sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:14px 0 10px;display:flex;align-items:center;gap:8px;}
+.sec-lbl::after{content:'';flex:1;height:1px;background:rgba(201,162,75,0.18);}
+.vp{display:flex;gap:12px;padding:12px;background:var(--navy2);border:1px solid var(--border);margin-bottom:8px;}
+.vp-ico{font-size:20px;flex-shrink:0;margin-top:2px;}
+.vp-t{font-size:13px;font-weight:600;margin-bottom:2px;}
+.vp-s{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.5;}
+
+/* ── MAP ── */
+.map-head{padding:14px 14px 6px;}
+.map-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:3px;}
+.map-s{font-size:12px;color:rgba(255,255,255,0.4);}
+.legend{display:flex;gap:12px;padding:8px 14px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.leg-d{width:8px;height:8px;border-radius:50%;}
+.leg-d.f{background:var(--gold);}
+.leg-d.a{background:rgba(201,162,75,0.4);}
+.leg-d.o{background:transparent;border:1.5px solid rgba(255,255,255,0.2);}
+
+/* USA MAP GRID - simple button grid */
+.states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:0 14px 14px;}
+.state-btn{
+  padding:10px 4px;background:var(--navy2);border:1px solid var(--border);
+  cursor:pointer;text-align:center;transition:all 0.15s;
+}
+.state-btn:active{opacity:0.75;}
+.state-btn.f{background:var(--gold);border-color:var(--gold);}
+.state-btn.f .s-code{color:var(--navy);}
+.state-btn.a{background:rgba(201,162,75,0.15);border-color:rgba(201,162,75,0.35);}
+.s-code{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--white);}
+.s-slots{display:flex;gap:1px;justify-content:center;margin-top:4px;}
+.s-pip{width:5px;height:3px;background:rgba(255,255,255,0.15);border-radius:1px;}
+.s-pip.on{background:var(--gold);}
+.state-btn.f .s-pip.on{background:var(--navy);}
+
+/* State popup */
+.state-pop{
+  margin:0 14px 14px;padding:16px;
+  background:var(--navy2);border:1px solid rgba(201,162,75,0.3);
+  display:none;
+}
+.state-pop.vis{display:block;}
+.sp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.sp-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.sp-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
+.sp-slots{display:flex;gap:4px;margin-bottom:8px;}
+.sp-slot{flex:1;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.sp-slot.on{background:var(--gold);color:var(--navy);}
+.sp-slot.off{border:1px dashed rgba(201,162,75,0.25);}
+.sp-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.sp-rep{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,0.05);}
+.sp-av{width:36px;height:36px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.sp-nm{font-size:13px;font-weight:600;}
+.sp-ci{font-size:11px;color:var(--muted);}
+.wa-circle{width:34px;height:34px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.sp-cta{width:100%;margin-top:12px;padding:12px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.sp-empty{font-size:13px;color:rgba(255,255,255,0.35);padding:10px 0;text-align:center;line-height:1.7;}
+
+/* ── FORMS ── */
+.fhero{padding:22px 16px 18px;background:linear-gradient(150deg,#0D1B2A 0%,var(--navy) 100%);border-bottom:1px solid var(--border);flex-shrink:0;}
+.fh-logo{width:48px;height:48px;object-fit:contain;margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(201,162,75,0.3));}
+.fh-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.fh-t{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;line-height:1.05;margin-bottom:5px;}
+.fh-s{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.55;}
+.fbody{padding:14px;}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.fi,.fs{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,162,75,0.15);color:var(--white);padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;appearance:none;transition:border-color 0.2s;}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fs option{background:var(--navy2);}
+.btn-wa{width:100%;padding:14px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+.btn-wa:active{opacity:0.85;}
+.btn-stripe{width:100%;padding:15px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+.btn-stripe:active{opacity:0.85;}
+.fnote{text-align:center;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.25);line-height:1.6;}
+
+/* price */
+.price-hero{padding:24px 16px 20px;background:linear-gradient(150deg,#0D1B2A 0%,var(--navy) 100%);border-bottom:1px solid var(--border);text-align:center;position:relative;overflow:hidden;}
+.price-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(201,162,75,0.09) 0%,transparent 60%);}
+.ph-logo{width:56px;height:56px;object-fit:contain;margin-bottom:12px;position:relative;z-index:1;filter:drop-shadow(0 0 12px rgba(201,162,75,0.4));}
+.ph-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1;}
+.ph-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;position:relative;z-index:1;}
+.ph-per{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:rgba(255,255,255,0.35);position:relative;z-index:1;}
+.ph-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:6px;position:relative;z-index:1;}
+.bens{padding:10px 14px;}
+.ben{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ben:last-child{border:none;}
+.ben-ico{width:32px;height:32px;border-radius:50%;background:rgba(201,162,75,0.08);border:1px solid rgba(201,162,75,0.18);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ben-t{font-size:13px;font-weight:600;margin-bottom:1px;}
+.ben-s{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;}
+.urg{margin:0 14px 12px;background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.2);padding:9px 12px;display:flex;gap:8px;align-items:center;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
+.urg-s{font-size:11px;color:rgba(255,255,255,0.35);margin-top:1px;}
+.secure{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;font-size:10px;color:rgba(255,255,255,0.2);}
+
+/* ── MODALS ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(11,22,38,0.92);z-index:500;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--navy2);border:1px solid rgba(201,162,75,0.2);width:100%;max-width:360px;padding:24px;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;}
+.g-btn{width:100%;padding:12px;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;color:#1E2D45;transition:opacity 0.2s;}
+.g-btn:active{opacity:0.85;}
+.or-div{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.or-line{flex:1;height:1px;background:rgba(201,162,75,0.15);}
+.or-txt{font-size:11px;color:var(--muted);}
+.modal-fi{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,75,0.15);color:var(--white);padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;margin-bottom:10px;}
+.modal-fi:focus{border-color:var(--gold);}
+.modal-submit{width:100%;padding:12px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.modal-err{color:#E85C6A;font-size:11px;text-align:center;display:none;margin-bottom:6px;}
+.modal-switch{text-align:center;font-size:12px;color:var(--muted);}
+.modal-switch a{color:var(--gold);cursor:pointer;text-decoration:none;}
+
+/* ── LOADING ── */
+#load{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.4s;}
+#load.gone{opacity:0;pointer-events:none;}
+#load img{width:90px;height:90px;object-fit:contain;margin-bottom:18px;animation:ldpulse 2s infinite;}
+@keyframes ldpulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+.ld-bar{width:90px;height:2px;background:rgba(201,162,75,0.15);margin-top:12px;}
+.ld-fill{height:100%;width:0;background:var(--gold);animation:ldfill 1.3s ease forwards;}
+@keyframes ldfill{to{width:100%;}}
+.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div id="load">
+  <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Tu Red Vital">
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+  <div class="ld-txt">Tu Red Vital · USA</div>
+</div>
+
+<div id="app">
+
+<!-- ══ INICIO ══ -->
+<div id="s-home" class="screen active">
+  <div class="top">
+    <div class="top-left">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" class="logo-img" alt="logo">
+      <span class="brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-right">
+      <div class="login-btn" onclick="openLogin()" id="top-user">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <span id="top-name">Entrar</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="hero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="hero-logo">
+      <div class="hero-ey">🌿 Red Nacional de Salud · USA</div>
+      <div class="hero-t">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
+      <div class="hero-s">Distribuidores certificados en los 50 estados de EE.UU. conectando personas con bienestar.</div>
+    </div>
+    <div class="big-btns">
+      <div class="big-btn gold" onclick="go('s-scan')">
+        <div class="bb-ey">Gratis</div>
+        <div class="bb-t">Solicitar mi escáner</div>
+        <div class="bb-arr">→</div>
+      </div>
+      <div class="big-btn dark" onclick="go('s-join')">
+        <div class="bb-ey">$49 / semana</div>
+        <div class="bb-t">Ser representante</div>
+        <div class="bb-arr">→</div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-lbl">¿Cómo funciona?</div>
+      <div class="vp"><div class="vp-ico">💚</div><div><div class="vp-t">Escáner corporal gratuito</div><div class="vp-s">Evaluación no invasiva. Plan personalizado con un especialista en tu zona.</div></div></div>
+      <div class="vp"><div class="vp-ico">🗺️</div><div><div class="vp-t">Representantes en tu estado</div><div class="vp-s">5 distribuidores certificados por estado. Toca el mapa para encontrar el tuyo.</div></div></div>
+      <div class="vp"><div class="vp-ico">📣</div><div><div class="vp-t">Campaña en tu ciudad</div><div class="vp-s">Si eres representante, creamos campañas para atraer clientes a tu comunidad.</div></div></div>
+    </div>
+    <div style="height:10px;"></div>
+  </div>
+  <nav class="bnav">
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ══ MAPA ══ -->
+<div id="s-map" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back" onclick="back()">←</button>
+      <span class="brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-right">
+      <div class="login-btn" onclick="openLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <span class="top-name-mirror">Entrar</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="map-head">
+      <div class="map-t">Mapa de representantes</div>
+      <div class="map-s">Toca tu estado para ver disponibilidad</div>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-d f"></div>Completo</div>
+      <div class="leg"><div class="leg-d a"></div>Disponible</div>
+      <div class="leg"><div class="leg-d o"></div>Abierto</div>
+    </div>
+    <div class="states-grid" id="states-grid"></div>
+    <div class="state-pop" id="state-pop">
+      <div class="sp-head">
+        <div class="sp-name" id="sp-name">—</div>
+        <button class="sp-close" onclick="closePop()">✕</button>
+      </div>
+      <div class="sp-slots" id="sp-slots"></div>
+      <div class="sp-status" id="sp-status"></div>
+      <div id="sp-reps"></div>
+      <button class="sp-cta" id="sp-cta">—</button>
+    </div>
+    <div style="height:10px;"></div>
+  </div>
+  <nav class="bnav">
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ══ ESCÁNER ══ -->
+<div id="s-scan" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back" onclick="back()">←</button>
+      <span class="brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-right">
+      <div class="login-btn" onclick="openLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <span class="top-name-mirror">Entrar</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="fhero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="fh-logo">
+      <div class="fh-ey">Para tu salud · Gratis</div>
+      <div class="fh-t">Solicita tu<br>escáner corporal</div>
+      <div class="fh-s">Te conectamos con un especialista en tu zona por WhatsApp — sin costo y sin compromiso.</div>
+    </div>
+    <div class="fbody">
+      <div class="fg"><label class="fl">Tu nombre completo</label><input class="fi" id="sc-nombre" type="text" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" id="sc-phone" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu estado</label>
+        <select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select>
+      </div>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="sc-ciudad" type="text" placeholder="Ciudad donde vives"></div>
+      <div class="fg">
+        <label class="fl">¿Quieres mejorar tu salud en…?</label>
+        <select class="fs" id="sc-goal">
+          <option value="">Elige una opción</option>
+          <option>Nutrición y peso saludable</option>
+          <option>Energía y vitalidad</option>
+          <option>Salud digestiva</option>
+          <option>Dolor e inflamación</option>
+          <option>Sueño y descanso</option>
+          <option>Salud hormonal</option>
+          <option>Sistema inmune</option>
+          <option>Salud mental y emocional</option>
+          <option>Rendimiento deportivo</option>
+          <option>Salud en general</option>
+        </select>
+      </div>
+      <button class="btn-wa" onclick="doScan()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Conectar con especialista
+      </button>
+      <div class="fnote">Un especialista te responderá en minutos · Sin costo · Sin compromiso</div>
+    </div>
+    <div style="height:10px;"></div>
+  </div>
+  <nav class="bnav">
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ══ ÚNETE ══ -->
+<div id="s-join" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back" onclick="back()">←</button>
+      <span class="brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-right">
+      <div class="login-btn" onclick="openLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <span class="top-name-mirror">Entrar</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="price-hero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="ph-logo">
+      <div class="ph-ey">Patrocinio semanal</div>
+      <div class="ph-num">$49</div>
+      <div class="ph-per">dólares / semana</div>
+      <div class="ph-note">Cancela cuando quieras · Sin contratos</div>
+    </div>
+    <div class="bens">
+      <div class="ben"><div class="ben-ico">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp en tu estado.</div></div></div>
+      <div class="ben"><div class="ben-ico">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas locales para atraer clientes.</div></div></div>
+      <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea.</div></div></div>
+      <div class="ben"><div class="ben-ico">🤝</div><div><div class="ben-t">Red de contactos</div><div class="ben-s">255 distribuidores nacionales + soporte.</div></div></div>
+    </div>
+    <div class="urg">
+      <div style="font-size:16px;">⚡</div>
+      <div><div class="urg-t">Espacios limitados</div><div class="urg-s">5 por estado · 255 en total</div></div>
+    </div>
+    <div class="fbody" style="padding-top:0;">
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="j-nombre" type="text" placeholder="Como aparecerá en el mapa"></div>
+      <div class="fg"><label class="fl">Tu estado</label>
+        <select class="fs" id="j-estado">
+          <option value="">Selecciona tu estado</option>
+          <option value="CA">California</option><option value="TX">Texas</option>
+          <option value="FL">Florida</option><option value="NY">New York</option>
+          <option value="WA">Washington</option><option value="AZ">Arizona</option>
+          <option value="IL">Illinois</option><option value="PA">Pennsylvania</option>
+          <option value="OH">Ohio</option><option value="GA">Georgia</option>
+          <option value="NC">North Carolina</option><option value="MI">Michigan</option>
+          <option value="NJ">New Jersey</option><option value="VA">Virginia</option>
+          <option value="TN">Tennessee</option><option value="CO">Colorado</option>
+          <option value="MN">Minnesota</option><option value="OR">Oregon</option>
+          <option value="NV">Nevada</option><option value="AL">Alabama</option>
+          <option value="AK">Alaska</option><option value="AR">Arkansas</option>
+          <option value="CT">Connecticut</option><option value="DE">Delaware</option>
+          <option value="HI">Hawaii</option><option value="ID">Idaho</option>
+          <option value="IN">Indiana</option><option value="IA">Iowa</option>
+          <option value="KS">Kansas</option><option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option><option value="ME">Maine</option>
+          <option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+          <option value="MS">Mississippi</option><option value="MO">Missouri</option>
+          <option value="MT">Montana</option><option value="NE">Nebraska</option>
+          <option value="NH">New Hampshire</option><option value="NM">New Mexico</option>
+          <option value="ND">North Dakota</option><option value="OK">Oklahoma</option>
+          <option value="RI">Rhode Island</option><option value="SC">South Carolina</option>
+          <option value="SD">South Dakota</option><option value="UT">Utah</option>
+          <option value="VT">Vermont</option><option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="j-ciudad" type="text" placeholder="Ciudad donde operas"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-whatsapp" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu email</label><input class="fi" id="j-email" type="email" placeholder="Para confirmación y acceso"></div>
+      <button class="btn-stripe" onclick="doJoin()">🔒 Reservar mi espacio · $49/sem</button>
+      <div class="secure">🔐 Pago seguro · <span style="border:1px solid rgba(255,255,255,0.15);padding:1px 5px;font-size:9px;letter-spacing:1px;font-family:'Barlow Condensed',sans-serif;">STRIPE</span> · Visa · MC · Apple Pay</div>
+      <div class="fnote">Al pagar aparecerás en el mapa y recibirás acceso a tu panel.</div>
+    </div>
+    <div style="height:10px;"></div>
+  </div>
+  <nav class="bnav">
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Iniciar sesión</div>
+      <button class="modal-close" onclick="closeModal('modal-login')">✕</button>
+    </div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar con Google
+    </button>
+    <div class="or-div"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="modal-fi" id="l-email" type="email" placeholder="tu@email.com">
+    <input class="modal-fi" id="l-pass" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')loginEmail()">
+    <div class="modal-err" id="l-err">Email o contraseña incorrectos.</div>
+    <button class="modal-submit" onclick="loginEmail()">Entrar</button>
+    <div class="modal-switch">¿No tienes cuenta? <a onclick="switchModal('modal-login','modal-reg')">Regístrate gratis →</a></div>
+  </div>
+</div>
+
+<!-- ══ REGISTER MODAL ══ -->
+<div class="modal-overlay" id="modal-reg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Crear cuenta</div>
+      <button class="modal-close" onclick="closeModal('modal-reg')">✕</button>
+    </div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Registrarse con Google
+    </button>
+    <div class="or-div"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="modal-fi" id="r-email" type="email" placeholder="tu@email.com">
+    <input class="modal-fi" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" onkeydown="if(event.key==='Enter')doRegister()">
+    <div class="modal-err" id="r-err"></div>
+    <button class="modal-submit" onclick="doRegister()">Crear cuenta</button>
+    <div class="modal-switch">¿Ya tienes cuenta? <a onclick="switchModal('modal-reg','modal-login')">Iniciar sesión →</a></div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(SB_URL, SB_KEY);
+
+const US = [
+  {c:'AL',n:'Alabama'},{c:'AK',n:'Alaska'},{c:'AZ',n:'Arizona'},{c:'AR',n:'Arkansas'},
+  {c:'CA',n:'California'},{c:'CO',n:'Colorado'},{c:'CT',n:'Connecticut'},{c:'DE',n:'Delaware'},
+  {c:'FL',n:'Florida'},{c:'GA',n:'Georgia'},{c:'HI',n:'Hawaii'},{c:'ID',n:'Idaho'},
+  {c:'IL',n:'Illinois'},{c:'IN',n:'Indiana'},{c:'IA',n:'Iowa'},{c:'KS',n:'Kansas'},
+  {c:'KY',n:'Kentucky'},{c:'LA',n:'Louisiana'},{c:'ME',n:'Maine'},{c:'MD',n:'Maryland'},
+  {c:'MA',n:'Massachusetts'},{c:'MI',n:'Michigan'},{c:'MN',n:'Minnesota'},{c:'MS',n:'Mississippi'},
+  {c:'MO',n:'Missouri'},{c:'MT',n:'Montana'},{c:'NE',n:'Nebraska'},{c:'NV',n:'Nevada'},
+  {c:'NH',n:'New Hampshire'},{c:'NJ',n:'New Jersey'},{c:'NM',n:'New Mexico'},{c:'NY',n:'New York'},
+  {c:'NC',n:'North Carolina'},{c:'ND',n:'North Dakota'},{c:'OH',n:'Ohio'},{c:'OK',n:'Oklahoma'},
+  {c:'OR',n:'Oregon'},{c:'PA',n:'Pennsylvania'},{c:'RI',n:'Rhode Island'},{c:'SC',n:'South Carolina'},
+  {c:'SD',n:'South Dakota'},{c:'TN',n:'Tennessee'},{c:'TX',n:'Texas'},{c:'UT',n:'Utah'},
+  {c:'VT',n:'Vermont'},{c:'VA',n:'Virginia'},{c:'WA',n:'Washington'},{c:'WV',n:'West Virginia'},
+  {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
+];
+
+let reps=[], smap={}, hist=['s-home'], user=null;
+
+// ── NAV ──────────────────────────────────────────────────────
+function go(to) {
+  const cur = hist[hist.length-1];
+  if(cur===to) return;
+  document.getElementById(cur).classList.add('prev');
+  document.getElementById(cur).classList.remove('active');
+  document.getElementById(to).classList.remove('prev');
+  document.getElementById(to).classList.add('active');
+  hist.push(to);
+}
+
+function back() {
+  if(hist.length<=1) return;
+  const cur = hist.pop();
+  const to  = hist[hist.length-1];
+  document.getElementById(cur).classList.remove('active','prev');
+  document.getElementById(to).classList.remove('prev');
+  document.getElementById(to).classList.add('active');
+}
+
+// ── DATA ──────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const { data } = await sb.from('membresias').select('*').eq('status','activa');
+    reps = data || [];
+  } catch { reps = []; }
+  smap = {};
+  reps.forEach(r => {
+    if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[];
+    smap[r.estado_codigo].push(r);
+  });
+  buildStateGrid();
+  fillStates();
+}
+
+// ── STATE GRID ────────────────────────────────────────────────
+function buildStateGrid() {
+  const grid = document.getElementById('states-grid');
+  grid.innerHTML = US.map(s => {
+    const r = smap[s.c]||[];
+    const cls = r.length>=5?'f':r.length>0?'a':'';
+    const pips = Array.from({length:5},(_,i)=>`<div class="s-pip${i<r.length?' on':''}"></div>`).join('');
+    return `<div class="state-btn ${cls}" onclick="showState('${s.c}')">
+      <div class="s-code">${s.c}</div>
+      <div class="s-slots">${pips}</div>
+    </div>`;
+  }).join('');
+}
+
+function showState(code) {
+  const r = smap[code]||[];
+  const name = US.find(s=>s.c===code)?.n||code;
+  const avail = 5-r.length;
+  document.getElementById('sp-name').textContent = name;
+  document.getElementById('sp-slots').innerHTML = Array.from({length:5},(_,i)=>
+    `<div class="sp-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
+  document.getElementById('sp-status').textContent = avail===0
+    ? 'ZONA COMPLETA · 5/5'
+    : `${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/sem`;
+  document.getElementById('sp-reps').innerHTML = r.length
+    ? r.map(x=>`<div class="sp-rep">
+        <div class="sp-av">${ini(x.nombre)}</div>
+        <div style="flex:1"><div class="sp-nm">${x.nombre}</div><div class="sp-ci">${x.ciudad||''}</div></div>
+        <button class="wa-circle" onclick="openWA('${x.whatsapp}','${x.nombre.replace(/'/g,"\\'")}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </button>
+      </div>`).join('')
+    : `<div class="sp-empty">Sé el primero en ${name}<br>$49/sem · 5 espacios disponibles</div>`;
+  const cta = document.getElementById('sp-cta');
+  cta.textContent = avail>0 ? `Reservar espacio en ${name} →` : `Solicitar escáner en ${name} →`;
+  cta.onclick = () => go(avail>0?'s-join':'s-scan');
+  document.getElementById('state-pop').classList.add('vis');
+  setTimeout(()=>document.getElementById('state-pop').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+}
+
+function closePop() { document.getElementById('state-pop').classList.remove('vis'); }
+
+// ── SCAN ──────────────────────────────────────────────────────
+async function doScan() {
+  const n = document.getElementById('sc-nombre').value.trim();
+  const p = document.getElementById('sc-phone').value.trim();
+  const c = document.getElementById('sc-estado').value;
+  const ci= document.getElementById('sc-ciudad').value.trim();
+  const g = document.getElementById('sc-goal').value;
+  if(!n||!p||!c||!ci||!g){ alert('Por favor completa todos los campos.'); return; }
+  const sn = US.find(s=>s.c===c)?.n||c;
+  try { await sb.from('solicitudes_scanner').insert({nombre:n,telefono:p.replace(/\D/g,''),estado_codigo:c,estado_nombre:sn,objetivo:g}); } catch(e){}
+  const msg = encodeURIComponent(`Hola! Me registré en Tu Red Vital 🌿\n\n👤 Nombre: ${n}\n📍 Estado: ${sn}\n🏙️ Ciudad: ${ci}\n📱 Teléfono: ${p}\n💚 Quiero mejorar: ${g}\n\nMe interesa el escáner corporal.`);
+  window.open(`https://wa.me/${WA}?text=${msg}`,'_blank');
+}
+
+// ── JOIN ──────────────────────────────────────────────────────
+async function doJoin() {
+  const n = document.getElementById('j-nombre').value.trim();
+  const e = document.getElementById('j-estado').value;
+  const c = document.getElementById('j-ciudad').value.trim();
+  const w = document.getElementById('j-whatsapp').value.trim();
+  const em= document.getElementById('j-email').value.trim();
+  if(!n||!e||!c||!w||!em){ alert('Por favor completa todos los campos.'); return; }
+  const en = US.find(s=>s.c===e)?.n||e;
+  try {
+    await sb.from('membresias').upsert({
+      nombre:n,email:em,whatsapp:w,ciudad:c,
+      estado_codigo:e,estado_nombre:en,
+      slot:(smap[e]||[]).length+1,status:'pendiente'
+    },{onConflict:'email'});
+  } catch(ex){}
+  window.location.href=`${STRIPE}?prefilled_email=${encodeURIComponent(em)}`;
+}
+
+// ── AUTH ──────────────────────────────────────────────────────
+function openLogin() {
+  if(user) { if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`)) sb.auth.signOut().then(()=>{user=null;updateUI();}); return; }
+  openModal('modal-login');
+}
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function switchModal(from,to) { closeModal(from); openModal(to); }
+
+async function loginGoogle() {
+  await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.origin}
+  });
+}
+
+async function loginEmail() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('l-err');
+  const { data, error } = await sb.auth.signInWithPassword({email,password:pass});
+  if(error){ err.style.display='block'; return; }
+  err.style.display='none';
+  closeModal('modal-login');
+  user = data.user;
+  updateUI();
+}
+
+async function doRegister() {
+  const email = document.getElementById('r-email').value.trim();
+  const pass  = document.getElementById('r-pass').value;
+  const err   = document.getElementById('r-err');
+  if(pass.length<6){ err.textContent='Mínimo 6 caracteres.'; err.style.display='block'; return; }
+  const { error } = await sb.auth.signUp({email,password:pass});
+  if(error){ err.textContent=error.message; err.style.display='block'; return; }
+  closeModal('modal-reg');
+  alert('¡Cuenta creada! Revisa tu email para confirmar.');
+}
+
+function updateUI() {
+  const name = user ? (user.user_metadata?.full_name||user.email||'').split(/[@\s]/)[0] : 'Entrar';
+  document.getElementById('top-name').textContent = name;
+  document.querySelectorAll('.top-name-mirror').forEach(el=>el.textContent=name);
+}
+
+async function checkSession() {
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session?.user){ user=session.user; updateUI(); }
+  sb.auth.onAuthStateChange((_,s)=>{ user=s?.user||null; updateUI(); });
+}
+
+// ── HELPERS ──────────────────────────────────────────────────
+function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function fillStates(){
+  const o=US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+o;
+}
+function openWA(num,name){
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital 🌿`)}`, '_blank');
+}
+
+window.addEventListener('DOMContentLoaded',async()=>{
+  await loadData();
+  await checkSession();
+  setTimeout(()=>document.getElementById('load').classList.add('gone'),1300);
+});
+</script>
+</body>
+</html>
 
