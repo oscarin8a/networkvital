@@ -357,43 +357,43 @@ svg.usa{width:100%;height:auto;}
 <!-- ══ ESCÁNER ══ -->
 <div id="s-scan" class="screen">
   <div class="hdr">
-    <div class="hdr-logo">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
+    <div class="hdr-logo" style="gap:14px;">
+      <button onclick="goTo('s-home')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;padding:0;line-height:1;display:flex;align-items:center;">←</button>
       <div class="hdr-name">TU RED <span>VITAL</span></div>
     </div>
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Escáner</div>
   </div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div style="padding:28px 22px 20px;background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);border-bottom:1px solid var(--border);">
+    <div style="padding:24px 22px 18px;background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);border-bottom:1px solid var(--border);">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Para tu salud</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1.05;margin-bottom:10px;">Conecta con<br>tu especialista</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;">Llena el formulario y te conectamos con un distribuidor certificado en tu estado por WhatsApp — gratis y sin compromiso.</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;">Llena el formulario y te conectamos con un especialista en tu zona — gratis y sin compromiso.</div>
     </div>
-    <div style="padding:22px 20px 0;">
-      <div style="background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.15);padding:14px 16px;margin-bottom:20px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">¿Qué incluye el escáner?</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Evaluación corporal rápida y no invasiva. Analiza nutrición, inflamación, hidratación y bienestar general. Resultado y plan personalizado en minutos.</div>
-      </div>
-      <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
-      <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
+    <div style="padding:20px 20px 0;">
+      <div class="fg"><label class="fl">Tu nombre completo</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Tu número de teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
       <div class="fg"><label class="fl">Tu estado</label>
         <select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select>
       </div>
-      <div class="fg"><label class="fl">¿Qué buscas?</label>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="sc-ciudad" placeholder="Ciudad donde vives"></div>
+      <div class="fg"><label class="fl">¿Quieres mejorar tu salud en…?</label>
         <select class="fs" id="sc-goal">
           <option value="">Elige una opción</option>
-          <option>Mejorar mi salud general</option>
-          <option>Bajar de peso</option>
-          <option>Más energía</option>
+          <option>Nutrición y peso saludable</option>
+          <option>Energía y vitalidad</option>
           <option>Salud digestiva</option>
           <option>Dolor e inflamación</option>
           <option>Sueño y descanso</option>
           <option>Salud hormonal</option>
+          <option>Sistema inmune</option>
+          <option>Salud mental y emocional</option>
+          <option>Rendimiento deportivo</option>
+          <option>Salud en general</option>
         </select>
       </div>
       <button onclick="submitScan()" style="width:100%;padding:16px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Conectar con mi especialista
+        Enviar mi información
       </button>
       <div style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;">Un especialista de tu zona te responderá en minutos.<br>Sin costo · Sin compromiso.</div>
     </div>
@@ -577,18 +577,25 @@ async function submitScan() {
   const nombre = document.getElementById('sc-nombre').value.trim();
   const phone  = document.getElementById('sc-phone').value.trim();
   const code   = document.getElementById('sc-estado').value;
+  const ciudad = document.getElementById('sc-ciudad').value.trim();
   const goal   = document.getElementById('sc-goal').value;
-  if(!nombre||!phone||!code||!goal){ alert('Completa todos los campos.'); return; }
+  if(!nombre||!phone||!code||!ciudad||!goal){ alert('Por favor completa todos los campos.'); return; }
   const sname = US_STATES.find(s=>s.c===code)?.n||code;
   try {
     await sb.from('solicitudes_scanner').insert({
       nombre, telefono:phone.replace(/\D/g,''), estado_codigo:code, estado_nombre:sname, objetivo:goal
     });
   } catch(e) {}
-  const reps = stateMap[code]||[];
-  const target = reps.length > 0 ? reps[0].whatsapp : YOUR_WHATSAPP;
-  const msg = encodeURIComponent(`Hola! Vengo de Tu Red Vital 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nBusco: ${goal}\nTel: ${phone}\n\nMe interesa el escáner corporal.`);
-  window.open(`https://wa.me/${target}?text=${msg}`,'_blank');
+  const msg = encodeURIComponent(
+    `Hola! Me registré en Tu Red Vital 🌿\n\n` +
+    `👤 Nombre: ${nombre}\n` +
+    `📍 Estado: ${sname}\n` +
+    `🏙️ Ciudad: ${ciudad}\n` +
+    `📱 Número: ${phone}\n` +
+    `💚 Quiero mejorar mi salud en: ${goal}\n\n` +
+    `Me interesa conectar con un especialista.`
+  );
+  window.open(`https://wa.me/${YOUR_WHATSAPP}?text=${msg}`,'_blank');
 }
 
 async function irAStripe(e) {
