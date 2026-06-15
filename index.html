@@ -3,276 +3,291 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Red Vital · USA Network</title>
+<title>Tu Red Vital · USA</title>
+<link rel="icon" type="image/png" href="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-  // ─── CONFIGURACIÓN ─────────────────────────────────────────
   const SUPABASE_URL      = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
   const YOUR_WHATSAPP     = '12099717638';
   const STRIPE_LINK       = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
-  const ADMIN_EMAIL       = 'oscar8a1985@gmail.com';
-  // ────────────────────────────────────────────────────────────
 </script>
 <style>
 :root{
-  --navy:#0B1626;--navy2:#1E2D45;--navy3:#162038;
-  --gold:#C9A24B;--slate:#2A3F5C;--muted:#7A8FA6;
-  --white:#fff;--wa:#25D366;--crimson:#C81E2D;--green:#1D9E75;
-  --border:rgba(201,162,75,0.18);
+  --navy:#0B1626;--navy2:#1E2D45;--navy3:#0D1B2A;
+  --gold:#C9A24B;--muted:#7A8FA6;--white:#fff;
+  --wa:#25D366;--green:#1D9E75;--border:rgba(201,162,75,0.15);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;}
 
 /* LOADING */
-#loading{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.4s;}
+#loading{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.5s;}
 #loading.hidden{opacity:0;pointer-events:none;}
-.ld-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:18px;}
-.ld-logo span{color:var(--white);}
-.ld-bar{width:120px;height:2px;background:rgba(201,162,75,0.2);}
-.ld-fill{height:100%;width:0;background:var(--gold);animation:ld 1.2s ease forwards;}
+#loading img{width:120px;height:120px;object-fit:contain;margin-bottom:20px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
+.ld-bar{width:100px;height:2px;background:rgba(201,162,75,0.2);margin-top:16px;}
+.ld-fill{height:100%;width:0;background:var(--gold);animation:ld 1.5s ease forwards;}
 @keyframes ld{to{width:100%;}}
-.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
+.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
 
 /* SCREENS */
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
 
 /* HEADER */
-.hdr{background:var(--navy);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;color:var(--gold);}
-.logo span{color:var(--white);}
-.pill{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:3px 9px;text-transform:uppercase;}
+.hdr{background:rgba(11,22,38,0.97);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+.hdr-logo{display:flex;align-items:center;gap:10px;}
+.hdr-logo img{width:36px;height:36px;object-fit:contain;}
+.hdr-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;}
+.hdr-name span{color:var(--gold);}
+.hdr-nav{display:flex;gap:6px;}
+.hdr-btn{background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:6px 10px;transition:color 0.15s;}
+.hdr-btn.active,.hdr-btn:hover{color:var(--gold);}
+.hdr-btn.cta{background:var(--gold);color:var(--navy);padding:6px 14px;}
 
-/* NAV */
+/* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy2);border-top:1px solid var(--border);display:flex;z-index:200;}
-.nb{flex:1;padding:10px 4px 14px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.15s;}
-.nb svg{width:19px;height:19px;}
+.nb{flex:1;padding:10px 4px 14px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.nb svg{width:20px;height:20px;}
 .nb.active{color:var(--gold);}
 
-/* HELPERS */
-.eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1.05;}
-.fg{margin-bottom:16px;}
-.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-.fi,.fs{width:100%;background:var(--navy2);border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
-.fi:focus,.fs:focus{border-color:var(--gold);}
-.fs option{background:var(--navy2);}
-@keyframes pulse{0%,100%{border-color:rgba(201,162,75,0.3);}50%{border-color:rgba(201,162,75,0.85);}}
-
 /* ─── HOME ─── */
-.hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:32px 22px 28px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,0.1) 0%,transparent 70%);pointer-events:none;}
-.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;line-height:0.92;letter-spacing:-0.5px;margin-bottom:14px;}
+.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#0D1B2A 0%,#0B1626 60%,#0F1E30 100%);padding:40px 24px 36px;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(201,162,75,0.08) 0%,transparent 60%);pointer-events:none;}
+.hero-logo{width:90px;height:90px;object-fit:contain;margin-bottom:20px;filter:drop-shadow(0 4px 24px rgba(201,162,75,0.3));}
+.hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;line-height:0.9;letter-spacing:-1px;margin-bottom:16px;}
 .hero-title .gold{color:var(--gold);}
-.hero-sub{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.55;margin-bottom:24px;}
-.stats-row{display:grid;grid-template-columns:1fr 1px 1fr;background:rgba(201,162,75,0.07);border:1px solid rgba(201,162,75,0.2);padding:14px 0;margin-bottom:24px;}
-.stat-item{text-align:center;padding:0 14px;}
-.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;line-height:1;color:var(--gold);}
-.stat-num.cr{color:var(--crimson);}
-.stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
-.dots{display:flex;gap:4px;justify-content:center;margin-top:6px;}
-.dot{width:8px;height:8px;border-radius:50%;}
-.dot.on{background:var(--gold);}
-.dot.off{background:transparent;border:1.5px solid rgba(201,162,75,0.4);animation:pulse 2s infinite;}
-.ctas{display:grid;gap:12px;padding:0 20px 24px;}
-.cta{background:var(--slate);border:1px solid rgba(201,162,75,0.12);padding:20px;cursor:pointer;transition:transform 0.15s;position:relative;text-align:left;}
-.cta:active{transform:scale(0.98);}
-.cta.primary{background:var(--gold);border-color:var(--gold);}
-.cta.primary .cta-ey,.cta.primary .cta-de{color:rgba(11,22,38,0.6);}
-.cta.primary .cta-ti{color:var(--navy);}
-.cta.primary .arr{color:var(--navy);}
-.cta-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:5px;}
-.cta-ti{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;line-height:1.1;margin-bottom:5px;}
-.cta-de{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.45;}
-.arr{position:absolute;top:20px;right:20px;font-size:22px;opacity:0.6;color:var(--gold);}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:28px;max-width:320px;}
+.hero-stats{display:flex;gap:0;border:1px solid rgba(201,162,75,0.2);background:rgba(201,162,75,0.05);}
+.hstat{flex:1;padding:14px 12px;text-align:center;position:relative;}
+.hstat+.hstat::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:rgba(201,162,75,0.2);}
+.hstat-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--gold);line-height:1;}
+.hstat-num.red{color:#E85C6A;}
+.hstat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
 
-/* ─── MAP ─── */
-.mhdr{padding:20px 20px 8px;}
-.legend{display:flex;gap:14px;padding:6px 20px 12px;}
+.home-section{padding:28px 20px;}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(201,162,75,0.2);}
+
+/* Value props */
+.vprops{display:grid;gap:10px;margin-bottom:28px;}
+.vprop{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--navy2);border:1px solid var(--border);}
+.vprop-ico{font-size:24px;flex-shrink:0;margin-top:2px;}
+.vprop-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;margin-bottom:3px;}
+.vprop-s{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;}
+
+/* CTAs */
+.cta-grid{display:grid;gap:12px;padding:0 20px 28px;}
+.cta-card{padding:22px;cursor:pointer;transition:transform 0.15s;position:relative;text-align:left;border:1px solid;}
+.cta-card:active{transform:scale(0.98);}
+.cta-card.primary{background:var(--gold);border-color:var(--gold);}
+.cta-card.secondary{background:var(--navy2);border-color:rgba(201,162,75,0.2);}
+.cta-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px;}
+.cta-card.primary .cta-ey{color:rgba(11,22,38,0.6);}
+.cta-card.secondary .cta-ey{color:var(--gold);}
+.cta-ti{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;line-height:1.1;margin-bottom:5px;}
+.cta-card.primary .cta-ti{color:var(--navy);}
+.cta-de{font-size:13px;line-height:1.5;}
+.cta-card.primary .cta-de{color:rgba(11,22,38,0.6);}
+.cta-card.secondary .cta-de{color:rgba(255,255,255,0.5);}
+.cta-arr{position:absolute;top:20px;right:20px;font-size:20px;opacity:0.5;}
+.cta-card.primary .cta-arr{color:var(--navy);}
+.cta-card.secondary .cta-arr{color:var(--gold);}
+
+/* ─── MAPA ─── */
+.map-head{padding:20px 20px 0;}
+.legend{display:flex;gap:16px;padding:10px 20px 12px;flex-wrap:wrap;}
 .li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
 .ld2{width:10px;height:10px;border-radius:50%;}
 .ld2.full{background:var(--gold);}
-.ld2.partial{background:rgba(201,162,75,0.4);}
-.ld2.open{background:transparent;border:1.5px solid rgba(255,255,255,0.25);}
+.ld2.partial{background:rgba(201,162,75,0.45);}
+.ld2.open{background:transparent;border:1.5px solid rgba(255,255,255,0.2);}
 .map-wrap{padding:0 10px;}
 svg.usa{width:100%;height:auto;}
-.st{stroke:var(--navy);stroke-width:1.5;cursor:pointer;fill:var(--slate);transition:opacity 0.15s;}
+.st{stroke:var(--navy);stroke-width:1.5;cursor:pointer;fill:#1A2840;transition:fill 0.2s;}
 .st.full{fill:var(--gold);}
 .st.partial{fill:rgba(201,162,75,0.45);}
-.st:active{opacity:0.7;}
-.spop{margin:10px 16px 0;padding:16px;background:var(--navy2);border:1px solid rgba(201,162,75,0.25);display:none;}
+.st:hover{opacity:0.8;}
+.spop{margin:12px 16px 0;padding:18px;background:var(--navy2);border:1px solid rgba(201,162,75,0.25);display:none;}
 .spop.vis{display:block;}
-.spop-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;margin-bottom:10px;}
-.spop-slots{display:flex;gap:5px;margin-bottom:10px;}
-.spop-slot{flex:1;height:28px;display:flex;align-items:center;justify-content:center;font-size:11px;}
-.spop-slot.on{background:var(--gold);color:var(--navy);font-weight:700;}
-.spop-slot.off{background:transparent;border:1.5px dashed rgba(201,162,75,0.35);animation:pulse 2.2s infinite;}
-.spop-status{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
-.rep-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,0.05);}
-.rep-av{width:38px;height:38px;border-radius:50%;background:var(--slate);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--gold);flex-shrink:0;}
-.rep-nm{font-size:14px;font-weight:600;}
-.rep-ci{font-size:12px;color:var(--muted);}
-.wac{width:36px;height:36px;border-radius:50%;background:var(--wa);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:auto;}
-.pop-btn{width:100%;margin-top:12px;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.spop-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;margin-bottom:10px;}
+.slot-row{display:flex;gap:5px;margin-bottom:8px;}
+.slot{flex:1;height:28px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.slot.on{background:var(--gold);color:var(--navy);}
+.slot.off{background:transparent;border:1.5px dashed rgba(201,162,75,0.3);}
+.spop-status{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;}
+.rep-card{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.05);}
+.rep-av{width:42px;height:42px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.rep-name{font-size:14px;font-weight:600;}
+.rep-city{font-size:12px;color:var(--muted);}
+.wa-round{width:40px;height:40px;border-radius:50%;background:var(--wa);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:auto;flex-shrink:0;}
+.spop-cta{width:100%;margin-top:14px;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.no-rep{font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.7;}
 
-/* ─── MEMBRESÍA ─── */
-.price-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
-.price-hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,0.12) 0%,transparent 70%);pointer-events:none;}
-.price-num{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;}
-.price-per{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:6px;}
-.price-d{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;margin-top:8px;}
-.benefits{padding:16px 20px;}
-.ben-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.ben-item:last-child{border-bottom:none;}
-.ben-ico{width:32px;height:32px;border-radius:50%;background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.ben-ti{font-size:14px;font-weight:600;margin-bottom:2px;}
-.ben-su{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
-.urgency{margin:0 18px 16px;background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.25);padding:10px 14px;display:flex;gap:8px;align-items:center;}
+/* ─── UNETE ─── */
+.join-hero{background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);padding:32px 22px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.join-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(201,162,75,0.1) 0%,transparent 60%);pointer-events:none;}
+.join-logo{width:70px;height:70px;object-fit:contain;margin-bottom:16px;filter:drop-shadow(0 2px 12px rgba(201,162,75,0.4));}
+.price-big{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;}
+.price-per{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);}
+.price-note{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;}
+
+.benefits-list{padding:20px;}
+.ben{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ben:last-child{border-bottom:none;}
+.ben-ico{width:36px;height:36px;border-radius:50%;background:rgba(201,162,75,0.08);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ben-t{font-size:14px;font-weight:600;margin-bottom:2px;}
+.ben-s{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
+
+.join-form{padding:20px;padding-bottom:90px;}
+.form-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;margin-bottom:16px;}
+.fg{margin-bottom:14px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.fi,.fs{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.15);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fs option{background:var(--navy2);}
+.pay-btn{width:100%;padding:18px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;transition:opacity 0.2s;}
+.pay-btn:active{opacity:0.85;}
+.secure{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.25);}
+.stripe-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,255,255,0.15);padding:1px 6px;color:rgba(255,255,255,0.25);}
+.urgency{background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.2);padding:10px 14px;display:flex;gap:8px;align-items:center;margin-bottom:16px;}
 .urg-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
-.urg-s{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;}
-.fbody{padding:20px;flex:1;padding-bottom:90px;}
-
-/* STRIPE BUTTON */
-.stripe-pay-btn{
-  display:block;width:100%;padding:18px;
-  background:var(--gold);color:var(--navy);
-  border:none;cursor:pointer;text-decoration:none;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:22px;font-weight:900;letter-spacing:1px;
-  text-transform:uppercase;text-align:center;
-  margin-top:8px;transition:opacity 0.2s;
-}
-.stripe-pay-btn:active{opacity:0.85;}
-.secure-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);}
-.stripe-b{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.1);padding:1px 6px;}
-
-/* ─── PERFIL DISTRIBUIDOR ─── */
-.profile-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;position:relative;}
-.p-av{width:72px;height:72px;border-radius:50%;background:var(--slate);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-bottom:14px;}
-.p-name{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin-bottom:2px;}
-.p-loc{font-size:13px;color:var(--muted);margin-bottom:14px;}
-.status-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;}
-.status-badge.activa{background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
-.status-badge.pendiente{background:rgba(201,162,75,0.15);color:var(--gold);border:1px solid rgba(201,162,75,0.3);}
-.status-badge.cancelada{background:rgba(200,30,45,0.1);color:#E85C6A;border:1px solid rgba(200,30,45,0.25);}
-.status-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
-
-/* Countdown timer */
-.countdown-box{background:var(--navy2);border:1px solid var(--border);padding:16px 20px;margin:16px 20px 0;}
-.cd-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
-.cd-timer{display:flex;gap:10px;align-items:center;}
-.cd-block{text-align:center;}
-.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--gold);line-height:1;}
-.cd-unit{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
-.cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:rgba(201,162,75,0.3);padding-bottom:8px;}
-.cd-warning{margin-top:8px;font-size:12px;color:#E85C6A;display:none;}
-
-.p-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px 0;}
-.p-card{background:var(--navy2);border:1px solid var(--border);padding:14px;}
-.p-card-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
-.p-card-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
-.p-card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-
-.p-section{padding:18px 20px 0;}
-.p-section-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);}
-
-.client-card{background:var(--slate);border:1px solid rgba(255,255,255,0.06);padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;}
-.cli-av{width:34px;height:34px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--muted);flex-shrink:0;}
-.cli-nm{font-size:14px;font-weight:600;}
-.cli-sub{font-size:11px;color:var(--muted);}
-
-.edit-input{width:100%;background:var(--navy2);border:1px solid var(--border);color:var(--white);padding:10px 12px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;margin-bottom:10px;}
-.edit-input:focus{border-color:var(--gold);}
-.save-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
-.renew-btn{width:100%;padding:13px;background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:8px;text-decoration:none;display:block;text-align:center;}
-
-/* ─── LOGIN ─── */
-.login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(ellipse at 30% 30%,rgba(201,162,75,0.06) 0%,transparent 60%),var(--navy);}
-.login-logo{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;text-align:center;}
-.login-logo span{color:var(--white);}
-.login-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:28px;}
-.login-card{width:100%;max-width:380px;border:1px solid var(--border);padding:28px;}
-.login-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:14px;}
-.login-err{color:#E85C6A;font-size:13px;margin-top:10px;text-align:center;display:none;}
-.login-link{text-align:center;margin-top:14px;font-size:13px;color:var(--muted);}
-.login-link a{color:var(--gold);text-decoration:none;cursor:pointer;}
-
-/* ─── ESCÁNER ─── */
-.wa-btn{width:100%;background:var(--wa);color:#fff;border:none;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
-.disc{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.55;}
-.pb90{padding-bottom:90px;}
+.urg-s{font-size:12px;color:rgba(255,255,255,0.4);margin-top:1px;}
 </style>
 </head>
 <body>
 
+<!-- LOADING -->
 <div id="loading">
-  <div class="ld-logo">RED<span> VITAL</span></div>
+  <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Tu Red Vital">
   <div class="ld-bar"><div class="ld-fill"></div></div>
-  <div class="ld-txt">Cargando red nacional…</div>
+  <div class="ld-txt">Tu Red Vital USA</div>
 </div>
 
 <!-- ══ HOME ══ -->
 <div id="s-home" class="screen active">
-  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">USA Network</div></div>
+  <div class="hdr">
+    <div class="hdr-logo">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
+      <div class="hdr-name">TU RED <span>VITAL</span></div>
+    </div>
+    <div class="hdr-nav">
+      <button class="hdr-btn cta" onclick="goTo('s-join')">$49/sem</button>
+    </div>
+  </div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
     <div class="hero">
-      <div class="eyebrow">🌿 Tu Red de Salud Nacional</div>
-      <div class="hero-title">Conecta,<br><span class="gold">crece,</span><br>prospera.</div>
-      <div class="hero-sub">Unimos personas que buscan mejorar su salud con distribuidores apasionados en todo EE.UU.</div>
-      <div class="stats-row">
-        <div class="stat-item">
-          <div class="stat-num" id="cnt-a">—</div>
-          <div class="stat-lbl">Miembros activos</div>
-          <div class="dots" id="dots-a"></div>
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Tu Red Vital" class="hero-logo">
+      <div class="hero-eyebrow">🌿 Red Nacional de Bienestar · USA</div>
+      <div class="hero-title">Tu salud.<br><span class="gold">Tu red.</span><br>Tu futuro.</div>
+      <div class="hero-sub">Conectamos personas que buscan mejorar su salud con distribuidores certificados en los 50 estados de EE.UU.</div>
+      <!-- BOTONES PRINCIPALES ARRIBA -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div class="cta-card primary" onclick="goTo('s-scan')" style="padding:16px;">
+          <div class="cta-ey">Para tu salud</div>
+          <div class="cta-ti" style="font-size:17px;">Quiero un especialista</div>
+          <div class="cta-arr">→</div>
         </div>
-        <div style="background:rgba(201,162,75,0.2);"></div>
-        <div class="stat-item">
-          <div class="stat-num cr" id="cnt-o">—</div>
-          <div class="stat-lbl">Espacios disponibles</div>
-          <div class="dots" id="dots-o"></div>
+        <div class="cta-card secondary" onclick="goTo('s-join')" style="padding:16px;">
+          <div class="cta-ey">Oportunidad</div>
+          <div class="cta-ti" style="font-size:17px;">Ser representante</div>
+          <div class="cta-arr">→</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-num" id="cnt-activos">—</div>
+          <div class="hstat-lbl">Miembros activos</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num red" id="cnt-disponibles">—</div>
+          <div class="hstat-lbl">Espacios disponibles</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">50</div>
+          <div class="hstat-lbl">Estados USA</div>
         </div>
       </div>
     </div>
-    <div class="ctas">
-      <div class="cta primary" onclick="goTo('s-scan')">
+
+    <div class="home-section">
+      <div class="section-label">¿Cómo funciona?</div>
+      <div class="vprops">
+        <div class="vprop">
+          <div class="vprop-ico">🗺️</div>
+          <div>
+            <div class="vprop-t">Representantes en tu zona</div>
+            <div class="vprop-s">5 distribuidores certificados por estado. Localiza el tuyo en el mapa y contáctalo directo por WhatsApp.</div>
+          </div>
+        </div>
+        <div class="vprop">
+          <div class="vprop-ico">💚</div>
+          <div>
+            <div class="vprop-t">Escáner corporal gratuito</div>
+            <div class="vprop-s">Análisis de 45+ sistemas corporales. No invasivo. Tu especialista diseña un plan 100% personalizado.</div>
+          </div>
+        </div>
+        <div class="vprop">
+          <div class="vprop-ico">📣</div>
+          <div>
+            <div class="vprop-t">Campaña en tu ciudad</div>
+            <div class="vprop-s">Creamos campañas locales para atraer clientes a tu comunidad. Tú te enfocas en ayudar, nosotros en el marketing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-grid">
+      <div class="cta-card primary" onclick="goTo('s-scan')">
         <div class="cta-ey">Para tu salud</div>
         <div class="cta-ti">Quiero un especialista en mi zona</div>
-        <div class="cta-de" style="color:rgba(11,22,38,0.6)">Contáctate con un distribuidor certificado cerca de ti.</div>
-        <div class="arr" style="color:var(--navy);">→</div>
+        <div class="cta-de">Escáner corporal gratuito con un distribuidor certificado cerca de ti.</div>
+        <div class="cta-arr">→</div>
       </div>
-      <div class="cta" onclick="goTo('s-membresia')">
+      <div class="cta-card secondary" onclick="goTo('s-join')">
         <div class="cta-ey">Oportunidad · $49/semana</div>
-        <div class="cta-ti">Quiero ser distribuidor</div>
-        <div class="cta-de">Patrocinio · Capacitación · Promoción en tu ciudad.</div>
-        <div class="arr">→</div>
+        <div class="cta-ti">Quiero ser representante</div>
+        <div class="cta-de">Únete a la red. Patrocinio semanal + capacitación + contactos + promoción en tu ciudad.</div>
+        <div class="cta-arr">→</div>
       </div>
-    </div>
-    <div style="padding:0 20px 20px;text-align:center;">
-      <button onclick="goTo('s-login')" style="background:none;border:1px solid var(--border);color:var(--gold);padding:10px 24px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Ya soy miembro · Iniciar sesión →</button>
     </div>
   </div>
   <nav class="bnav">
-    <button class="nb active" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/sem</button>
-    <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
+    <button class="nb active" onclick="goTo('s-home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio
+    </button>
+    <button class="nb" onclick="goTo('s-map')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
+    </button>
+    <button class="nb" onclick="goTo('s-scan')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner
+    </button>
+    <button class="nb" onclick="goTo('s-join')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
+    </button>
   </nav>
 </div>
 
 <!-- ══ MAPA ══ -->
 <div id="s-map" class="screen">
-  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Mapa USA</div></div>
+  <div class="hdr">
+    <div class="hdr-logo">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
+      <div class="hdr-name">TU RED <span>VITAL</span></div>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Mapa USA</div>
+  </div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div class="mhdr">
-      <div class="eyebrow">Disponibilidad por estado</div>
-      <div class="sec-title">Encuentra tu zona</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:3px;">Toca un estado para ver distribuidores</div>
+    <div class="map-head">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Representantes por estado</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;margin-bottom:4px;">Encuentra tu zona</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);">Toca un estado para ver distribuidores disponibles</div>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld2 full"></div>Completo (5/5)</div>
+      <div class="li"><div class="ld2 full"></div>Completo 5/5</div>
       <div class="li"><div class="ld2 partial"></div>Parcial</div>
       <div class="li"><div class="ld2 open"></div>Disponible</div>
     </div>
@@ -321,83 +336,110 @@ svg.usa{width:100%;height:auto;}
         <path class="st" id="MD" d="M800,192L845,190L845,210L800,212Z"/>
         <path class="st" id="MA" d="M840,105L900,102L898,128L838,130Z"/>
         <path class="st" id="ME" d="M878,50L910,48L905,100L876,102Z"/>
-        <text x="152" y="78" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">WA</text>
-        <text x="140" y="248" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">CA</text>
-        <text x="462" y="388" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">TX</text>
-        <text x="700" y="392" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">FL</text>
-        <text x="835" y="130" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">NY</text>
-        <text x="805" y="170" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">PA</text>
       </svg>
     </div>
-    <div id="spop" class="spop pb90">
+    <div id="spop" class="spop">
       <div class="spop-name" id="spop-name">—</div>
-      <div class="spop-slots" id="spop-slots"></div>
+      <div class="slot-row" id="spop-slots"></div>
       <div class="spop-status" id="spop-status"></div>
       <div id="spop-reps"></div>
-      <button class="pop-btn" id="spop-btn">—</button>
+      <button class="spop-cta" id="spop-cta">—</button>
     </div>
   </div>
   <nav class="bnav">
     <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
     <button class="nb active" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/sem</button>
-    <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
+    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="nb" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
 <!-- ══ ESCÁNER ══ -->
 <div id="s-scan" class="screen">
-  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Escáner</div></div>
-  <div class="fbody">
-    <div class="eyebrow" style="margin-bottom:6px;">Para tu salud</div>
-    <div class="sec-title" style="margin-bottom:6px;">Conecta con<br>tu especialista</div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:22px;">Te conectamos con un distribuidor certificado en tu estado de inmediato por WhatsApp.</div>
-    <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
-    <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
-    <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select></div>
-    <div class="fg"><label class="fl">¿Qué buscas?</label>
-      <select class="fs" id="sc-goal">
-        <option value="">Elige una opción</option>
-        <option>Mejorar mi salud general</option>
-        <option>Bajar de peso</option>
-        <option>Más energía</option>
-        <option>Salud digestiva</option>
-        <option>Dolor e inflamación</option>
-        <option>Sueño y descanso</option>
-      </select>
+  <div class="hdr">
+    <div class="hdr-logo">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
+      <div class="hdr-name">TU RED <span>VITAL</span></div>
     </div>
-    <button class="wa-btn" onclick="submitScan()"><?xml version="1.0"?><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Contactar especialista</button>
-    <div class="disc">Un distribuidor certificado de tu zona te responderá en minutos.</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Escáner</div>
   </div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
+    <div style="padding:28px 22px 20px;background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);border-bottom:1px solid var(--border);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Para tu salud</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1.05;margin-bottom:10px;">Conecta con<br>tu especialista</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;">Llena el formulario y te conectamos con un distribuidor certificado en tu estado por WhatsApp — gratis y sin compromiso.</div>
+    </div>
+    <div style="padding:22px 20px 0;">
+      <div style="background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.15);padding:14px 16px;margin-bottom:20px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">¿Qué incluye el escáner?</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Evaluación corporal rápida y no invasiva. Analiza nutrición, inflamación, hidratación y bienestar general. Resultado y plan personalizado en minutos.</div>
+      </div>
+      <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu estado</label>
+        <select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select>
+      </div>
+      <div class="fg"><label class="fl">¿Qué buscas?</label>
+        <select class="fs" id="sc-goal">
+          <option value="">Elige una opción</option>
+          <option>Mejorar mi salud general</option>
+          <option>Bajar de peso</option>
+          <option>Más energía</option>
+          <option>Salud digestiva</option>
+          <option>Dolor e inflamación</option>
+          <option>Sueño y descanso</option>
+          <option>Salud hormonal</option>
+        </select>
+      </div>
+      <button onclick="submitScan()" style="width:100%;padding:16px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Conectar con mi especialista
+      </button>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;">Un especialista de tu zona te responderá en minutos.<br>Sin costo · Sin compromiso.</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="nb active" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="nb" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
 </div>
 
-<!-- ══ MEMBRESÍA ══ -->
-<div id="s-membresia" class="screen">
-  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Membresía</div></div>
+<!-- ══ ÚNETE ══ -->
+<div id="s-join" class="screen">
+  <div class="hdr">
+    <div class="hdr-logo">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
+      <div class="hdr-name">TU RED <span>VITAL</span></div>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Membresía</div>
+  </div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div class="price-hero">
-      <div class="eyebrow" style="margin-bottom:10px;">Patrocinio semanal</div>
-      <div class="price-num">$49</div>
+    <div class="join-hero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo" class="join-logo">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">Patrocinio semanal</div>
+      <div class="price-big">$49</div>
       <div class="price-per">dólares / semana</div>
-      <div class="price-d">Tu espacio activo en la red nacional.<br>Cancela cuando quieras · Sin contratos.</div>
+      <div class="price-note">Cancela cuando quieras · Sin contratos</div>
     </div>
-    <div class="benefits">
-      <div class="ben-item"><div class="ben-ico">🗺️</div><div><div class="ben-ti">Perfil en el mapa USA</div><div class="ben-su">Tu nombre y WhatsApp visibles para clientes de tu zona.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">📣</div><div><div class="ben-ti">Campaña en tu ciudad</div><div class="ben-su">Creamos campañas para atraer personas a tu comunidad.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">🎓</div><div><div class="ben-ti">Capacitación incluida</div><div class="ben-su">Sistema de venta presencial y en línea con apoyo logístico.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">🤝</div><div><div class="ben-ti">Red de contactos</div><div class="ben-su">Acceso a los 255 distribuidores nacionales y soporte directo.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">🔒</div><div><div class="ben-ti">Pago seguro con Stripe</div><div class="ben-su">Visa, MC, Amex, Apple Pay, Cash App Pay.</div></div></div>
+
+    <div class="benefits-list">
+      <div class="ben"><div class="ben-ico">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles para clientes de tu estado.</div></div></div>
+      <div class="ben"><div class="ben-ico">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas para atraer personas a tu comunidad.</div></div></div>
+      <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea con apoyo logístico.</div></div></div>
+      <div class="ben"><div class="ben-ico">🤝</div><div><div class="ben-t">Red de contactos</div><div class="ben-s">Acceso a los 255 distribuidores nacionales y soporte directo.</div></div></div>
     </div>
-    <div class="urgency">
-      <div style="font-size:18px;">⚡</div>
-      <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="memb-avail">5 por estado · 255 en total</div></div>
-    </div>
-    <div class="fbody" style="padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:14px;">¿En qué ciudad operas?</div>
-      <div class="fg"><label class="fl">Tu nombre completo</label><input class="fi" type="text" id="m-nombre" placeholder="Como aparecerá en el mapa"></div>
+
+    <div class="join-form">
+      <div class="urgency">
+        <div style="font-size:18px;">⚡</div>
+        <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="join-avail">5 por estado · 255 en total</div></div>
+      </div>
+      <div class="form-title">Tus datos para el perfil</div>
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" type="text" id="j-nombre" placeholder="Como aparecerá en el mapa"></div>
       <div class="fg"><label class="fl">Tu estado</label>
-        <select class="fs" id="m-estado">
+        <select class="fs" id="j-estado">
           <option value="">Selecciona tu estado</option>
           <option value="CA">California</option><option value="TX">Texas</option>
           <option value="FL">Florida</option><option value="NY">New York</option>
@@ -426,126 +468,28 @@ svg.usa{width:100%;height:auto;}
           <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
         </select>
       </div>
-      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="m-ciudad" placeholder="Ciudad donde operas"></div>
-      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" type="tel" id="m-whatsapp" placeholder="+1 (555) 000-0000"></div>
-      <div class="fg"><label class="fl">Tu email</label><input class="fi" type="email" id="m-email" placeholder="Para acceder a tu perfil"></div>
-
-      <!-- BOTÓN STRIPE DIRECTO -->
-      <a id="stripe-btn" class="stripe-pay-btn" href="#" onclick="irAStripe(event)">
-        🔒 Pagar $49 / semana con Stripe
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="j-ciudad" placeholder="Ciudad donde operas"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" type="tel" id="j-whatsapp" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu email</label><input class="fi" type="email" id="j-email" placeholder="Para confirmación y acceso"></div>
+      <a id="pay-btn" class="pay-btn" href="#" onclick="irAStripe(event)">
+        🔒 Reservar mi espacio · $49/sem
       </a>
-      <div class="secure-row">
-        <span>🔐 Seguro</span>
-        <div class="stripe-b">POWERED BY STRIPE</div>
-        <span>PCI-DSS</span>
-      </div>
-      <div class="disc">Al pagar tu perfil aparecerá en el mapa. Recibirás acceso a tu panel personal.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ LOGIN ══ -->
-<div id="s-login" class="screen">
-  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" class="login-wrap">
-    <div class="login-logo">RED<span> VITAL</span></div>
-    <div class="login-tag">Portal del Distribuidor</div>
-    <div class="login-card">
-      <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="l-email" placeholder="tu@email.com" style="margin-bottom:0;"></div>
-      <div class="fg" style="margin-top:12px;"><label class="fl">Contraseña</label><input class="fi" type="password" id="l-pass" placeholder="••••••••" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="login-btn" onclick="doLogin()">Entrar a mi perfil</button>
-      <div class="login-err" id="login-err">Email o contraseña incorrectos.</div>
-      <div class="login-link">¿Aún no eres miembro? <a onclick="goTo('s-membresia')">Únete por $49/semana →</a></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PERFIL DISTRIBUIDOR ══ -->
-<div id="s-perfil" class="screen">
-  <div class="hdr">
-    <div class="logo">RED<span> VITAL</span></div>
-    <button onclick="doLogout()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--muted);padding:5px 12px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">Salir</button>
-  </div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:20px;">
-
-    <!-- Hero del perfil -->
-    <div class="profile-hero">
-      <div class="p-av" id="p-av">—</div>
-      <div class="p-name" id="p-name">Cargando…</div>
-      <div class="p-loc" id="p-loc"></div>
-      <span class="status-badge activa" id="p-status">Membresía activa</span>
-    </div>
-
-    <!-- Countdown semanal -->
-    <div class="countdown-box">
-      <div class="cd-label">⏳ Tu membresía vence en</div>
-      <div class="cd-timer">
-        <div class="cd-block"><div class="cd-num" id="cd-d">0</div><div class="cd-unit">Días</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">Horas</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">Min</div></div>
-        <div class="cd-sep">:</div>
-        <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Seg</div></div>
-      </div>
-      <div class="cd-warning" id="cd-warning">⚠️ Tu membresía vence pronto — renueva para seguir activo en el mapa.</div>
-    </div>
-
-    <!-- Tarjetas de info -->
-    <div class="p-cards">
-      <div class="p-card">
-        <div class="p-card-lbl">Mi estado</div>
-        <div class="p-card-val" id="p-estado" style="font-size:20px;">—</div>
-        <div class="p-card-sub" id="p-ciudad-card">—</div>
-      </div>
-      <div class="p-card">
-        <div class="p-card-lbl">Mi slot</div>
-        <div class="p-card-val" id="p-slot">—</div>
-        <div class="p-card-sub">de 5 en mi estado</div>
-      </div>
-      <div class="p-card">
-        <div class="p-card-lbl">Clientes recibidos</div>
-        <div class="p-card-val" id="p-clientes-count">0</div>
-        <div class="p-card-sub">esta semana</div>
-      </div>
-      <div class="p-card">
-        <div class="p-card-lbl">Próximo cobro</div>
-        <div class="p-card-val" id="p-renov" style="font-size:16px;">—</div>
-        <div class="p-card-sub">$49 automático</div>
-      </div>
-    </div>
-
-    <!-- Clientes asignados -->
-    <div class="p-section">
-      <div class="p-section-title">Clientes de tu zona esta semana</div>
-      <div id="p-clients">
-        <div style="font-size:13px;color:var(--muted);padding:8px 0;">Cargando clientes…</div>
-      </div>
-    </div>
-
-    <!-- Editar perfil -->
-    <div class="p-section" style="margin-top:16px;padding-bottom:0;">
-      <div class="p-section-title">Editar mi perfil</div>
-      <label class="fl">Mi ciudad</label>
-      <input class="edit-input" type="text" id="e-ciudad" placeholder="Ciudad donde operas">
-      <label class="fl">Mi WhatsApp</label>
-      <input class="edit-input" type="tel" id="e-whatsapp" placeholder="+1 (555) 000-0000">
-      <label class="fl">Mi bio</label>
-      <input class="edit-input" type="text" id="e-bio" placeholder="Cuéntale a tus clientes sobre ti">
-      <button class="save-btn" onclick="saveProfile()">Guardar cambios</button>
-      <a class="renew-btn" href="#" id="renew-link" target="_blank">🔄 Gestionar mi membresía en Stripe</a>
-    </div>
-
-    <div style="padding:20px;text-align:center;">
-      <div style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.8;">
-        Para cancelar visita stripe.com/billing<br>
-        Soporte: <span style="color:var(--gold);">soporte@redvital.com</span>
+      <div class="secure">
+        <span>🔐 Pago seguro</span>
+        <div class="stripe-badge">POWERED BY STRIPE</div>
+        <span>Visa · MC · Amex · Apple Pay</span>
       </div>
     </div>
   </div>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="nb active" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
 </div>
 
 <script>
-// ── SUPABASE ──────────────────────────────────────────────────
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -565,9 +509,8 @@ const US_STATES = [
   {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
 ];
 
-let allReps=[], stateMap={}, currentUser=null, currentMember=null, countdownTimer=null;
+let allReps = [], stateMap = {};
 
-// ── LOAD DATA ─────────────────────────────────────────────────
 async function loadData() {
   try {
     const { data } = await sb.from('membresias').select('*').eq('status','activa');
@@ -575,265 +518,115 @@ async function loadData() {
   } catch { allReps = []; }
   stateMap = {};
   allReps.forEach(r => {
-    if(!stateMap[r.estado_codigo]) stateMap[r.estado_codigo]=[];
+    if(!stateMap[r.estado_codigo]) stateMap[r.estado_codigo] = [];
     stateMap[r.estado_codigo].push(r);
   });
-  renderHome(); renderMap(); fillDropdowns(); updateMembAvail();
+  document.getElementById('cnt-activos').textContent = allReps.length;
+  document.getElementById('cnt-disponibles').textContent = 255 - allReps.length;
+  document.getElementById('join-avail').textContent = `${255-allReps.length} de 255 espacios disponibles`;
+  renderMap();
+  fillDropdowns();
 }
 
-// ── AUTH ──────────────────────────────────────────────────────
-async function checkSession() {
-  const { data:{ session } } = await sb.auth.getSession();
-  if(session?.user) {
-    currentUser = session.user;
-    await loadMemberProfile();
-    if(currentMember) goTo('s-perfil');
-  }
-}
-
-async function doLogin() {
-  const email = document.getElementById('l-email').value.trim();
-  const pass  = document.getElementById('l-pass').value;
-  const err   = document.getElementById('login-err');
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error){ err.style.display='block'; return; }
-  err.style.display='none';
-  currentUser = data.user;
-  await loadMemberProfile();
-  goTo('s-perfil');
-}
-
-async function doLogout() {
-  await sb.auth.signOut();
-  currentUser=null; currentMember=null;
-  if(countdownTimer) clearInterval(countdownTimer);
-  goTo('s-home');
-}
-
-async function loadMemberProfile() {
-  if(!currentUser) return;
-  const { data } = await sb.from('membresias').select('*').eq('email', currentUser.email).single();
-  currentMember = data;
-  if(data) renderProfile(data);
-}
-
-// ── RENDER PROFILE ────────────────────────────────────────────
-function renderProfile(m) {
-  document.getElementById('p-av').textContent    = ini(m.nombre);
-  document.getElementById('p-name').textContent  = m.nombre;
-  document.getElementById('p-estado').textContent= m.estado_nombre || m.estado_codigo;
-  document.getElementById('p-ciudad-card').textContent = m.ciudad || '—';
-  document.getElementById('p-loc').textContent   = `${m.ciudad||''} · ${m.estado_nombre||m.estado_codigo}`;
-  document.getElementById('p-slot').textContent  = `#${m.slot||1}`;
-  document.getElementById('p-renov').textContent = m.fecha_renovacion
-    ? new Date(m.fecha_renovacion).toLocaleDateString('es-US',{month:'short',day:'numeric'}) : '—';
-
-  const badge = document.getElementById('p-status');
-  badge.className = `status-badge ${m.status}`;
-  const statusLabels = { activa:'✅ Membresía activa', pendiente:'⏳ Pago pendiente', cancelada:'❌ Cancelada', vencida:'⚠️ Vencida' };
-  badge.textContent = statusLabels[m.status] || m.status;
-
-  document.getElementById('e-ciudad').value  = m.ciudad  || '';
-  document.getElementById('e-whatsapp').value= m.whatsapp|| '';
-  document.getElementById('e-bio').value     = m.bio     || '';
-
-  // Countdown
-  if(m.fecha_renovacion) startCountdown(m.fecha_renovacion);
-
-  // Renew link
-  document.getElementById('renew-link').href = STRIPE_LINK;
-
-  // Load clients
-  loadMyClients(m.id, m.estado_codigo);
-}
-
-async function loadMyClients(membresiaId, estadoCodigo) {
-  const { data } = await sb.from('solicitudes_scanner')
-    .select('*')
-    .eq('estado_codigo', estadoCodigo)
-    .order('created_at',{ascending:false})
-    .limit(10);
-
-  document.getElementById('p-clientes-count').textContent = data?.length || 0;
-
-  const el = document.getElementById('p-clients');
-  if(!data?.length) {
-    el.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px 0;line-height:1.6;">Aún no hay clientes asignados en tu zona.<br>Cuando alguien solicite un especialista en tu estado aparecerán aquí.</div>`;
-    return;
-  }
-  el.innerHTML = data.map(c=>`
-    <div class="client-card">
-      <div class="cli-av">${ini(c.nombre)}</div>
-      <div style="flex:1;">
-        <div class="cli-nm">${c.nombre}</div>
-        <div class="cli-sub">${c.objetivo||'Consulta general'} · ${fmtDate(c.created_at)}</div>
-      </div>
-      ${c.telefono ? `<a href="https://wa.me/${c.telefono.replace(/\D/g,'')}" target="_blank">
-        <button style="background:var(--wa);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${waIcon()}</button>
-      </a>` : ''}
-    </div>`).join('');
-}
-
-async function saveProfile() {
-  if(!currentMember) return;
-  const ciudad   = document.getElementById('e-ciudad').value.trim();
-  const whatsapp = document.getElementById('e-whatsapp').value.trim();
-  const bio      = document.getElementById('e-bio').value.trim();
-  const { error } = await sb.from('membresias').update({ ciudad, whatsapp, bio }).eq('id', currentMember.id);
-  showToast(error ? 'Error al guardar' : '¡Perfil actualizado ✓', !error);
-  if(!error) Object.assign(currentMember, { ciudad, whatsapp, bio });
-}
-
-// ── COUNTDOWN ─────────────────────────────────────────────────
-function startCountdown(fechaRenovacion) {
-  if(countdownTimer) clearInterval(countdownTimer);
-  const update = () => {
-    const diff = new Date(fechaRenovacion) - Date.now();
-    if(diff <= 0) {
-      document.getElementById('cd-d').textContent='0';
-      document.getElementById('cd-h').textContent='00';
-      document.getElementById('cd-m').textContent='00';
-      document.getElementById('cd-s').textContent='00';
-      return;
-    }
-    const d = Math.floor(diff/86400000);
-    const h = Math.floor((diff%86400000)/3600000);
-    const m = Math.floor((diff%3600000)/60000);
-    const s = Math.floor((diff%60000)/1000);
-    document.getElementById('cd-d').textContent = d;
-    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
-    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
-    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
-    // Advertencia si quedan menos de 2 días
-    const warning = document.getElementById('cd-warning');
-    if(d < 2) warning.style.display='block'; else warning.style.display='none';
-  };
-  update();
-  countdownTimer = setInterval(update, 1000);
-}
-
-// ── STRIPE ────────────────────────────────────────────────────
-async function irAStripe(e) {
-  e.preventDefault();
-  const nombre   = document.getElementById('m-nombre').value.trim();
-  const estado   = document.getElementById('m-estado').value;
-  const ciudad   = document.getElementById('m-ciudad').value.trim();
-  const whatsapp = document.getElementById('m-whatsapp').value.trim();
-  const email    = document.getElementById('m-email').value.trim();
-
-  if(!nombre||!estado||!ciudad||!whatsapp||!email) {
-    showToast('Por favor completa todos los campos antes de pagar','err');
-    return;
-  }
-
-  // Guardar en Supabase como pendiente
-  const estadoNombre = US_STATES.find(s=>s.c===estado)?.n || estado;
-  const repsEnEstado = stateMap[estado]||[];
-  const slot = repsEnEstado.length + 1;
-
-  await sb.from('membresias').upsert({
-    nombre, email, whatsapp, ciudad,
-    estado_codigo: estado,
-    estado_nombre: estadoNombre,
-    slot, status: 'pendiente',
-  }, { onConflict: 'email' });
-
-  // Ir a Stripe con parámetros pre-llenados
-  const stripeUrl = `${STRIPE_LINK}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${encodeURIComponent(email)}`;
-  window.location.href = stripeUrl;
-}
-
-// ── HOME ──────────────────────────────────────────────────────
-function renderHome() {
-  const total=allReps.length, open=255-total;
-  document.getElementById('cnt-a').textContent=total;
-  document.getElementById('cnt-o').textContent=open;
-  const t=Math.min(5,Math.round((total/255)*5));
-  document.getElementById('dots-a').innerHTML=Array.from({length:5},(_,i)=>`<div class="dot ${i<t?'on':'off'}"></div>`).join('');
-  document.getElementById('dots-o').innerHTML=Array.from({length:5},(_,i)=>`<div class="dot ${i>=t?'off':'on'}"></div>`).join('');
-}
-
-// ── MAP ───────────────────────────────────────────────────────
 function renderMap() {
-  document.querySelectorAll('.st').forEach(p=>{
-    const reps=stateMap[p.id]||[], n=reps.length;
+  document.querySelectorAll('.st').forEach(p => {
+    const reps = stateMap[p.id] || [];
     p.classList.remove('full','partial');
-    if(n>=5) p.classList.add('full');
-    else if(n>0) p.classList.add('partial');
-    p.onclick=()=>showState(p.id);
+    if(reps.length >= 5) p.classList.add('full');
+    else if(reps.length > 0) p.classList.add('partial');
+    p.onclick = () => showState(p.id);
   });
 }
 
 function showState(code) {
-  const reps=stateMap[code]||[], name=US_STATES.find(s=>s.c===code)?.n||code;
-  const taken=reps.length, avail=5-taken;
-  document.getElementById('spop-name').textContent=name;
-  document.getElementById('spop-slots').innerHTML=Array.from({length:5},(_,i)=>
-    `<div class="spop-slot ${i<taken?'on':'off'}">${i<taken?'✓':''}</div>`).join('');
-  document.getElementById('spop-status').textContent=avail===0
-    ?'ZONA COMPLETA · 5/5 activos'
-    :`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/semana`;
-  document.getElementById('spop-reps').innerHTML=reps.length
-    ?reps.map(r=>`<div class="rep-row">
-        <div class="rep-av">${ini(r.nombre)}</div>
-        <div style="flex:1;"><div class="rep-nm">${r.nombre}</div><div class="rep-ci">${r.ciudad||''}</div></div>
-        <button class="wac" onclick="openWA('${r.whatsapp}','${r.nombre.replace(/'/g,"\\'")}' )">${waIcon()}</button>
-      </div>`).join('')
-    :`<p style="font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.6;">Sé el primero en ${name}<br>$49/semana</p>`;
-  const btn=document.getElementById('spop-btn');
-  btn.textContent=avail>0?`Reservar espacio en ${name} →`:'Solicitar especialista →';
-  btn.onclick=()=>goTo(avail>0?'s-membresia':'s-scan');
-  const pop=document.getElementById('spop');
+  const reps = stateMap[code] || [];
+  const name = US_STATES.find(s => s.c === code)?.n || code;
+  const taken = reps.length, avail = 5 - taken;
+
+  document.getElementById('spop-name').textContent = name;
+  document.getElementById('spop-slots').innerHTML = Array.from({length:5},(_,i) =>
+    `<div class="slot ${i<taken?'on':'off'}">${i<taken?'✓':''}</div>`).join('');
+  document.getElementById('spop-status').textContent = avail === 0
+    ? 'ZONA COMPLETA · 5/5 activos'
+    : `${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/semana`;
+
+  document.getElementById('spop-reps').innerHTML = reps.length
+    ? reps.map(r => `
+        <div class="rep-card">
+          <div class="rep-av">${ini(r.nombre)}</div>
+          <div style="flex:1;">
+            <div class="rep-name">${r.nombre}</div>
+            <div class="rep-city">${r.ciudad || ''}</div>
+          </div>
+          <button class="wa-round" onclick="openWA('${r.whatsapp}','${r.nombre.replace(/'/g,"\\'")}')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </button>
+        </div>`).join('')
+    : `<div class="no-rep">Sé el primero en ${name}.<br>Solo $49/semana · 5 espacios disponibles.</div>`;
+
+  const cta = document.getElementById('spop-cta');
+  cta.textContent = avail > 0 ? `Reservar espacio en ${name} →` : 'Solicitar escáner aquí →';
+  cta.onclick = () => goTo(avail > 0 ? 's-join' : 's-scan');
+
+  const pop = document.getElementById('spop');
   pop.classList.add('vis');
-  setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+  setTimeout(() => pop.scrollIntoView({behavior:'smooth',block:'nearest'}), 60);
 }
 
-// ── SCAN ──────────────────────────────────────────────────────
 async function submitScan() {
-  const nombre=document.getElementById('sc-nombre').value.trim();
-  const phone=document.getElementById('sc-phone').value.trim();
-  const code=document.getElementById('sc-estado').value;
-  const goal=document.getElementById('sc-goal').value;
-  if(!nombre||!phone||!code||!goal){showToast('Completa todos los campos','err');return;}
-  const sname=US_STATES.find(s=>s.c===code)?.n||code;
-  await sb.from('solicitudes_scanner').insert({
-    nombre, telefono:phone.replace(/\D/g,''), estado_codigo:code, estado_nombre:sname, objetivo:goal
-  });
-  const reps=stateMap[code]||[];
-  const target=reps.length>0?reps[0].whatsapp:YOUR_WHATSAPP;
-  const msg=encodeURIComponent(`Hola! Vengo de Red Vital 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nBusco: ${goal}\nTel: ${phone}\n\nMe interesa conectar con un especialista.`);
+  const nombre = document.getElementById('sc-nombre').value.trim();
+  const phone  = document.getElementById('sc-phone').value.trim();
+  const code   = document.getElementById('sc-estado').value;
+  const goal   = document.getElementById('sc-goal').value;
+  if(!nombre||!phone||!code||!goal){ alert('Completa todos los campos.'); return; }
+  const sname = US_STATES.find(s=>s.c===code)?.n||code;
+  try {
+    await sb.from('solicitudes_scanner').insert({
+      nombre, telefono:phone.replace(/\D/g,''), estado_codigo:code, estado_nombre:sname, objetivo:goal
+    });
+  } catch(e) {}
+  const reps = stateMap[code]||[];
+  const target = reps.length > 0 ? reps[0].whatsapp : YOUR_WHATSAPP;
+  const msg = encodeURIComponent(`Hola! Vengo de Tu Red Vital 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nBusco: ${goal}\nTel: ${phone}\n\nMe interesa el escáner corporal.`);
   window.open(`https://wa.me/${target}?text=${msg}`,'_blank');
 }
 
-// ── HELPERS ───────────────────────────────────────────────────
-function fillDropdowns() {
-  const opts=US_STATES.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
-  document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+opts;
-}
-function updateMembAvail() {
-  document.getElementById('memb-avail').textContent=`${255-allReps.length} de 255 espacios disponibles`;
-}
-function openWA(n,name) {
-  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Red Vital. Me interesa conectar contigo 🌿`);
-  window.open(`https://wa.me/${n}?text=${msg}`,'_blank');
-}
-function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
-function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('es-US',{month:'short',day:'numeric'});}
-function waIcon(){return`<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;}
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function showToast(msg,ok){
-  let t=document.getElementById('_toast');
-  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:12px 20px;font-size:14px;font-family:Barlow,sans-serif;z-index:999;max-width:340px;text-align:center;';document.body.appendChild(t);}
-  t.style.background=ok===false||ok==='err'?'#C81E2D':'#1D9E75';
-  t.style.color='#fff'; t.textContent=msg;
-  t.style.display='block'; setTimeout(()=>{t.style.display='none';},3500);
+async function irAStripe(e) {
+  e.preventDefault();
+  const nombre   = document.getElementById('j-nombre').value.trim();
+  const estado   = document.getElementById('j-estado').value;
+  const ciudad   = document.getElementById('j-ciudad').value.trim();
+  const whatsapp = document.getElementById('j-whatsapp').value.trim();
+  const email    = document.getElementById('j-email').value.trim();
+  if(!nombre||!estado||!ciudad||!whatsapp||!email){ alert('Completa todos los campos antes de pagar.'); return; }
+  const estadoNombre = US_STATES.find(s=>s.c===estado)?.n||estado;
+  const slot = (stateMap[estado]||[]).length + 1;
+  try {
+    await sb.from('membresias').upsert({
+      nombre, email, whatsapp, ciudad,
+      estado_codigo:estado, estado_nombre:estadoNombre,
+      slot, status:'pendiente'
+    },{ onConflict:'email' });
+  } catch(e) {}
+  window.location.href = `${STRIPE_LINK}?prefilled_email=${encodeURIComponent(email)}`;
 }
 
-// ── INIT ──────────────────────────────────────────────────────
+function fillDropdowns() {
+  const opts = US_STATES.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  document.getElementById('sc-estado').innerHTML = '<option value="">Selecciona tu estado</option>'+opts;
+}
+
+function openWA(num, name) {
+  const msg = encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital. Me interesa conectar contigo 🌿`);
+  window.open(`https://wa.me/${num}?text=${msg}`,'_blank');
+}
+
+function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
 window.addEventListener('DOMContentLoaded', async()=>{
   await loadData();
-  await checkSession();
-  setTimeout(()=>document.getElementById('loading').classList.add('hidden'),1200);
+  setTimeout(()=>document.getElementById('loading').classList.add('hidden'),1400);
 });
 </script>
 </body>
