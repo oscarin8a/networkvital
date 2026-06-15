@@ -4,440 +4,537 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tu Red Vital · USA</title>
-<link rel="icon" type="image/png" href="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png">
+<link rel="icon" href="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-  const SUPABASE_URL      = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
-  const YOUR_WHATSAPP     = '12099717638';
-  const STRIPE_LINK       = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
+const SUPABASE_URL  = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
+const WA_NUMBER     = '12099717638';
+const STRIPE_LINK   = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
+const LOGO          = '/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png';
 </script>
 <style>
 :root{
   --navy:#0B1626;--navy2:#1E2D45;--navy3:#0D1B2A;
   --gold:#C9A24B;--muted:#7A8FA6;--white:#fff;
-  --wa:#25D366;--green:#1D9E75;--border:rgba(201,162,75,0.15);
+  --wa:#25D366;--green:#1D9E75;
+  --border:rgba(201,162,75,0.15);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;}
+html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);overflow:hidden;}
 
-/* LOADING */
-#loading{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.5s;}
-#loading.hidden{opacity:0;pointer-events:none;}
-#loading img{width:120px;height:120px;object-fit:contain;margin-bottom:20px;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
-.ld-bar{width:100px;height:2px;background:rgba(201,162,75,0.2);margin-top:16px;}
-.ld-fill{height:100%;width:0;background:var(--gold);animation:ld 1.5s ease forwards;}
-@keyframes ld{to{width:100%;}}
-.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
+/* ── SCREENS ── */
+#app{position:fixed;inset:0;overflow:hidden;}
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  background:var(--navy);
+  overflow:hidden;
+}
+.screen.active{transform:translateX(0);}
+.screen.prev{transform:translateX(-30%);}
 
-/* SCREENS */
-.screen{display:none;min-height:100vh;flex-direction:column;}
-.screen.active{display:flex;}
+/* ── TOPBAR ── */
+.topbar{
+  flex-shrink:0;
+  background:rgba(11,22,38,0.97);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+.tb-left{display:flex;align-items:center;gap:12px;}
+.back-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.25);
+  color:var(--gold);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-img{width:32px;height:32px;object-fit:contain;}
+.logo-txt{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;color:var(--white);}
+.logo-txt span{color:var(--gold);}
+.tb-right{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
 
-/* HEADER */
-.hdr{background:rgba(11,22,38,0.97);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
-.hdr-logo{display:flex;align-items:center;gap:10px;}
-.hdr-logo img{width:36px;height:36px;object-fit:contain;}
-.hdr-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;}
-.hdr-name span{color:var(--gold);}
-.hdr-nav{display:flex;gap:6px;}
-.hdr-btn{background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:6px 10px;transition:color 0.15s;}
-.hdr-btn.active,.hdr-btn:hover{color:var(--gold);}
-.hdr-btn.cta{background:var(--gold);color:var(--navy);padding:6px 14px;}
+/* ── SCROLL BODY ── */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
 
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy2);border-top:1px solid var(--border);display:flex;z-index:200;}
-.nb{flex:1;padding:10px 4px 14px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.nb svg{width:20px;height:20px;}
-.nb.active{color:var(--gold);}
+/* ── BOTTOM NAV ── */
+.bnav{
+  flex-shrink:0;
+  background:var(--navy2);border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  height:60px;
+}
+.bn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:none;border:none;
+  color:var(--muted);cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  transition:color 0.15s;
+}
+.bn svg{width:20px;height:20px;}
+.bn.on{color:var(--gold);}
 
-/* ─── HOME ─── */
-.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#0D1B2A 0%,#0B1626 60%,#0F1E30 100%);padding:40px 24px 36px;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(201,162,75,0.08) 0%,transparent 60%);pointer-events:none;}
-.hero-logo{width:90px;height:90px;object-fit:contain;margin-bottom:20px;filter:drop-shadow(0 4px 24px rgba(201,162,75,0.3));}
-.hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
-.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;line-height:0.9;letter-spacing:-1px;margin-bottom:16px;}
-.hero-title .gold{color:var(--gold);}
-.hero-sub{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:28px;max-width:320px;}
-.hero-stats{display:flex;gap:0;border:1px solid rgba(201,162,75,0.2);background:rgba(201,162,75,0.05);}
-.hstat{flex:1;padding:14px 12px;text-align:center;position:relative;}
-.hstat+.hstat::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:rgba(201,162,75,0.2);}
-.hstat-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--gold);line-height:1;}
-.hstat-num.red{color:#E85C6A;}
-.hstat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+/* ── HERO / PORTADA ── */
+.hero-cover{
+  position:relative;height:300px;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(160deg,#0a1520 0%,#0f2035 50%,#0a1520 100%);
+}
+.hero-cover::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(201,162,75,0.15) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 20%,rgba(29,158,117,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 100%,rgba(201,162,75,0.05) 0%,transparent 60%);
+}
+/* Decorative network nodes */
+.hero-cover::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle 2px at 15% 25%,rgba(201,162,75,0.5) 0%,transparent 100%),
+    radial-gradient(circle 1.5px at 35% 15%,rgba(201,162,75,0.4) 0%,transparent 100%),
+    radial-gradient(circle 2px at 75% 30%,rgba(201,162,75,0.5) 0%,transparent 100%),
+    radial-gradient(circle 1.5px at 85% 60%,rgba(201,162,75,0.3) 0%,transparent 100%),
+    radial-gradient(circle 2px at 60% 70%,rgba(201,162,75,0.4) 0%,transparent 100%),
+    radial-gradient(circle 1.5px at 25% 75%,rgba(201,162,75,0.3) 0%,transparent 100%),
+    radial-gradient(circle 1px at 50% 40%,rgba(201,162,75,0.6) 0%,transparent 100%),
+    radial-gradient(circle 1px at 90% 15%,rgba(201,162,75,0.4) 0%,transparent 100%);
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:32px 22px 0;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+.hero-logo-big{
+  width:80px;height:80px;object-fit:contain;margin-bottom:16px;
+  filter:drop-shadow(0 0 20px rgba(201,162,75,0.4));
+}
+.hero-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:900;
+  line-height:0.9;letter-spacing:-1px;
+}
+.hero-title .g{color:var(--gold);}
+.hero-sub{
+  font-size:13px;color:rgba(255,255,255,0.5);line-height:1.55;margin-top:10px;
+}
+.hero-badge{
+  position:absolute;top:20px;right:16px;z-index:3;
+  background:rgba(201,162,75,0.12);border:1px solid rgba(201,162,75,0.3);
+  padding:6px 12px;
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;color:var(--gold);text-transform:uppercase;
+}
 
-.home-section{padding:28px 20px;}
-.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.section-label::after{content:'';flex:1;height:1px;background:rgba(201,162,75,0.2);}
+/* ── STATS STRIP ── */
+.stats-strip{
+  display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
+  background:rgba(201,162,75,0.06);border-top:1px solid rgba(201,162,75,0.15);
+  border-bottom:1px solid rgba(201,162,75,0.15);
+  flex-shrink:0;
+}
+.stat{padding:12px 6px;text-align:center;}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--gold);line-height:1;}
+.stat-n.r{color:#E85C6A;}
+.stat-l{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.stat-div{background:rgba(201,162,75,0.2);}
 
-/* Value props */
-.vprops{display:grid;gap:10px;margin-bottom:28px;}
-.vprop{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--navy2);border:1px solid var(--border);}
-.vprop-ico{font-size:24px;flex-shrink:0;margin-top:2px;}
-.vprop-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;margin-bottom:3px;}
-.vprop-s{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;}
+/* ── CTA CARDS ── */
+.cta-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px;}
+.cta{padding:16px 14px;cursor:pointer;border:1px solid;position:relative;transition:opacity 0.15s;}
+.cta:active{opacity:0.85;}
+.cta.gold{background:var(--gold);border-color:var(--gold);}
+.cta.dark{background:var(--navy2);border-color:rgba(201,162,75,0.2);}
+.cta-ey{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.cta.gold .cta-ey{color:rgba(11,22,38,0.6);}
+.cta.dark .cta-ey{color:var(--gold);}
+.cta-ti{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;line-height:1.15;}
+.cta.gold .cta-ti{color:var(--navy);}
+.cta.dark .cta-ti{color:var(--white);}
+.cta-arr{position:absolute;top:12px;right:12px;font-size:16px;opacity:0.5;}
+.cta.gold .cta-arr{color:var(--navy);}
+.cta.dark .cta-arr{color:var(--gold);}
 
-/* CTAs */
-.cta-grid{display:grid;gap:12px;padding:0 20px 28px;}
-.cta-card{padding:22px;cursor:pointer;transition:transform 0.15s;position:relative;text-align:left;border:1px solid;}
-.cta-card:active{transform:scale(0.98);}
-.cta-card.primary{background:var(--gold);border-color:var(--gold);}
-.cta-card.secondary{background:var(--navy2);border-color:rgba(201,162,75,0.2);}
-.cta-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px;}
-.cta-card.primary .cta-ey{color:rgba(11,22,38,0.6);}
-.cta-card.secondary .cta-ey{color:var(--gold);}
-.cta-ti{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;line-height:1.1;margin-bottom:5px;}
-.cta-card.primary .cta-ti{color:var(--navy);}
-.cta-de{font-size:13px;line-height:1.5;}
-.cta-card.primary .cta-de{color:rgba(11,22,38,0.6);}
-.cta-card.secondary .cta-de{color:rgba(255,255,255,0.5);}
-.cta-arr{position:absolute;top:20px;right:20px;font-size:20px;opacity:0.5;}
-.cta-card.primary .cta-arr{color:var(--navy);}
-.cta-card.secondary .cta-arr{color:var(--gold);}
+/* ── VALUE PROPS ── */
+.section{padding:0 16px 16px;}
+.sec-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  padding:16px 0 10px;display:flex;align-items:center;gap:8px;
+}
+.sec-label::after{content:'';flex:1;height:1px;background:rgba(201,162,75,0.2);}
+.vp{display:flex;gap:12px;padding:12px;background:var(--navy2);border:1px solid var(--border);margin-bottom:8px;}
+.vp-ico{font-size:22px;flex-shrink:0;margin-top:2px;}
+.vp-t{font-size:13px;font-weight:600;margin-bottom:2px;}
+.vp-s{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
 
-/* ─── MAPA ─── */
-.map-head{padding:20px 20px 0;}
-.legend{display:flex;gap:16px;padding:10px 20px 12px;flex-wrap:wrap;}
-.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
-.ld2{width:10px;height:10px;border-radius:50%;}
-.ld2.full{background:var(--gold);}
-.ld2.partial{background:rgba(201,162,75,0.45);}
-.ld2.open{background:transparent;border:1.5px solid rgba(255,255,255,0.2);}
-.map-wrap{padding:0 10px;}
-svg.usa{width:100%;height:auto;}
-.st{stroke:var(--navy);stroke-width:1.5;cursor:pointer;fill:#1A2840;transition:fill 0.2s;}
-.st.full{fill:var(--gold);}
-.st.partial{fill:rgba(201,162,75,0.45);}
-.st:hover{opacity:0.8;}
-.spop{margin:12px 16px 0;padding:18px;background:var(--navy2);border:1px solid rgba(201,162,75,0.25);display:none;}
-.spop.vis{display:block;}
-.spop-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;margin-bottom:10px;}
-.slot-row{display:flex;gap:5px;margin-bottom:8px;}
-.slot{flex:1;height:28px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
-.slot.on{background:var(--gold);color:var(--navy);}
-.slot.off{background:transparent;border:1.5px dashed rgba(201,162,75,0.3);}
-.spop-status{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;}
-.rep-card{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.05);}
-.rep-av{width:42px;height:42px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold);flex-shrink:0;}
-.rep-name{font-size:14px;font-weight:600;}
-.rep-city{font-size:12px;color:var(--muted);}
-.wa-round{width:40px;height:40px;border-radius:50%;background:var(--wa);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:auto;flex-shrink:0;}
-.spop-cta{width:100%;margin-top:14px;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
-.no-rep{font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.7;}
+/* ── MAP ── */
+.map-intro{padding:16px 16px 8px;}
+.map-intro-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:4px;}
+.map-intro-s{font-size:12px;color:rgba(255,255,255,0.4);}
+.legend{display:flex;gap:14px;padding:8px 16px 6px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.leg-dot{width:9px;height:9px;border-radius:50%;}
+.leg-dot.f{background:var(--gold);}
+.leg-dot.p{background:rgba(201,162,75,0.45);}
+.leg-dot.o{background:transparent;border:1.5px solid rgba(255,255,255,0.2);}
+.map-svg-wrap{padding:0 8px;}
+.map-svg-wrap svg{width:100%;height:auto;display:block;}
+.st{stroke:var(--navy);stroke-width:1.2;cursor:pointer;fill:#1a2840;transition:fill 0.2s,opacity 0.15s;}
+.st:active{opacity:0.7;}
+.st.f{fill:var(--gold);}
+.st.p{fill:rgba(201,162,75,0.45);}
 
-/* ─── UNETE ─── */
-.join-hero{background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);padding:32px 22px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
-.join-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(201,162,75,0.1) 0%,transparent 60%);pointer-events:none;}
-.join-logo{width:70px;height:70px;object-fit:contain;margin-bottom:16px;filter:drop-shadow(0 2px 12px rgba(201,162,75,0.4));}
-.price-big{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;}
-.price-per{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);}
-.price-note{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;}
+/* ── STATE POPUP ── */
+.state-pop{
+  margin:10px 14px;padding:16px;
+  background:var(--navy2);border:1px solid rgba(201,162,75,0.25);
+  display:none;
+}
+.state-pop.vis{display:block;}
+.sp-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:8px;}
+.sp-slots{display:flex;gap:4px;margin-bottom:8px;}
+.sp-slot{flex:1;height:24px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.sp-slot.on{background:var(--gold);color:var(--navy);}
+.sp-slot.off{border:1px dashed rgba(201,162,75,0.3);}
+.sp-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
+.sp-rep{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,0.05);}
+.sp-av{width:38px;height:38px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.sp-nm{font-size:13px;font-weight:600;}
+.sp-ci{font-size:11px;color:var(--muted);}
+.wa-btn{width:36px;height:36px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.sp-cta{width:100%;margin-top:12px;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.sp-empty{font-size:13px;color:rgba(255,255,255,0.35);padding:10px 0;text-align:center;line-height:1.7;}
 
-.benefits-list{padding:20px;}
-.ben{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.ben:last-child{border-bottom:none;}
-.ben-ico{width:36px;height:36px;border-radius:50%;background:rgba(201,162,75,0.08);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.ben-t{font-size:14px;font-weight:600;margin-bottom:2px;}
-.ben-s{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;}
-
-.join-form{padding:20px;padding-bottom:90px;}
-.form-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;margin-bottom:16px;}
+/* ── FORMS ── */
+.form-hero{
+  padding:24px 18px 18px;
+  background:linear-gradient(160deg,#0D1B2A 0%,var(--navy) 100%);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.fh-ey{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.fh-t{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1.05;margin-bottom:6px;}
+.fh-s{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.55;}
+.fh-logo{width:52px;height:52px;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 0 10px rgba(201,162,75,0.35));}
+.form-body{padding:16px;}
 .fg{margin-bottom:14px;}
 .fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
-.fi,.fs{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.15);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
+.fi,.fs{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,162,75,0.18);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;appearance:none;transition:border-color 0.2s;}
 .fi:focus,.fs:focus{border-color:var(--gold);}
 .fs option{background:var(--navy2);}
-.pay-btn{width:100%;padding:18px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;transition:opacity 0.2s;}
-.pay-btn:active{opacity:0.85;}
-.secure{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.25);}
-.stripe-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,255,255,0.15);padding:1px 6px;color:rgba(255,255,255,0.25);}
-.urgency{background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.2);padding:10px 14px;display:flex;gap:8px;align-items:center;margin-bottom:16px;}
-.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
-.urg-s{font-size:12px;color:rgba(255,255,255,0.4);margin-top:1px;}
+.submit-wa{width:100%;padding:15px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+.submit-wa:active{opacity:0.85;}
+.submit-stripe{width:100%;padding:16px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.2s;}
+.submit-stripe:active{opacity:0.85;}
+.form-note{text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.28);line-height:1.6;}
+
+/* ── PRICE HERO ── */
+.price-hero{
+  padding:28px 18px 22px;
+  background:linear-gradient(160deg,#0D1B2A 0%,var(--navy) 100%);
+  border-bottom:1px solid var(--border);
+  text-align:center;flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.price-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(201,162,75,0.08) 0%,transparent 60%);}
+.price-logo{position:relative;z-index:1;width:60px;height:60px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 14px rgba(201,162,75,0.4));}
+.price-big{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;position:relative;z-index:1;}
+.price-per{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;color:rgba(255,255,255,0.35);position:relative;z-index:1;}
+.price-note{font-size:12px;color:rgba(255,255,255,0.3);margin-top:6px;position:relative;z-index:1;}
+
+/* ── BENEFITS ── */
+.ben-list{padding:12px 16px;}
+.ben{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ben:last-child{border:none;}
+.ben-ico{width:34px;height:34px;border-radius:50%;background:rgba(201,162,75,0.08);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ben-t{font-size:13px;font-weight:600;margin-bottom:2px;}
+.ben-s{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.5;}
+
+/* ── URGENCY ── */
+.urgency{margin:0 16px 14px;background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.2);padding:10px 14px;display:flex;gap:8px;align-items:center;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
+.urg-s{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px;}
+.secure-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.2);}
+
+/* ── LOADING ── */
+#loading{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity 0.4s;}
+#loading.gone{opacity:0;pointer-events:none;}
+#loading img{width:100px;height:100px;object-fit:contain;margin-bottom:20px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+.ld-bar{width:100px;height:2px;background:rgba(201,162,75,0.15);margin-top:14px;}
+.ld-fill{height:100%;width:0;background:var(--gold);animation:ldanim 1.4s ease forwards;}
+@keyframes ldanim{to{width:100%;}}
+.ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:8px;}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading">
   <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Tu Red Vital">
   <div class="ld-bar"><div class="ld-fill"></div></div>
-  <div class="ld-txt">Tu Red Vital USA</div>
+  <div class="ld-txt">Tu Red Vital · USA</div>
 </div>
 
-<!-- ══ HOME ══ -->
+<div id="app">
+
+<!-- ══════════ INICIO ══════════ -->
 <div id="s-home" class="screen active">
-  <div class="hdr">
-    <div class="hdr-logo">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
-      <div class="hdr-name">TU RED <span>VITAL</span></div>
+  <div class="topbar">
+    <div class="tb-left">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="logo-img">
+      <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div class="hdr-nav">
-      <button class="hdr-btn cta" onclick="goTo('s-join')">$49/sem</button>
-    </div>
+    <div class="tb-right">USA · 50 Estados</div>
   </div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div class="hero">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Tu Red Vital" class="hero-logo">
-      <div class="hero-eyebrow">🌿 Red Nacional de Bienestar · USA</div>
-      <div class="hero-title">Tu salud.<br><span class="gold">Tu red.</span><br>Tu futuro.</div>
-      <div class="hero-sub">Conectamos personas que buscan mejorar su salud con distribuidores certificados en los 50 estados de EE.UU.</div>
-      <!-- BOTONES PRINCIPALES ARRIBA -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-        <div class="cta-card primary" onclick="goTo('s-scan')" style="padding:16px;">
-          <div class="cta-ey">Para tu salud</div>
-          <div class="cta-ti" style="font-size:17px;">Quiero un especialista</div>
-          <div class="cta-arr">→</div>
-        </div>
-        <div class="cta-card secondary" onclick="goTo('s-join')" style="padding:16px;">
-          <div class="cta-ey">Oportunidad</div>
-          <div class="cta-ti" style="font-size:17px;">Ser representante</div>
-          <div class="cta-arr">→</div>
-        </div>
-      </div>
-      <div class="hero-stats">
-        <div class="hstat">
-          <div class="hstat-num" id="cnt-activos">—</div>
-          <div class="hstat-lbl">Miembros activos</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-num red" id="cnt-disponibles">—</div>
-          <div class="hstat-lbl">Espacios disponibles</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-num">50</div>
-          <div class="hstat-lbl">Estados USA</div>
-        </div>
+  <div class="scroll">
+    <!-- PORTADA -->
+    <div class="hero-cover">
+      <div class="hero-badge">🌿 Red Nacional de Salud</div>
+      <div class="hero-content">
+        <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="hero-logo-big">
+        <div class="hero-eyebrow">Conecta · Crece · Prospera</div>
+        <div class="hero-title">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
+        <div class="hero-sub">Distribuidores certificados<br>en los 50 estados de EE.UU.</div>
       </div>
     </div>
-
-    <div class="home-section">
-      <div class="section-label">¿Cómo funciona?</div>
-      <div class="vprops">
-        <div class="vprop">
-          <div class="vprop-ico">🗺️</div>
-          <div>
-            <div class="vprop-t">Representantes en tu zona</div>
-            <div class="vprop-s">5 distribuidores certificados por estado. Localiza el tuyo en el mapa y contáctalo directo por WhatsApp.</div>
-          </div>
-        </div>
-        <div class="vprop">
-          <div class="vprop-ico">💚</div>
-          <div>
-            <div class="vprop-t">Escáner corporal gratuito</div>
-            <div class="vprop-s">Análisis de 45+ sistemas corporales. No invasivo. Tu especialista diseña un plan 100% personalizado.</div>
-          </div>
-        </div>
-        <div class="vprop">
-          <div class="vprop-ico">📣</div>
-          <div>
-            <div class="vprop-t">Campaña en tu ciudad</div>
-            <div class="vprop-s">Creamos campañas locales para atraer clientes a tu comunidad. Tú te enfocas en ayudar, nosotros en el marketing.</div>
-          </div>
-        </div>
-      </div>
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat"><div class="stat-n" id="h-activos">—</div><div class="stat-l">Miembros</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-n r" id="h-disp">—</div><div class="stat-l">Disponibles</div></div>
+      <div class="stat-div"></div>
+      <div class="stat"><div class="stat-n">50</div><div class="stat-l">Estados</div></div>
     </div>
-
-    <div class="cta-grid">
-      <div class="cta-card primary" onclick="goTo('s-scan')">
+    <!-- BOTONES PRINCIPALES -->
+    <div class="cta-pair">
+      <div class="cta gold" onclick="nav('s-scan')">
         <div class="cta-ey">Para tu salud</div>
-        <div class="cta-ti">Quiero un especialista en mi zona</div>
-        <div class="cta-de">Escáner corporal gratuito con un distribuidor certificado cerca de ti.</div>
+        <div class="cta-ti">Quiero un especialista</div>
         <div class="cta-arr">→</div>
       </div>
-      <div class="cta-card secondary" onclick="goTo('s-join')">
-        <div class="cta-ey">Oportunidad · $49/semana</div>
-        <div class="cta-ti">Quiero ser representante</div>
-        <div class="cta-de">Únete a la red. Patrocinio semanal + capacitación + contactos + promoción en tu ciudad.</div>
+      <div class="cta dark" onclick="nav('s-join')">
+        <div class="cta-ey">Oportunidad</div>
+        <div class="cta-ti">Ser representante</div>
         <div class="cta-arr">→</div>
       </div>
+    </div>
+    <!-- VALUE PROPS -->
+    <div class="section">
+      <div class="sec-label">¿Cómo funciona?</div>
+      <div class="vp"><div class="vp-ico">🗺️</div><div><div class="vp-t">Representantes en tu zona</div><div class="vp-s">5 distribuidores por estado. Localiza el tuyo en el mapa y contáctalo directo.</div></div></div>
+      <div class="vp"><div class="vp-ico">💚</div><div><div class="vp-t">Escáner corporal gratuito</div><div class="vp-s">Análisis de 45+ sistemas. No invasivo. Plan 100% personalizado.</div></div></div>
+      <div class="vp"><div class="vp-ico">📣</div><div><div class="vp-t">Campaña en tu ciudad</div><div class="vp-s">Creamos campañas locales para atraer clientes a tu comunidad.</div></div></div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="nb active" onclick="goTo('s-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio
-    </button>
-    <button class="nb" onclick="goTo('s-map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
-    </button>
-    <button class="nb" onclick="goTo('s-scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner
-    </button>
-    <button class="nb" onclick="goTo('s-join')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
-    </button>
+    <button class="bn on" onclick="nav('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══ MAPA ══ -->
+<!-- ══════════ MAPA ══════════ -->
 <div id="s-map" class="screen">
-  <div class="hdr">
-    <div class="hdr-logo">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
-      <div class="hdr-name">TU RED <span>VITAL</span></div>
+  <div class="topbar">
+    <div class="tb-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Mapa USA</div>
+    <div class="tb-right">Mapa USA</div>
   </div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div class="map-head">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Representantes por estado</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;margin-bottom:4px;">Encuentra tu zona</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.4);">Toca un estado para ver distribuidores disponibles</div>
+  <div class="scroll">
+    <div class="map-intro">
+      <div class="map-intro-t">Encuentra tu zona</div>
+      <div class="map-intro-s">Toca un estado para ver distribuidores disponibles</div>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld2 full"></div>Completo 5/5</div>
-      <div class="li"><div class="ld2 partial"></div>Parcial</div>
-      <div class="li"><div class="ld2 open"></div>Disponible</div>
+      <div class="leg"><div class="leg-dot f"></div>Completo</div>
+      <div class="leg"><div class="leg-dot p"></div>Parcial</div>
+      <div class="leg"><div class="leg-dot o"></div>Disponible</div>
     </div>
-    <div class="map-wrap">
-      <svg class="usa" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg">
-        <path class="st" id="WA" d="M100,50L220,50L225,90L185,95L160,110L100,100Z"/>
-        <path class="st" id="OR" d="M100,100L185,95L190,170L100,175Z"/>
-        <path class="st" id="CA" d="M100,175L190,170L195,290L155,330L90,300Z"/>
-        <path class="st" id="NV" d="M190,170L245,165L250,255L195,290Z"/>
-        <path class="st" id="ID" d="M185,95L255,90L260,160L245,165L190,170Z"/>
-        <path class="st" id="MT" d="M220,50L370,50L375,120L255,125L225,90Z"/>
-        <path class="st" id="WY" d="M255,125L375,120L380,195L260,200Z"/>
-        <path class="st" id="UT" d="M245,165L260,200L265,270L210,275L195,230L195,165Z"/>
-        <path class="st" id="AZ" d="M195,230L265,270L270,330L200,340L175,310Z"/>
-        <path class="st" id="CO" d="M260,200L380,195L385,260L265,265Z"/>
-        <path class="st" id="NM" d="M265,265L385,260L390,330L270,335Z"/>
-        <path class="st" id="ND" d="M370,50L510,48L515,115L375,120Z"/>
-        <path class="st" id="SD" d="M375,120L515,115L520,185L380,190Z"/>
-        <path class="st" id="NE" d="M380,190L520,185L525,240L385,245Z"/>
-        <path class="st" id="KS" d="M385,245L525,240L530,290L390,295Z"/>
-        <path class="st" id="OK" d="M390,295L530,290L535,335L395,340Z"/>
-        <path class="st" id="TX" d="M390,335L535,335L545,420L480,450L420,430L380,395Z"/>
-        <path class="st" id="MN" d="M510,48L590,48L595,145L515,148Z"/>
-        <path class="st" id="IA" d="M515,148L595,145L600,200L520,205Z"/>
-        <path class="st" id="MO" d="M520,205L600,200L610,265L525,270Z"/>
-        <path class="st" id="AR" d="M525,270L610,265L615,315L530,320Z"/>
-        <path class="st" id="LA" d="M530,315L615,315L620,360L550,370L530,360Z"/>
-        <path class="st" id="WI" d="M590,48L650,50L655,140L595,145Z"/>
-        <path class="st" id="IL" d="M595,145L655,140L660,215L600,220Z"/>
-        <path class="st" id="MS" d="M600,265L615,265L620,335L605,350L595,320L595,265Z"/>
-        <path class="st" id="MI" d="M650,50L720,55L710,110L655,115Z"/>
-        <path class="st" id="IN" d="M655,140L710,135L715,200L660,205Z"/>
-        <path class="st" id="OH" d="M710,135L765,130L770,195L715,200Z"/>
-        <path class="st" id="KY" d="M660,205L770,200L775,240L660,250Z"/>
-        <path class="st" id="TN" d="M615,250L775,245L775,275L615,280Z"/>
-        <path class="st" id="AL" d="M615,280L665,275L670,345L620,350L615,335Z"/>
-        <path class="st" id="GA" d="M665,275L720,270L730,345L670,355Z"/>
-        <path class="st" id="FL" d="M670,350L730,345L745,390L720,430L680,440L660,400Z"/>
-        <path class="st" id="SC" d="M720,270L765,265L760,310L725,315Z"/>
-        <path class="st" id="NC" d="M720,245L800,240L795,270L720,270Z"/>
-        <path class="st" id="VA" d="M765,210L820,205L815,245L765,245Z"/>
-        <path class="st" id="WV" d="M765,195L800,190L805,215L770,215Z"/>
-        <path class="st" id="PA" d="M770,155L840,148L845,190L765,192Z"/>
-        <path class="st" id="NY" d="M800,105L875,100L875,155L770,158L770,130Z"/>
-        <path class="st" id="NJ" d="M840,148L870,145L868,180L842,182Z"/>
-        <path class="st" id="MD" d="M800,192L845,190L845,210L800,212Z"/>
-        <path class="st" id="MA" d="M840,105L900,102L898,128L838,130Z"/>
-        <path class="st" id="ME" d="M878,50L910,48L905,100L876,102Z"/>
+    <div class="map-svg-wrap">
+      <svg viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg">
+        <!-- PACIFIC NORTHWEST -->
+        <path class="st" id="WA" d="M105,52 L228,52 L232,95 L188,100 L162,115 L105,105Z"/>
+        <path class="st" id="OR" d="M105,105 L188,100 L193,178 L105,183Z"/>
+        <path class="st" id="CA" d="M105,183 L193,178 L200,305 L158,345 L92,312Z"/>
+        <!-- MOUNTAIN -->
+        <path class="st" id="ID" d="M188,100 L258,95 L264,168 L248,172 L193,178Z"/>
+        <path class="st" id="NV" d="M193,178 L248,172 L254,268 L200,305Z"/>
+        <path class="st" id="AZ" d="M200,255 L270,248 L276,340 L205,348 L180,320Z"/>
+        <path class="st" id="UT" d="M248,172 L264,168 L268,248 L254,268 L200,255 L200,172Z"/>
+        <path class="st" id="MT" d="M228,52 L382,52 L386,128 L258,132 L232,95Z"/>
+        <path class="st" id="WY" d="M258,132 L386,128 L390,205 L264,210Z"/>
+        <path class="st" id="CO" d="M264,210 L390,205 L395,270 L268,275Z"/>
+        <path class="st" id="NM" d="M268,275 L395,270 L400,340 L276,345Z"/>
+        <!-- PLAINS -->
+        <path class="st" id="ND" d="M382,52 L522,50 L526,120 L386,128Z"/>
+        <path class="st" id="SD" d="M386,128 L526,120 L530,192 L390,198Z"/>
+        <path class="st" id="NE" d="M390,198 L530,192 L535,248 L395,253Z"/>
+        <path class="st" id="KS" d="M395,253 L535,248 L540,300 L400,305Z"/>
+        <path class="st" id="OK" d="M400,305 L540,300 L545,348 L408,352Z"/>
+        <path class="st" id="TX" d="M400,348 L545,348 L556,438 L490,462 L428,442 L388,405Z"/>
+        <!-- MIDWEST -->
+        <path class="st" id="MN" d="M522,50 L604,50 L608,150 L526,153Z"/>
+        <path class="st" id="IA" d="M526,153 L608,150 L614,208 L530,212Z"/>
+        <path class="st" id="MO" d="M530,212 L614,208 L620,272 L535,278Z"/>
+        <path class="st" id="AR" d="M535,278 L620,272 L625,325 L540,330Z"/>
+        <path class="st" id="LA" d="M540,325 L625,325 L630,372 L558,382 L540,370Z"/>
+        <path class="st" id="WI" d="M604,50 L662,52 L666,148 L608,150Z"/>
+        <path class="st" id="IL" d="M608,150 L666,148 L670,222 L614,228Z"/>
+        <path class="st" id="MS" d="M608,272 L625,272 L630,345 L614,358 L605,328 L604,272Z"/>
+        <path class="st" id="MI" d="M662,52 L728,58 L718,115 L662,118Z"/>
+        <path class="st" id="IN" d="M662,148 L718,142 L722,208 L666,212Z"/>
+        <path class="st" id="OH" d="M718,142 L772,136 L778,202 L722,208Z"/>
+        <path class="st" id="KY" d="M666,212 L778,206 L782,248 L666,258Z"/>
+        <path class="st" id="TN" d="M620,258 L782,252 L782,282 L620,288Z"/>
+        <path class="st" id="AL" d="M620,288 L668,282 L674,358 L625,364 L620,345Z"/>
+        <path class="st" id="GA" d="M668,282 L724,278 L735,358 L674,368Z"/>
+        <path class="st" id="FL" d="M674,362 L735,358 L750,402 L725,442 L684,452 L664,412Z"/>
+        <!-- SOUTHEAST -->
+        <path class="st" id="SC" d="M724,278 L768,272 L764,318 L728,322Z"/>
+        <path class="st" id="NC" d="M724,252 L804,246 L800,278 L724,278Z"/>
+        <path class="st" id="VA" d="M768,216 L824,210 L820,252 L768,252Z"/>
+        <path class="st" id="WV" d="M768,200 L804,196 L808,222 L772,222Z"/>
+        <path class="st" id="MD" d="M804,198 L848,196 L848,216 L808,218Z"/>
+        <path class="st" id="DE" d="M848,172 L868,170 L866,196 L848,196Z"/>
+        <!-- NORTHEAST -->
+        <path class="st" id="PA" d="M772,158 L848,150 L852,196 L768,200Z"/>
+        <path class="st" id="NY" d="M804,108 L878,104 L878,158 L772,162 L772,134Z"/>
+        <path class="st" id="NJ" d="M848,150 L874,148 L872,182 L846,184Z"/>
+        <path class="st" id="CT" d="M878,128 L908,126 L906,148 L876,150Z"/>
+        <path class="st" id="RI" d="M908,126 L920,124 L918,142 L907,143Z"/>
+        <path class="st" id="MA" d="M842,108 L908,104 L908,128 L840,130Z"/>
+        <path class="st" id="NH" d="M878,72 L906,70 L907,106 L877,108Z"/>
+        <path class="st" id="VT" d="M852,72 L878,70 L878,108 L852,106Z"/>
+        <path class="st" id="ME" d="M880,52 L918,50 L912,104 L880,106Z"/>
+        <!-- ALASKA & HAWAII insets -->
+        <path class="st" id="AK" d="M60,440 L160,440 L160,520 L60,520Z"/>
+        <path class="st" id="HI" d="M190,460 L270,460 L270,520 L190,520Z"/>
+        <!-- State labels -->
+        <text x="158" y="82" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">WA</text>
+        <text x="145" y="148" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">OR</text>
+        <text x="148" y="258" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">CA</text>
+        <text x="468" y="402" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">TX</text>
+        <text x="704" y="408" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">FL</text>
+        <text x="838" y="136" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">NY</text>
+        <text x="812" y="178" font-family="Barlow Condensed" font-size="9" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">PA</text>
+        <text x="110" y="480" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">AK</text>
+        <text x="230" y="490" font-family="Barlow Condensed" font-size="10" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">HI</text>
       </svg>
     </div>
-    <div id="spop" class="spop">
-      <div class="spop-name" id="spop-name">—</div>
-      <div class="slot-row" id="spop-slots"></div>
-      <div class="spop-status" id="spop-status"></div>
-      <div id="spop-reps"></div>
-      <button class="spop-cta" id="spop-cta">—</button>
+    <div id="state-pop" class="state-pop">
+      <div class="sp-name" id="sp-name">—</div>
+      <div class="sp-slots" id="sp-slots"></div>
+      <div class="sp-status" id="sp-status"></div>
+      <div id="sp-reps"></div>
+      <button class="sp-cta" id="sp-cta">—</button>
     </div>
+    <div style="height:16px;"></div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="nb active" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn on" onclick="nav('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══ ESCÁNER ══ -->
+<!-- ══════════ ESCÁNER ══════════ -->
 <div id="s-scan" class="screen">
-  <div class="hdr">
-    <div class="hdr-logo">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
-      <div class="hdr-name">TU RED <span>VITAL</span></div>
+  <div class="topbar">
+    <div class="tb-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Escáner</div>
+    <div class="tb-right">Escáner</div>
   </div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div style="padding:28px 22px 20px;background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 100%);border-bottom:1px solid var(--border);">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Para tu salud</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;line-height:1.05;margin-bottom:10px;">Conecta con<br>tu especialista</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;">Llena el formulario y te conectamos con un distribuidor certificado en tu estado por WhatsApp — gratis y sin compromiso.</div>
+  <div class="scroll">
+    <div class="form-hero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="fh-logo">
+      <div class="fh-ey">Para tu salud · Gratis</div>
+      <div class="fh-t">Conecta con<br>tu especialista</div>
+      <div class="fh-s">Te contactamos con un distribuidor certificado en tu zona por WhatsApp — sin costo y sin compromiso.</div>
     </div>
-    <div style="padding:22px 20px 0;">
-      <div style="background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.15);padding:14px 16px;margin-bottom:20px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">¿Qué incluye el escáner?</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">Evaluación corporal rápida y no invasiva. Analiza nutrición, inflamación, hidratación y bienestar general. Resultado y plan personalizado en minutos.</div>
-      </div>
-      <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
-      <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
-      <div class="fg"><label class="fl">Tu estado</label>
-        <select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select>
-      </div>
-      <div class="fg"><label class="fl">¿Qué buscas?</label>
+    <div class="form-body">
+      <div class="fg"><label class="fl">Tu nombre completo</label><input class="fi" id="sc-nombre" type="text" placeholder="Nombre completo"></div>
+      <div class="fg"><label class="fl">Tu número de teléfono</label><input class="fi" id="sc-phone" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select></div>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="sc-ciudad" type="text" placeholder="Ciudad donde vives"></div>
+      <div class="fg">
+        <label class="fl">¿Quieres mejorar tu salud en…?</label>
         <select class="fs" id="sc-goal">
           <option value="">Elige una opción</option>
-          <option>Mejorar mi salud general</option>
-          <option>Bajar de peso</option>
-          <option>Más energía</option>
+          <option>Nutrición y peso saludable</option>
+          <option>Energía y vitalidad</option>
           <option>Salud digestiva</option>
           <option>Dolor e inflamación</option>
           <option>Sueño y descanso</option>
           <option>Salud hormonal</option>
+          <option>Sistema inmune</option>
+          <option>Salud mental y emocional</option>
+          <option>Rendimiento deportivo</option>
+          <option>Salud en general</option>
         </select>
       </div>
-      <button onclick="submitScan()" style="width:100%;padding:16px;background:var(--wa);color:#fff;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Conectar con mi especialista
+      <button class="submit-wa" onclick="doScan()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar mi información
       </button>
-      <div style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6;">Un especialista de tu zona te responderá en minutos.<br>Sin costo · Sin compromiso.</div>
+      <div class="form-note">Un especialista de tu zona te responderá en minutos.<br>Sin costo · Sin compromiso.</div>
     </div>
+    <div style="height:16px;"></div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="nb active" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══ ÚNETE ══ -->
+<!-- ══════════ ÚNETE ══════════ -->
 <div id="s-join" class="screen">
-  <div class="hdr">
-    <div class="hdr-logo">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo">
-      <div class="hdr-name">TU RED <span>VITAL</span></div>
+  <div class="topbar">
+    <div class="tb-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Membresía</div>
+    <div class="tb-right">Membresía</div>
   </div>
-  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
-    <div class="join-hero">
-      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="Logo" class="join-logo">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">Patrocinio semanal</div>
+  <div class="scroll">
+    <div class="price-hero">
+      <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="price-logo">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1;">Patrocinio semanal</div>
       <div class="price-big">$49</div>
       <div class="price-per">dólares / semana</div>
       <div class="price-note">Cancela cuando quieras · Sin contratos</div>
     </div>
-
-    <div class="benefits-list">
-      <div class="ben"><div class="ben-ico">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles para clientes de tu estado.</div></div></div>
-      <div class="ben"><div class="ben-ico">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas para atraer personas a tu comunidad.</div></div></div>
-      <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea con apoyo logístico.</div></div></div>
-      <div class="ben"><div class="ben-ico">🤝</div><div><div class="ben-t">Red de contactos</div><div class="ben-s">Acceso a los 255 distribuidores nacionales y soporte directo.</div></div></div>
+    <div class="ben-list">
+      <div class="ben"><div class="ben-ico">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles en tu estado.</div></div></div>
+      <div class="ben"><div class="ben-ico">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas locales para atraer clientes.</div></div></div>
+      <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea.</div></div></div>
+      <div class="ben"><div class="ben-ico">🤝</div><div><div class="ben-t">Red de contactos</div><div class="ben-s">255 distribuidores nacionales + soporte directo.</div></div></div>
+      <div class="ben"><div class="ben-ico">🔒</div><div><div class="ben-t">Pago seguro Stripe</div><div class="ben-s">Visa · MC · Amex · Apple Pay · Cash App.</div></div></div>
     </div>
-
-    <div class="join-form">
-      <div class="urgency">
-        <div style="font-size:18px;">⚡</div>
-        <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="join-avail">5 por estado · 255 en total</div></div>
-      </div>
-      <div class="form-title">Tus datos para el perfil</div>
-      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" type="text" id="j-nombre" placeholder="Como aparecerá en el mapa"></div>
+    <div class="urgency">
+      <div style="font-size:16px;">⚡</div>
+      <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="join-avail">5 por estado · 255 en total</div></div>
+    </div>
+    <div class="form-body" style="padding-top:0;">
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="j-nombre" type="text" placeholder="Como aparecerá en el mapa"></div>
       <div class="fg"><label class="fl">Tu estado</label>
         <select class="fs" id="j-estado">
           <option value="">Selecciona tu estado</option>
@@ -468,32 +565,33 @@ svg.usa{width:100%;height:auto;}
           <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
         </select>
       </div>
-      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="j-ciudad" placeholder="Ciudad donde operas"></div>
-      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" type="tel" id="j-whatsapp" placeholder="+1 (555) 000-0000"></div>
-      <div class="fg"><label class="fl">Tu email</label><input class="fi" type="email" id="j-email" placeholder="Para confirmación y acceso"></div>
-      <a id="pay-btn" class="pay-btn" href="#" onclick="irAStripe(event)">
-        🔒 Reservar mi espacio · $49/sem
-      </a>
-      <div class="secure">
-        <span>🔐 Pago seguro</span>
-        <div class="stripe-badge">POWERED BY STRIPE</div>
-        <span>Visa · MC · Amex · Apple Pay</span>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="j-ciudad" type="text" placeholder="Ciudad donde operas"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-whatsapp" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu email</label><input class="fi" id="j-email" type="email" placeholder="Para confirmación"></div>
+      <button class="submit-stripe" onclick="doJoin()">🔒 Reservar mi espacio · $49/sem</button>
+      <div class="secure-row">
+        <span>🔐 Seguro</span>
+        <span style="border:1px solid rgba(255,255,255,0.15);padding:1px 6px;font-size:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">POWERED BY STRIPE</span>
       </div>
+      <div class="form-note">Al pagar tu perfil aparecerá en el mapa.</div>
     </div>
+    <div style="height:16px;"></div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb active" onclick="goTo('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
+</div><!-- /app -->
+
 <script>
 const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const US_STATES = [
+const US = [
   {c:'AL',n:'Alabama'},{c:'AK',n:'Alaska'},{c:'AZ',n:'Arizona'},{c:'AR',n:'Arkansas'},
   {c:'CA',n:'California'},{c:'CO',n:'Colorado'},{c:'CT',n:'Connecticut'},{c:'DE',n:'Delaware'},
   {c:'FL',n:'Florida'},{c:'GA',n:'Georgia'},{c:'HI',n:'Hawaii'},{c:'ID',n:'Idaho'},
@@ -509,124 +607,147 @@ const US_STATES = [
   {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
 ];
 
-let allReps = [], stateMap = {};
+let reps = [], smap = {}, hist = ['s-home'];
 
+// ── NAV ──────────────────────────────────────────────────────
+function nav(to) {
+  const cur = hist[hist.length-1];
+  if(cur === to) return;
+  const prev = document.getElementById(cur);
+  const next = document.getElementById(to);
+  prev.classList.add('prev');
+  prev.classList.remove('active');
+  next.classList.add('active');
+  next.classList.remove('prev');
+  hist.push(to);
+  document.getElementById('state-pop')?.classList.remove('vis');
+}
+
+function back() {
+  if(hist.length <= 1) return;
+  hist.pop();
+  const to = hist[hist.length-1];
+  const screens = document.querySelectorAll('.screen');
+  screens.forEach(s => { s.classList.remove('active','prev'); });
+  document.getElementById(to).classList.add('active');
+}
+
+// ── DATA ──────────────────────────────────────────────────────
 async function loadData() {
   try {
     const { data } = await sb.from('membresias').select('*').eq('status','activa');
-    allReps = data || [];
-  } catch { allReps = []; }
-  stateMap = {};
-  allReps.forEach(r => {
-    if(!stateMap[r.estado_codigo]) stateMap[r.estado_codigo] = [];
-    stateMap[r.estado_codigo].push(r);
+    reps = data || [];
+  } catch { reps = []; }
+  smap = {};
+  reps.forEach(r => {
+    if(!smap[r.estado_codigo]) smap[r.estado_codigo] = [];
+    smap[r.estado_codigo].push(r);
   });
-  document.getElementById('cnt-activos').textContent = allReps.length;
-  document.getElementById('cnt-disponibles').textContent = 255 - allReps.length;
-  document.getElementById('join-avail').textContent = `${255-allReps.length} de 255 espacios disponibles`;
+  document.getElementById('h-activos').textContent = reps.length;
+  document.getElementById('h-disp').textContent = 255 - reps.length;
+  document.getElementById('join-avail').textContent = `${255-reps.length} de 255 espacios disponibles`;
   renderMap();
-  fillDropdowns();
+  fillStates();
 }
 
+// ── MAP ───────────────────────────────────────────────────────
 function renderMap() {
-  document.querySelectorAll('.st').forEach(p => {
-    const reps = stateMap[p.id] || [];
-    p.classList.remove('full','partial');
-    if(reps.length >= 5) p.classList.add('full');
-    else if(reps.length > 0) p.classList.add('partial');
-    p.onclick = () => showState(p.id);
+  document.querySelectorAll('.st').forEach(el => {
+    const r = smap[el.id] || [];
+    el.classList.remove('f','p');
+    if(r.length >= 5) el.classList.add('f');
+    else if(r.length > 0) el.classList.add('p');
+    el.onclick = () => showState(el.id);
   });
 }
 
 function showState(code) {
-  const reps = stateMap[code] || [];
-  const name = US_STATES.find(s => s.c === code)?.n || code;
-  const taken = reps.length, avail = 5 - taken;
-
-  document.getElementById('spop-name').textContent = name;
-  document.getElementById('spop-slots').innerHTML = Array.from({length:5},(_,i) =>
-    `<div class="slot ${i<taken?'on':'off'}">${i<taken?'✓':''}</div>`).join('');
-  document.getElementById('spop-status').textContent = avail === 0
+  const r = smap[code] || [];
+  const name = US.find(s=>s.c===code)?.n || code;
+  const avail = 5 - r.length;
+  document.getElementById('sp-name').textContent = name;
+  document.getElementById('sp-slots').innerHTML = Array.from({length:5},(_,i) =>
+    `<div class="sp-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
+  document.getElementById('sp-status').textContent = avail===0
     ? 'ZONA COMPLETA · 5/5 activos'
     : `${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/semana`;
-
-  document.getElementById('spop-reps').innerHTML = reps.length
-    ? reps.map(r => `
-        <div class="rep-card">
-          <div class="rep-av">${ini(r.nombre)}</div>
-          <div style="flex:1;">
-            <div class="rep-name">${r.nombre}</div>
-            <div class="rep-city">${r.ciudad || ''}</div>
-          </div>
-          <button class="wa-round" onclick="openWA('${r.whatsapp}','${r.nombre.replace(/'/g,"\\'")}')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          </button>
-        </div>`).join('')
-    : `<div class="no-rep">Sé el primero en ${name}.<br>Solo $49/semana · 5 espacios disponibles.</div>`;
-
-  const cta = document.getElementById('spop-cta');
-  cta.textContent = avail > 0 ? `Reservar espacio en ${name} →` : 'Solicitar escáner aquí →';
-  cta.onclick = () => goTo(avail > 0 ? 's-join' : 's-scan');
-
-  const pop = document.getElementById('spop');
+  document.getElementById('sp-reps').innerHTML = r.length
+    ? r.map(x=>`<div class="sp-rep">
+        <div class="sp-av">${ini(x.nombre)}</div>
+        <div style="flex:1"><div class="sp-nm">${x.nombre}</div><div class="sp-ci">${x.ciudad||''}</div></div>
+        <button class="wa-btn" onclick="openWA('${x.whatsapp}','${x.nombre.replace(/'/g,"\\'")}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </button>
+      </div>`).join('')
+    : `<div class="sp-empty">Sé el primero en ${name}.<br>Solo $49/semana · 5 espacios.</div>`;
+  const cta = document.getElementById('sp-cta');
+  cta.textContent = avail>0 ? `Reservar espacio en ${name} →` : `Solicitar escáner en ${name} →`;
+  cta.onclick = () => { nav(avail>0?'s-join':'s-scan'); };
+  const pop = document.getElementById('state-pop');
   pop.classList.add('vis');
-  setTimeout(() => pop.scrollIntoView({behavior:'smooth',block:'nearest'}), 60);
+  setTimeout(() => pop.scrollIntoView({behavior:'smooth',block:'nearest'}), 80);
 }
 
-async function submitScan() {
+// ── SCAN ──────────────────────────────────────────────────────
+async function doScan() {
   const nombre = document.getElementById('sc-nombre').value.trim();
   const phone  = document.getElementById('sc-phone').value.trim();
   const code   = document.getElementById('sc-estado').value;
+  const ciudad = document.getElementById('sc-ciudad').value.trim();
   const goal   = document.getElementById('sc-goal').value;
-  if(!nombre||!phone||!code||!goal){ alert('Completa todos los campos.'); return; }
-  const sname = US_STATES.find(s=>s.c===code)?.n||code;
+  if(!nombre||!phone||!code||!ciudad||!goal){ alert('Por favor completa todos los campos.'); return; }
+  const sname = US.find(s=>s.c===code)?.n||code;
   try {
     await sb.from('solicitudes_scanner').insert({
       nombre, telefono:phone.replace(/\D/g,''), estado_codigo:code, estado_nombre:sname, objetivo:goal
     });
-  } catch(e) {}
-  const reps = stateMap[code]||[];
-  const target = reps.length > 0 ? reps[0].whatsapp : YOUR_WHATSAPP;
-  const msg = encodeURIComponent(`Hola! Vengo de Tu Red Vital 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nBusco: ${goal}\nTel: ${phone}\n\nMe interesa el escáner corporal.`);
-  window.open(`https://wa.me/${target}?text=${msg}`,'_blank');
+  } catch(e){}
+  const msg = encodeURIComponent(
+    `Hola! Me registré en Tu Red Vital 🌿\n\n` +
+    `👤 Nombre: ${nombre}\n` +
+    `📍 Estado: ${sname}\n` +
+    `🏙️ Ciudad: ${ciudad}\n` +
+    `📱 Número: ${phone}\n` +
+    `💚 Quiero mejorar mi salud en: ${goal}\n\n` +
+    `Me interesa conectar con un especialista.`
+  );
+  window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`,'_blank');
 }
 
-async function irAStripe(e) {
-  e.preventDefault();
+// ── JOIN ──────────────────────────────────────────────────────
+async function doJoin() {
   const nombre   = document.getElementById('j-nombre').value.trim();
   const estado   = document.getElementById('j-estado').value;
   const ciudad   = document.getElementById('j-ciudad').value.trim();
   const whatsapp = document.getElementById('j-whatsapp').value.trim();
   const email    = document.getElementById('j-email').value.trim();
-  if(!nombre||!estado||!ciudad||!whatsapp||!email){ alert('Completa todos los campos antes de pagar.'); return; }
-  const estadoNombre = US_STATES.find(s=>s.c===estado)?.n||estado;
-  const slot = (stateMap[estado]||[]).length + 1;
+  if(!nombre||!estado||!ciudad||!whatsapp||!email){ alert('Por favor completa todos los campos.'); return; }
+  const en = US.find(s=>s.c===estado)?.n||estado;
   try {
     await sb.from('membresias').upsert({
       nombre, email, whatsapp, ciudad,
-      estado_codigo:estado, estado_nombre:estadoNombre,
-      slot, status:'pendiente'
-    },{ onConflict:'email' });
-  } catch(e) {}
+      estado_codigo:estado, estado_nombre:en,
+      slot:(smap[estado]||[]).length+1, status:'pendiente'
+    },{onConflict:'email'});
+  } catch(e){}
   window.location.href = `${STRIPE_LINK}?prefilled_email=${encodeURIComponent(email)}`;
 }
 
-function fillDropdowns() {
-  const opts = US_STATES.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
-  document.getElementById('sc-estado').innerHTML = '<option value="">Selecciona tu estado</option>'+opts;
+// ── HELPERS ───────────────────────────────────────────────────
+function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function fillStates(){
+  const o = US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+o;
 }
-
-function openWA(num, name) {
-  const msg = encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital. Me interesa conectar contigo 🌿`);
+function openWA(num,name){
+  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital 🌿 Me interesa conectar contigo.`);
   window.open(`https://wa.me/${num}?text=${msg}`,'_blank');
 }
 
-function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
+// ── INIT ──────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async()=>{
   await loadData();
-  setTimeout(()=>document.getElementById('loading').classList.add('hidden'),1400);
+  setTimeout(()=>document.getElementById('loading').classList.add('gone'),1300);
 });
 </script>
 </body>
