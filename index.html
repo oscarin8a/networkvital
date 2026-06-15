@@ -3,27 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vital Health Network</title>
+<title>Red Vital · USA Network</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-  // ─── CONFIGURACIÓN — CAMBIA ESTOS 3 VALORES ────────────────
+  // ─── CONFIGURACIÓN ─────────────────────────────────────────
   const SUPABASE_URL      = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
   const YOUR_WHATSAPP     = '12099717638';
+  const STRIPE_LINK       = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
+  const ADMIN_EMAIL       = 'oscar8a1985@gmail.com';
   // ────────────────────────────────────────────────────────────
 </script>
-
 <style>
 :root{
   --navy:#0B1626;--navy2:#1E2D45;--navy3:#162038;
   --gold:#C9A24B;--slate:#2A3F5C;--muted:#7A8FA6;
-  --white:#fff;--wa:#25D366;--crimson:#C81E2D;
-  --green:#1D9E75;--border:rgba(201,162,75,0.18);
+  --white:#fff;--wa:#25D366;--crimson:#C81E2D;--green:#1D9E75;
+  --border:rgba(201,162,75,0.18);
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;}
 
 /* LOADING */
@@ -46,7 +45,7 @@ body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);m
 .logo span{color:var(--white);}
 .pill{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);border:1px solid var(--gold);padding:3px 9px;text-transform:uppercase;}
 
-/* BOTTOM NAV */
+/* NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--navy2);border-top:1px solid var(--border);display:flex;z-index:200;}
 .nb{flex:1;padding:10px 4px 14px;background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.15s;}
 .nb svg{width:19px;height:19px;}
@@ -55,6 +54,11 @@ body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);m
 /* HELPERS */
 .eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1.05;}
+.fg{margin-bottom:16px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.fi,.fs{width:100%;background:var(--navy2);border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fs option{background:var(--navy2);}
 @keyframes pulse{0%,100%{border-color:rgba(201,162,75,0.3);}50%{border-color:rgba(201,162,75,0.85);}}
 
 /* ─── HOME ─── */
@@ -72,7 +76,7 @@ body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);m
 .dot{width:8px;height:8px;border-radius:50%;}
 .dot.on{background:var(--gold);}
 .dot.off{background:transparent;border:1.5px solid rgba(201,162,75,0.4);animation:pulse 2s infinite;}
-.ctas{display:grid;gap:12px;padding:0 20px 28px;}
+.ctas{display:grid;gap:12px;padding:0 20px 24px;}
 .cta{background:var(--slate);border:1px solid rgba(201,162,75,0.12);padding:20px;cursor:pointer;transition:transform 0.15s;position:relative;text-align:left;}
 .cta:active{transform:scale(0.98);}
 .cta.primary{background:var(--gold);border-color:var(--gold);}
@@ -113,23 +117,7 @@ svg.usa{width:100%;height:auto;}
 .wac{width:36px;height:36px;border-radius:50%;background:var(--wa);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:auto;}
 .pop-btn{width:100%;margin-top:12px;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
 
-/* ─── FORMS ─── */
-.fbody{padding:20px;flex:1;padding-bottom:90px;}
-.info-box{background:rgba(201,162,75,0.06);border:1px solid rgba(201,162,75,0.18);padding:16px;margin-bottom:22px;}
-.info-box-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:7px;}
-.info-box p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;}
-.alert-box{background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.28);padding:12px 16px;margin-bottom:20px;display:flex;gap:10px;align-items:center;}
-.alert-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
-.alert-s{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;}
-.fg{margin-bottom:16px;}
-.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-.fi,.fs{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.18);color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;appearance:none;}
-.fi:focus,.fs:focus{border-color:var(--gold);}
-.fs option{background:var(--navy2);}
-.wa-btn{width:100%;background:var(--wa);color:#fff;border:none;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
-.disc{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.55;}
-
-/* ─── MEMBRESÍA / PAGO ─── */
+/* ─── MEMBRESÍA ─── */
 .price-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
 .price-hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,75,0.12) 0%,transparent 70%);pointer-events:none;}
 .price-num{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-3px;}
@@ -144,79 +132,95 @@ svg.usa{width:100%;height:auto;}
 .urgency{margin:0 18px 16px;background:rgba(200,30,45,0.07);border:1px solid rgba(200,30,45,0.25);padding:10px 14px;display:flex;gap:8px;align-items:center;}
 .urg-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#E85C6A;letter-spacing:1px;text-transform:uppercase;}
 .urg-s{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;}
-.pay-btn{width:100%;padding:18px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;transition:opacity 0.2s;}
-.pay-btn.loading{opacity:0.6;pointer-events:none;}
+.fbody{padding:20px;flex:1;padding-bottom:90px;}
+
+/* STRIPE BUTTON */
+.stripe-pay-btn{
+  display:block;width:100%;padding:18px;
+  background:var(--gold);color:var(--navy);
+  border:none;cursor:pointer;text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:900;letter-spacing:1px;
+  text-transform:uppercase;text-align:center;
+  margin-top:8px;transition:opacity 0.2s;
+}
+.stripe-pay-btn:active{opacity:0.85;}
 .secure-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);}
 .stripe-b{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.1);padding:1px 6px;}
 
-/* ─── PERFIL DISTRIBUIDOR (después de login) ─── */
-.profile-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;position:relative;overflow:hidden;}
-.profile-av{width:72px;height:72px;border-radius:50%;background:var(--slate);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-bottom:14px;}
-.profile-name{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin-bottom:2px;}
-.profile-location{font-size:13px;color:var(--muted);margin-bottom:16px;}
-.status-pill{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:2px;}
-.status-pill.activa{background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
-.status-pill.pendiente{background:rgba(201,162,75,0.15);color:var(--gold);border:1px solid rgba(201,162,75,0.3);}
-.status-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
-.profile-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 20px 0;}
-.pcard{background:var(--navy2);border:1px solid var(--border);padding:14px;}
-.pcard-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
-.pcard-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
-.pcard-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.profile-section{padding:20px 20px 0;}
-.profile-section-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.client-card{background:var(--slate);border:1px solid rgba(255,255,255,0.06);padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:center;}
-.client-av{width:36px;height:36px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0;}
-.client-name{font-size:14px;font-weight:600;}
-.client-sub{font-size:11px;color:var(--muted);}
-.edit-field{margin-bottom:12px;}
-.edit-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:block;}
-.edit-input{width:100%;background:var(--navy2);border:1px solid rgba(201,162,75,0.18);color:var(--white);padding:10px 12px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+/* ─── PERFIL DISTRIBUIDOR ─── */
+.profile-hero{background:linear-gradient(155deg,var(--navy) 0%,var(--navy3) 100%);padding:28px 22px;position:relative;}
+.p-av{width:72px;height:72px;border-radius:50%;background:var(--slate);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);margin-bottom:14px;}
+.p-name{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;margin-bottom:2px;}
+.p-loc{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.status-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;}
+.status-badge.activa{background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);}
+.status-badge.pendiente{background:rgba(201,162,75,0.15);color:var(--gold);border:1px solid rgba(201,162,75,0.3);}
+.status-badge.cancelada{background:rgba(200,30,45,0.1);color:#E85C6A;border:1px solid rgba(200,30,45,0.25);}
+.status-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+/* Countdown timer */
+.countdown-box{background:var(--navy2);border:1px solid var(--border);padding:16px 20px;margin:16px 20px 0;}
+.cd-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.cd-timer{display:flex;gap:10px;align-items:center;}
+.cd-block{text-align:center;}
+.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--gold);line-height:1;}
+.cd-unit{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:rgba(201,162,75,0.3);padding-bottom:8px;}
+.cd-warning{margin-top:8px;font-size:12px;color:#E85C6A;display:none;}
+
+.p-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 20px 0;}
+.p-card{background:var(--navy2);border:1px solid var(--border);padding:14px;}
+.p-card-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.p-card-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.p-card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.p-section{padding:18px 20px 0;}
+.p-section-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.06);}
+
+.client-card{background:var(--slate);border:1px solid rgba(255,255,255,0.06);padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;}
+.cli-av{width:34px;height:34px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--muted);flex-shrink:0;}
+.cli-nm{font-size:14px;font-weight:600;}
+.cli-sub{font-size:11px;color:var(--muted);}
+
+.edit-input{width:100%;background:var(--navy2);border:1px solid var(--border);color:var(--white);padding:10px 12px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;margin-bottom:10px;}
 .edit-input:focus{border-color:var(--gold);}
-.save-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
+.save-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.renew-btn{width:100%;padding:13px;background:rgba(29,158,117,0.15);color:var(--green);border:1px solid rgba(29,158,117,0.3);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:8px;text-decoration:none;display:block;text-align:center;}
 
 /* ─── LOGIN ─── */
 .login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:radial-gradient(ellipse at 30% 30%,rgba(201,162,75,0.06) 0%,transparent 60%),var(--navy);}
 .login-logo{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;text-align:center;}
 .login-logo span{color:var(--white);}
-.login-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:32px;}
+.login-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:28px;}
 .login-card{width:100%;max-width:380px;border:1px solid var(--border);padding:28px;}
-.login-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.login-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:14px;}
 .login-err{color:#E85C6A;font-size:13px;margin-top:10px;text-align:center;display:none;}
 .login-link{text-align:center;margin-top:14px;font-size:13px;color:var(--muted);}
-.login-link a{color:var(--gold);text-decoration:none;}
+.login-link a{color:var(--gold);text-decoration:none;cursor:pointer;}
 
-/* ─── ÉXITO PAGO ─── */
-.success-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 24px;text-align:center;}
-.check-circle{width:76px;height:76px;border-radius:50%;background:rgba(29,158,117,0.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:22px;}
-.suc-t{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;margin-bottom:8px;}
-.suc-t span{color:var(--gold);}
-.suc-s{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.65;margin-bottom:24px;}
-.suc-info{width:100%;background:rgba(201,162,75,0.07);border:1px solid rgba(201,162,75,0.2);padding:12px 16px;text-align:left;margin-bottom:10px;}
-.suc-info-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:3px;}
-.suc-info-v{font-size:14px;font-weight:500;}
-.suc-wa{width:100%;background:var(--wa);color:#fff;border:none;padding:14px;margin-top:14px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.suc-back{width:100%;background:none;border:1px solid rgba(201,162,75,0.3);color:var(--gold);padding:11px;margin-top:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;}
+/* ─── ESCÁNER ─── */
+.wa-btn{width:100%;background:var(--wa);color:#fff;border:none;padding:16px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
+.disc{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.55;}
 .pb90{padding-bottom:90px;}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading">
-  <div class="ld-logo">VITAL<span> HEALTH</span></div>
+  <div class="ld-logo">RED<span> VITAL</span></div>
   <div class="ld-bar"><div class="ld-fill"></div></div>
-  <div class="ld-txt">Iniciando sistema…</div>
+  <div class="ld-txt">Cargando red nacional…</div>
 </div>
 
-<!-- ══════════ HOME ══════════ -->
+<!-- ══ HOME ══ -->
 <div id="s-home" class="screen active">
-  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">USA Network</div></div>
-  <div style="overflow-y:auto;flex:1;padding-bottom:70px;">
+  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">USA Network</div></div>
+  <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
     <div class="hero">
-      <div class="eyebrow">🌿 Red Nacional de Bienestar</div>
-      <div class="hero-title">Tu salud,<br><span class="gold">tu red,</span><br>tu futuro.</div>
-      <div class="hero-sub">Conectamos personas que quieren mejorar su salud con especialistas certificados en todo EE.UU.</div>
+      <div class="eyebrow">🌿 Tu Red de Salud Nacional</div>
+      <div class="hero-title">Conecta,<br><span class="gold">crece,</span><br>prospera.</div>
+      <div class="hero-sub">Unimos personas que buscan mejorar su salud con distribuidores apasionados en todo EE.UU.</div>
       <div class="stats-row">
         <div class="stat-item">
           <div class="stat-num" id="cnt-a">—</div>
@@ -234,42 +238,41 @@ svg.usa{width:100%;height:auto;}
     <div class="ctas">
       <div class="cta primary" onclick="goTo('s-scan')">
         <div class="cta-ey">Para tu salud</div>
-        <div class="cta-ti">Quiero conocer mi cuerpo</div>
-        <div class="cta-de" style="color:rgba(11,22,38,0.6)">Escáner corporal con especialista en tu zona.</div>
+        <div class="cta-ti">Quiero un especialista en mi zona</div>
+        <div class="cta-de" style="color:rgba(11,22,38,0.6)">Contáctate con un distribuidor certificado cerca de ti.</div>
         <div class="arr" style="color:var(--navy);">→</div>
       </div>
       <div class="cta" onclick="goTo('s-membresia')">
-        <div class="cta-ey">Oportunidad · $49/mes</div>
-        <div class="cta-ti">Reservar mi espacio en la red</div>
-        <div class="cta-de">Sé representante certificado en tu estado.</div>
+        <div class="cta-ey">Oportunidad · $49/semana</div>
+        <div class="cta-ti">Quiero ser distribuidor</div>
+        <div class="cta-de">Patrocinio · Capacitación · Promoción en tu ciudad.</div>
         <div class="arr">→</div>
       </div>
     </div>
     <div style="padding:0 20px 20px;text-align:center;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">¿Ya eres miembro?</div>
-      <button onclick="goTo('s-login')" style="background:none;border:1px solid var(--border);color:var(--gold);padding:10px 24px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Iniciar sesión →</button>
+      <button onclick="goTo('s-login')" style="background:none;border:1px solid var(--border);color:var(--gold);padding:10px 24px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Ya soy miembro · Iniciar sesión →</button>
     </div>
   </div>
-  <nav class="bnav" id="bnav-home">
+  <nav class="bnav">
     <button class="nb active" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
     <button class="nb" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
     <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/mes</button>
+    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/sem</button>
     <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
   </nav>
 </div>
 
-<!-- ══════════ MAPA ══════════ -->
+<!-- ══ MAPA ══ -->
 <div id="s-map" class="screen">
-  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Mapa USA</div></div>
+  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Mapa USA</div></div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
     <div class="mhdr">
       <div class="eyebrow">Disponibilidad por estado</div>
       <div class="sec-title">Encuentra tu zona</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:3px;">Toca un estado para ver representantes</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:3px;">Toca un estado para ver distribuidores</div>
     </div>
     <div class="legend">
-      <div class="li"><div class="ld2 full"></div>Completo</div>
+      <div class="li"><div class="ld2 full"></div>Completo (5/5)</div>
       <div class="li"><div class="ld2 partial"></div>Parcial</div>
       <div class="li"><div class="ld2 open"></div>Disponible</div>
     </div>
@@ -319,7 +322,6 @@ svg.usa{width:100%;height:auto;}
         <path class="st" id="MA" d="M840,105L900,102L898,128L838,130Z"/>
         <path class="st" id="ME" d="M878,50L910,48L905,100L876,102Z"/>
         <text x="152" y="78" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">WA</text>
-        <text x="143" y="138" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">OR</text>
         <text x="140" y="248" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">CA</text>
         <text x="462" y="388" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">TX</text>
         <text x="700" y="392" font-family="Barlow Condensed" font-size="11" fill="rgba(255,255,255,0.5)" font-weight="700" text-anchor="middle" pointer-events="none">FL</text>
@@ -339,150 +341,211 @@ svg.usa{width:100%;height:auto;}
     <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9a1 1 0 001 1h4v-4h4v4h4a1 1 0 001-1v-9" stroke-linecap="round"/></svg>Inicio</button>
     <button class="nb active" onclick="goTo('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4M15 4L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
     <button class="nb" onclick="goTo('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/mes</button>
+    <button class="nb" onclick="goTo('s-membresia')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>$49/sem</button>
     <button class="nb" onclick="goTo('s-login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi perfil</button>
   </nav>
 </div>
 
-<!-- ══════════ ESCÁNER ══════════ -->
+<!-- ══ ESCÁNER ══ -->
 <div id="s-scan" class="screen">
-  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Escáner</div></div>
+  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Escáner</div></div>
   <div class="fbody">
     <div class="eyebrow" style="margin-bottom:6px;">Para tu salud</div>
-    <div class="sec-title" style="margin-bottom:6px;">Conoce<br>tu cuerpo</div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:22px;">Te conectamos con un especialista en tu estado de inmediato.</div>
-    <div class="info-box"><div class="info-box-t">¿Qué es el escáner?</div><p>Evaluación corporal rápida y no invasiva. Analiza nutrición, inflamación y bienestar para un plan 100% personalizado.</p></div>
+    <div class="sec-title" style="margin-bottom:6px;">Conecta con<br>tu especialista</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:22px;">Te conectamos con un distribuidor certificado en tu estado de inmediato por WhatsApp.</div>
     <div class="fg"><label class="fl">Tu nombre</label><input class="fi" type="text" id="sc-nombre" placeholder="Nombre completo"></div>
     <div class="fg"><label class="fl">Tu teléfono</label><input class="fi" type="tel" id="sc-phone" placeholder="+1 (555) 000-0000"></div>
     <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select></div>
-    <div class="fg"><label class="fl">¿Qué te preocupa más?</label>
+    <div class="fg"><label class="fl">¿Qué buscas?</label>
       <select class="fs" id="sc-goal">
         <option value="">Elige una opción</option>
-        <option>Bajar de peso</option><option>Más energía</option>
-        <option>Salud digestiva</option><option>Dolor e inflamación</option>
-        <option>Sueño y descanso</option><option>Salud en general</option>
+        <option>Mejorar mi salud general</option>
+        <option>Bajar de peso</option>
+        <option>Más energía</option>
+        <option>Salud digestiva</option>
+        <option>Dolor e inflamación</option>
+        <option>Sueño y descanso</option>
       </select>
     </div>
-    <button class="wa-btn" onclick="submitScan()"><?xml version="1.0"?><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Conectar con mi especialista</button>
-    <div class="disc">Un especialista de tu zona te responderá en WhatsApp de inmediato.</div>
+    <button class="wa-btn" onclick="submitScan()"><?xml version="1.0"?><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Contactar especialista</button>
+    <div class="disc">Un distribuidor certificado de tu zona te responderá en minutos.</div>
   </div>
 </div>
 
-<!-- ══════════ MEMBRESÍA ══════════ -->
+<!-- ══ MEMBRESÍA ══ -->
 <div id="s-membresia" class="screen">
-  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><div class="pill">Membresía</div></div>
+  <div class="hdr"><div class="logo">RED<span> VITAL</span></div><div class="pill">Membresía</div></div>
   <div style="flex:1;overflow-y:auto;padding-bottom:70px;">
     <div class="price-hero">
-      <div class="eyebrow" style="margin-bottom:10px;">Reserva tu espacio</div>
+      <div class="eyebrow" style="margin-bottom:10px;">Patrocinio semanal</div>
       <div class="price-num">$49</div>
-      <div class="price-per">dólares / mes</div>
-      <div class="price-d">Perfil activo en el mapa nacional · Cancela cuando quieras.</div>
+      <div class="price-per">dólares / semana</div>
+      <div class="price-d">Tu espacio activo en la red nacional.<br>Cancela cuando quieras · Sin contratos.</div>
     </div>
     <div class="benefits">
-      <div class="ben-item"><div class="ben-ico">🗺️</div><div><div class="ben-ti">Perfil en el mapa USA</div><div class="ben-su">Tu WhatsApp visible para clientes de tu zona.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">📲</div><div><div class="ben-ti">Clientes directos</div><div class="ben-su">Te contactan por WhatsApp sin intermediarios.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">🌿</div><div><div class="ben-ti">Red de 255 líderes</div><div class="ben-su">Comunidad activa y soporte de zona.</div></div></div>
-      <div class="ben-item"><div class="ben-ico">🔒</div><div><div class="ben-ti">Pago seguro con Stripe</div><div class="ben-su">Visa, MC, Amex, Apple Pay, Google Pay.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🗺️</div><div><div class="ben-ti">Perfil en el mapa USA</div><div class="ben-su">Tu nombre y WhatsApp visibles para clientes de tu zona.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">📣</div><div><div class="ben-ti">Campaña en tu ciudad</div><div class="ben-su">Creamos campañas para atraer personas a tu comunidad.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🎓</div><div><div class="ben-ti">Capacitación incluida</div><div class="ben-su">Sistema de venta presencial y en línea con apoyo logístico.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🤝</div><div><div class="ben-ti">Red de contactos</div><div class="ben-su">Acceso a los 255 distribuidores nacionales y soporte directo.</div></div></div>
+      <div class="ben-item"><div class="ben-ico">🔒</div><div><div class="ben-ti">Pago seguro con Stripe</div><div class="ben-su">Visa, MC, Amex, Apple Pay, Cash App Pay.</div></div></div>
     </div>
     <div class="urgency">
       <div style="font-size:18px;">⚡</div>
       <div><div class="urg-t">Espacios limitados</div><div class="urg-s" id="memb-avail">5 por estado · 255 en total</div></div>
     </div>
     <div class="fbody" style="padding-top:0;">
-      <div class="eyebrow" style="margin-bottom:14px;">Tus datos para el perfil</div>
-      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" type="text" id="m-nombre" placeholder="Como aparecerá en el mapa"></div>
-      <div class="fg"><label class="fl">Correo electrónico</label><input class="fi" type="email" id="m-email" placeholder="Recibirás tus credenciales aquí"></div>
-      <div class="fg"><label class="fl">WhatsApp</label><input class="fi" type="tel" id="m-whatsapp" placeholder="+1 (555) 000-0000"></div>
+      <div class="eyebrow" style="margin-bottom:14px;">¿En qué ciudad operas?</div>
+      <div class="fg"><label class="fl">Tu nombre completo</label><input class="fi" type="text" id="m-nombre" placeholder="Como aparecerá en el mapa"></div>
       <div class="fg"><label class="fl">Tu estado</label>
         <select class="fs" id="m-estado">
           <option value="">Selecciona tu estado</option>
-          <option value="AL|Alabama">Alabama</option><option value="AK|Alaska">Alaska</option>
-          <option value="AZ|Arizona">Arizona</option><option value="AR|Arkansas">Arkansas</option>
-          <option value="CA|California">California</option><option value="CO|Colorado">Colorado</option>
-          <option value="CT|Connecticut">Connecticut</option><option value="DE|Delaware">Delaware</option>
-          <option value="FL|Florida">Florida</option><option value="GA|Georgia">Georgia</option>
-          <option value="HI|Hawaii">Hawaii</option><option value="ID|Idaho">Idaho</option>
-          <option value="IL|Illinois">Illinois</option><option value="IN|Indiana">Indiana</option>
-          <option value="IA|Iowa">Iowa</option><option value="KS|Kansas">Kansas</option>
-          <option value="KY|Kentucky">Kentucky</option><option value="LA|Louisiana">Louisiana</option>
-          <option value="ME|Maine">Maine</option><option value="MD|Maryland">Maryland</option>
-          <option value="MA|Massachusetts">Massachusetts</option><option value="MI|Michigan">Michigan</option>
-          <option value="MN|Minnesota">Minnesota</option><option value="MS|Mississippi">Mississippi</option>
-          <option value="MO|Missouri">Missouri</option><option value="MT|Montana">Montana</option>
-          <option value="NE|Nebraska">Nebraska</option><option value="NV|Nevada">Nevada</option>
-          <option value="NH|New Hampshire">New Hampshire</option><option value="NJ|New Jersey">New Jersey</option>
-          <option value="NM|New Mexico">New Mexico</option><option value="NY|New York">New York</option>
-          <option value="NC|North Carolina">North Carolina</option><option value="ND|North Dakota">North Dakota</option>
-          <option value="OH|Ohio">Ohio</option><option value="OK|Oklahoma">Oklahoma</option>
-          <option value="OR|Oregon">Oregon</option><option value="PA|Pennsylvania">Pennsylvania</option>
-          <option value="RI|Rhode Island">Rhode Island</option><option value="SC|South Carolina">South Carolina</option>
-          <option value="SD|South Dakota">South Dakota</option><option value="TN|Tennessee">Tennessee</option>
-          <option value="TX|Texas">Texas</option><option value="UT|Utah">Utah</option>
-          <option value="VT|Vermont">Vermont</option><option value="VA|Virginia">Virginia</option>
-          <option value="WA|Washington">Washington</option><option value="WV|West Virginia">West Virginia</option>
-          <option value="WI|Wisconsin">Wisconsin</option><option value="WY|Wyoming">Wyoming</option>
+          <option value="CA">California</option><option value="TX">Texas</option>
+          <option value="FL">Florida</option><option value="NY">New York</option>
+          <option value="WA">Washington</option><option value="AZ">Arizona</option>
+          <option value="IL">Illinois</option><option value="PA">Pennsylvania</option>
+          <option value="OH">Ohio</option><option value="GA">Georgia</option>
+          <option value="NC">North Carolina</option><option value="MI">Michigan</option>
+          <option value="NJ">New Jersey</option><option value="VA">Virginia</option>
+          <option value="TN">Tennessee</option><option value="CO">Colorado</option>
+          <option value="MN">Minnesota</option><option value="OR">Oregon</option>
+          <option value="NV">Nevada</option><option value="AL">Alabama</option>
+          <option value="AK">Alaska</option><option value="AR">Arkansas</option>
+          <option value="CT">Connecticut</option><option value="DE">Delaware</option>
+          <option value="HI">Hawaii</option><option value="ID">Idaho</option>
+          <option value="IN">Indiana</option><option value="IA">Iowa</option>
+          <option value="KS">Kansas</option><option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option><option value="ME">Maine</option>
+          <option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+          <option value="MS">Mississippi</option><option value="MO">Missouri</option>
+          <option value="MT">Montana</option><option value="NE">Nebraska</option>
+          <option value="NH">New Hampshire</option><option value="NM">New Mexico</option>
+          <option value="ND">North Dakota</option><option value="OK">Oklahoma</option>
+          <option value="RI">Rhode Island</option><option value="SC">South Carolina</option>
+          <option value="SD">South Dakota</option><option value="UT">Utah</option>
+          <option value="VT">Vermont</option><option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
         </select>
       </div>
       <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" type="text" id="m-ciudad" placeholder="Ciudad donde operas"></div>
-      <div class="fg"><label class="fl">Mini bio (opcional)</label><input class="fi" type="text" id="m-bio" placeholder="Ej: Especialista en bienestar digestivo"></div>
-      <button class="pay-btn" id="pay-btn" onclick="iniciarPago()">🔒 Pagar $49 / mes</button>
-      <div class="secure-row"><span>🔐 Seguro</span><div class="stripe-b">POWERED BY STRIPE</div><span>PCI-DSS</span></div>
-      <div class="disc">Al pagar recibirás tus credenciales por email para acceder a tu perfil.</div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" type="tel" id="m-whatsapp" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu email</label><input class="fi" type="email" id="m-email" placeholder="Para acceder a tu perfil"></div>
+
+      <!-- BOTÓN STRIPE DIRECTO -->
+      <a id="stripe-btn" class="stripe-pay-btn" href="#" onclick="irAStripe(event)">
+        🔒 Pagar $49 / semana con Stripe
+      </a>
+      <div class="secure-row">
+        <span>🔐 Seguro</span>
+        <div class="stripe-b">POWERED BY STRIPE</div>
+        <span>PCI-DSS</span>
+      </div>
+      <div class="disc">Al pagar tu perfil aparecerá en el mapa. Recibirás acceso a tu panel personal.</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ LOGIN ══════════ -->
+<!-- ══ LOGIN ══ -->
 <div id="s-login" class="screen">
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" class="login-wrap">
-    <div class="login-logo">VITAL<span> HEALTH</span></div>
-    <div class="login-sub">Portal del Distribuidor</div>
+    <div class="login-logo">RED<span> VITAL</span></div>
+    <div class="login-tag">Portal del Distribuidor</div>
     <div class="login-card">
       <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="l-email" placeholder="tu@email.com" style="margin-bottom:0;"></div>
-      <div class="fg" style="margin-top:12px;"><label class="fl">Contraseña</label><input class="fi" type="password" id="l-pass" placeholder="••••••••" style="margin-bottom:0;"></div>
-      <button class="login-btn" onclick="doLogin()" style="margin-top:16px;">Entrar a mi perfil</button>
+      <div class="fg" style="margin-top:12px;"><label class="fl">Contraseña</label><input class="fi" type="password" id="l-pass" placeholder="••••••••" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="login-btn" onclick="doLogin()">Entrar a mi perfil</button>
       <div class="login-err" id="login-err">Email o contraseña incorrectos.</div>
-      <div class="login-link">¿Aún no eres miembro? <a onclick="goTo('s-membresia')" style="cursor:pointer;">Únete por $49/mes →</a></div>
+      <div class="login-link">¿Aún no eres miembro? <a onclick="goTo('s-membresia')">Únete por $49/semana →</a></div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ PERFIL DISTRIBUIDOR ══════════ -->
+<!-- ══ PERFIL DISTRIBUIDOR ══ -->
 <div id="s-perfil" class="screen">
-  <div class="hdr"><div class="logo">VITAL<span> HEALTH</span></div><button onclick="doLogout()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--muted);padding:5px 12px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">Salir</button></div>
+  <div class="hdr">
+    <div class="logo">RED<span> VITAL</span></div>
+    <button onclick="doLogout()" style="background:none;border:1px solid rgba(255,255,255,0.15);color:var(--muted);padding:5px 12px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">Salir</button>
+  </div>
   <div style="flex:1;overflow-y:auto;padding-bottom:20px;">
+
+    <!-- Hero del perfil -->
     <div class="profile-hero">
-      <div class="profile-av" id="p-av">—</div>
-      <div class="profile-name" id="p-name">Cargando…</div>
-      <div class="profile-location" id="p-location"></div>
-      <div class="status-pill activa" id="p-status-pill">Membresía activa</div>
+      <div class="p-av" id="p-av">—</div>
+      <div class="p-name" id="p-name">Cargando…</div>
+      <div class="p-loc" id="p-loc"></div>
+      <span class="status-badge activa" id="p-status">Membresía activa</span>
     </div>
-    <div class="profile-cards">
-      <div class="pcard"><div class="pcard-lbl">Renovación</div><div class="pcard-val" id="p-renov" style="font-size:16px;">—</div><div class="pcard-sub">próximo cobro</div></div>
-      <div class="pcard"><div class="pcard-lbl">Tu slot</div><div class="pcard-val" id="p-slot">—</div><div class="pcard-sub">de 5 en tu estado</div></div>
+
+    <!-- Countdown semanal -->
+    <div class="countdown-box">
+      <div class="cd-label">⏳ Tu membresía vence en</div>
+      <div class="cd-timer">
+        <div class="cd-block"><div class="cd-num" id="cd-d">0</div><div class="cd-unit">Días</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">Horas</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">Min</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Seg</div></div>
+      </div>
+      <div class="cd-warning" id="cd-warning">⚠️ Tu membresía vence pronto — renueva para seguir activo en el mapa.</div>
     </div>
-    <div class="profile-section" style="margin-top:16px;">
-      <div class="profile-section-title">Clientes de tu zona</div>
-      <div id="p-clients"><div style="font-size:13px;color:var(--muted);padding:8px 0;">Cargando clientes…</div></div>
+
+    <!-- Tarjetas de info -->
+    <div class="p-cards">
+      <div class="p-card">
+        <div class="p-card-lbl">Mi estado</div>
+        <div class="p-card-val" id="p-estado" style="font-size:20px;">—</div>
+        <div class="p-card-sub" id="p-ciudad-card">—</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-lbl">Mi slot</div>
+        <div class="p-card-val" id="p-slot">—</div>
+        <div class="p-card-sub">de 5 en mi estado</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-lbl">Clientes recibidos</div>
+        <div class="p-card-val" id="p-clientes-count">0</div>
+        <div class="p-card-sub">esta semana</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-lbl">Próximo cobro</div>
+        <div class="p-card-val" id="p-renov" style="font-size:16px;">—</div>
+        <div class="p-card-sub">$49 automático</div>
+      </div>
     </div>
-    <div class="profile-section" style="margin-top:16px;">
-      <div class="profile-section-title">Editar mi perfil</div>
-      <div class="edit-field"><label class="edit-label">Mi bio</label><input class="edit-input" type="text" id="e-bio" placeholder="Cuéntale a tus clientes sobre ti"></div>
-      <div class="edit-field"><label class="edit-label">Mi ciudad</label><input class="edit-input" type="text" id="e-ciudad"></div>
-      <div class="edit-field"><label class="edit-label">Mi WhatsApp</label><input class="edit-input" type="tel" id="e-whatsapp"></div>
+
+    <!-- Clientes asignados -->
+    <div class="p-section">
+      <div class="p-section-title">Clientes de tu zona esta semana</div>
+      <div id="p-clients">
+        <div style="font-size:13px;color:var(--muted);padding:8px 0;">Cargando clientes…</div>
+      </div>
+    </div>
+
+    <!-- Editar perfil -->
+    <div class="p-section" style="margin-top:16px;padding-bottom:0;">
+      <div class="p-section-title">Editar mi perfil</div>
+      <label class="fl">Mi ciudad</label>
+      <input class="edit-input" type="text" id="e-ciudad" placeholder="Ciudad donde operas">
+      <label class="fl">Mi WhatsApp</label>
+      <input class="edit-input" type="tel" id="e-whatsapp" placeholder="+1 (555) 000-0000">
+      <label class="fl">Mi bio</label>
+      <input class="edit-input" type="text" id="e-bio" placeholder="Cuéntale a tus clientes sobre ti">
       <button class="save-btn" onclick="saveProfile()">Guardar cambios</button>
+      <a class="renew-btn" href="#" id="renew-link" target="_blank">🔄 Gestionar mi membresía en Stripe</a>
     </div>
-    <div style="padding:20px;margin-top:8px;">
-      <div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;line-height:1.6;">
-        Para cancelar tu membresía visita stripe.com/billing<br>
-        Soporte: <span style="color:var(--gold);">soporte@vitalhealthnetwork.com</span>
+
+    <div style="padding:20px;text-align:center;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.2);line-height:1.8;">
+        Para cancelar visita stripe.com/billing<br>
+        Soporte: <span style="color:var(--gold);">soporte@redvital.com</span>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── INIT SUPABASE ─────────────────────────────────────────────
+// ── SUPABASE ──────────────────────────────────────────────────
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -502,7 +565,7 @@ const US_STATES = [
   {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
 ];
 
-let allReps=[], stateMap={}, currentUser=null, currentMember=null;
+let allReps=[], stateMap={}, currentUser=null, currentMember=null, countdownTimer=null;
 
 // ── LOAD DATA ─────────────────────────────────────────────────
 async function loadData() {
@@ -510,23 +573,21 @@ async function loadData() {
     const { data } = await sb.from('membresias').select('*').eq('status','activa');
     allReps = data || [];
   } catch { allReps = []; }
-
   stateMap = {};
   allReps.forEach(r => {
     if(!stateMap[r.estado_codigo]) stateMap[r.estado_codigo]=[];
     stateMap[r.estado_codigo].push(r);
   });
-
-  renderHome(); renderMap(); fillDropdowns();
-  updateMembAvail();
+  renderHome(); renderMap(); fillDropdowns(); updateMembAvail();
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
 async function checkSession() {
-  const { data: { session } } = await sb.auth.getSession();
+  const { data:{ session } } = await sb.auth.getSession();
   if(session?.user) {
     currentUser = session.user;
     await loadMemberProfile();
+    if(currentMember) goTo('s-perfil');
   }
 }
 
@@ -534,10 +595,8 @@ async function doLogin() {
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value;
   const err   = document.getElementById('login-err');
-
   const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error) { err.style.display='block'; return; }
-
+  if(error){ err.style.display='block'; return; }
   err.style.display='none';
   currentUser = data.user;
   await loadMemberProfile();
@@ -546,71 +605,142 @@ async function doLogin() {
 
 async function doLogout() {
   await sb.auth.signOut();
-  currentUser = null; currentMember = null;
+  currentUser=null; currentMember=null;
+  if(countdownTimer) clearInterval(countdownTimer);
   goTo('s-home');
 }
 
 async function loadMemberProfile() {
   if(!currentUser) return;
-  const { data } = await sb.from('membresias').select('*').eq('user_id', currentUser.id).single();
+  const { data } = await sb.from('membresias').select('*').eq('email', currentUser.email).single();
   currentMember = data;
   if(data) renderProfile(data);
 }
 
 // ── RENDER PROFILE ────────────────────────────────────────────
 function renderProfile(m) {
-  document.getElementById('p-av').textContent      = ini(m.nombre);
-  document.getElementById('p-name').textContent    = m.nombre;
-  document.getElementById('p-location').textContent= `${m.ciudad} · ${m.estado_nombre}`;
-  document.getElementById('p-slot').textContent    = m.slot || '1';
-  document.getElementById('p-renov').textContent   = m.fecha_renovacion
+  document.getElementById('p-av').textContent    = ini(m.nombre);
+  document.getElementById('p-name').textContent  = m.nombre;
+  document.getElementById('p-estado').textContent= m.estado_nombre || m.estado_codigo;
+  document.getElementById('p-ciudad-card').textContent = m.ciudad || '—';
+  document.getElementById('p-loc').textContent   = `${m.ciudad||''} · ${m.estado_nombre||m.estado_codigo}`;
+  document.getElementById('p-slot').textContent  = `#${m.slot||1}`;
+  document.getElementById('p-renov').textContent = m.fecha_renovacion
     ? new Date(m.fecha_renovacion).toLocaleDateString('es-US',{month:'short',day:'numeric'}) : '—';
 
-  const pill = document.getElementById('p-status-pill');
-  pill.className = `status-pill ${m.status}`;
-  pill.textContent = m.status === 'activa' ? 'Membresía activa' : 'Membresía ' + m.status;
+  const badge = document.getElementById('p-status');
+  badge.className = `status-badge ${m.status}`;
+  const statusLabels = { activa:'✅ Membresía activa', pendiente:'⏳ Pago pendiente', cancelada:'❌ Cancelada', vencida:'⚠️ Vencida' };
+  badge.textContent = statusLabels[m.status] || m.status;
 
-  document.getElementById('e-bio').value     = m.bio || '';
-  document.getElementById('e-ciudad').value  = m.ciudad || '';
-  document.getElementById('e-whatsapp').value= m.whatsapp || '';
+  document.getElementById('e-ciudad').value  = m.ciudad  || '';
+  document.getElementById('e-whatsapp').value= m.whatsapp|| '';
+  document.getElementById('e-bio').value     = m.bio     || '';
 
-  loadMyClients(m.id);
+  // Countdown
+  if(m.fecha_renovacion) startCountdown(m.fecha_renovacion);
+
+  // Renew link
+  document.getElementById('renew-link').href = STRIPE_LINK;
+
+  // Load clients
+  loadMyClients(m.id, m.estado_codigo);
 }
 
-async function loadMyClients(membresiaId) {
+async function loadMyClients(membresiaId, estadoCodigo) {
   const { data } = await sb.from('solicitudes_scanner')
-    .select('*').eq('rep_asignado_id', membresiaId).order('created_at',{ascending:false});
+    .select('*')
+    .eq('estado_codigo', estadoCodigo)
+    .order('created_at',{ascending:false})
+    .limit(10);
+
+  document.getElementById('p-clientes-count').textContent = data?.length || 0;
 
   const el = document.getElementById('p-clients');
   if(!data?.length) {
-    el.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px 0;line-height:1.6;">Aún no tienes clientes asignados.<br>Cuando alguien solicite un escáner en ${currentMember?.estado_nombre||'tu estado'} aparecerán aquí.</div>`;
+    el.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:8px 0;line-height:1.6;">Aún no hay clientes asignados en tu zona.<br>Cuando alguien solicite un especialista en tu estado aparecerán aquí.</div>`;
     return;
   }
   el.innerHTML = data.map(c=>`
     <div class="client-card">
-      <div class="client-av">${ini(c.nombre)}</div>
+      <div class="cli-av">${ini(c.nombre)}</div>
       <div style="flex:1;">
-        <div class="client-name">${c.nombre}</div>
-        <div class="client-sub">${c.objetivo||'Escáner general'} · ${fmtDate(c.created_at)}</div>
+        <div class="cli-nm">${c.nombre}</div>
+        <div class="cli-sub">${c.objetivo||'Consulta general'} · ${fmtDate(c.created_at)}</div>
       </div>
-      <a href="https://wa.me/${c.telefono?.replace(/\D/g,'')}" target="_blank">
+      ${c.telefono ? `<a href="https://wa.me/${c.telefono.replace(/\D/g,'')}" target="_blank">
         <button style="background:var(--wa);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;">${waIcon()}</button>
-      </a>
+      </a>` : ''}
     </div>`).join('');
 }
 
 async function saveProfile() {
-  if(!currentUser || !currentMember) return;
-  const bio      = document.getElementById('e-bio').value.trim();
+  if(!currentMember) return;
   const ciudad   = document.getElementById('e-ciudad').value.trim();
   const whatsapp = document.getElementById('e-whatsapp').value.trim();
-
-  const { error } = await sb.from('membresias')
-    .update({ bio, ciudad, whatsapp })
-    .eq('user_id', currentUser.id);
-
+  const bio      = document.getElementById('e-bio').value.trim();
+  const { error } = await sb.from('membresias').update({ ciudad, whatsapp, bio }).eq('id', currentMember.id);
   showToast(error ? 'Error al guardar' : '¡Perfil actualizado ✓', !error);
-  if(!error) Object.assign(currentMember, { bio, ciudad, whatsapp });
+  if(!error) Object.assign(currentMember, { ciudad, whatsapp, bio });
+}
+
+// ── COUNTDOWN ─────────────────────────────────────────────────
+function startCountdown(fechaRenovacion) {
+  if(countdownTimer) clearInterval(countdownTimer);
+  const update = () => {
+    const diff = new Date(fechaRenovacion) - Date.now();
+    if(diff <= 0) {
+      document.getElementById('cd-d').textContent='0';
+      document.getElementById('cd-h').textContent='00';
+      document.getElementById('cd-m').textContent='00';
+      document.getElementById('cd-s').textContent='00';
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+    // Advertencia si quedan menos de 2 días
+    const warning = document.getElementById('cd-warning');
+    if(d < 2) warning.style.display='block'; else warning.style.display='none';
+  };
+  update();
+  countdownTimer = setInterval(update, 1000);
+}
+
+// ── STRIPE ────────────────────────────────────────────────────
+async function irAStripe(e) {
+  e.preventDefault();
+  const nombre   = document.getElementById('m-nombre').value.trim();
+  const estado   = document.getElementById('m-estado').value;
+  const ciudad   = document.getElementById('m-ciudad').value.trim();
+  const whatsapp = document.getElementById('m-whatsapp').value.trim();
+  const email    = document.getElementById('m-email').value.trim();
+
+  if(!nombre||!estado||!ciudad||!whatsapp||!email) {
+    showToast('Por favor completa todos los campos antes de pagar','err');
+    return;
+  }
+
+  // Guardar en Supabase como pendiente
+  const estadoNombre = US_STATES.find(s=>s.c===estado)?.n || estado;
+  const repsEnEstado = stateMap[estado]||[];
+  const slot = repsEnEstado.length + 1;
+
+  await sb.from('membresias').upsert({
+    nombre, email, whatsapp, ciudad,
+    estado_codigo: estado,
+    estado_nombre: estadoNombre,
+    slot, status: 'pendiente',
+  }, { onConflict: 'email' });
+
+  // Ir a Stripe con parámetros pre-llenados
+  const stripeUrl = `${STRIPE_LINK}?prefilled_email=${encodeURIComponent(email)}&client_reference_id=${encodeURIComponent(email)}`;
+  window.location.href = stripeUrl;
 }
 
 // ── HOME ──────────────────────────────────────────────────────
@@ -626,11 +756,11 @@ function renderHome() {
 // ── MAP ───────────────────────────────────────────────────────
 function renderMap() {
   document.querySelectorAll('.st').forEach(p=>{
-    const code=p.id, reps=stateMap[code]||[], n=reps.length;
+    const reps=stateMap[p.id]||[], n=reps.length;
     p.classList.remove('full','partial');
     if(n>=5) p.classList.add('full');
     else if(n>0) p.classList.add('partial');
-    p.onclick=()=>showState(code);
+    p.onclick=()=>showState(p.id);
   });
 }
 
@@ -642,66 +772,37 @@ function showState(code) {
     `<div class="spop-slot ${i<taken?'on':'off'}">${i<taken?'✓':''}</div>`).join('');
   document.getElementById('spop-status').textContent=avail===0
     ?'ZONA COMPLETA · 5/5 activos'
-    :`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/mes`;
+    :`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/semana`;
   document.getElementById('spop-reps').innerHTML=reps.length
     ?reps.map(r=>`<div class="rep-row">
         <div class="rep-av">${ini(r.nombre)}</div>
-        <div style="flex:1;"><div class="rep-nm">${r.nombre}</div><div class="rep-ci">${r.ciudad}</div></div>
+        <div style="flex:1;"><div class="rep-nm">${r.nombre}</div><div class="rep-ci">${r.ciudad||''}</div></div>
         <button class="wac" onclick="openWA('${r.whatsapp}','${r.nombre.replace(/'/g,"\\'")}' )">${waIcon()}</button>
       </div>`).join('')
-    :`<p style="font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.6;">Sé el primero en ${name} · $49/mes</p>`;
+    :`<p style="font-size:13px;color:rgba(255,255,255,0.4);padding:12px 0;text-align:center;line-height:1.6;">Sé el primero en ${name}<br>$49/semana</p>`;
   const btn=document.getElementById('spop-btn');
-  btn.textContent=avail>0?`Reservar espacio en ${name} →`:'Solicitar escáner aquí →';
+  btn.textContent=avail>0?`Reservar espacio en ${name} →`:'Solicitar especialista →';
   btn.onclick=()=>goTo(avail>0?'s-membresia':'s-scan');
   const pop=document.getElementById('spop');
   pop.classList.add('vis');
   setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
 }
 
-// ── SCANNER FORM ──────────────────────────────────────────────
+// ── SCAN ──────────────────────────────────────────────────────
 async function submitScan() {
   const nombre=document.getElementById('sc-nombre').value.trim();
   const phone=document.getElementById('sc-phone').value.trim();
   const code=document.getElementById('sc-estado').value;
   const goal=document.getElementById('sc-goal').value;
-  if(!nombre||!phone||!code||!goal){alert('Completa todos los campos.');return;}
-
-  // Guardar en Supabase
+  if(!nombre||!phone||!code||!goal){showToast('Completa todos los campos','err');return;}
   const sname=US_STATES.find(s=>s.c===code)?.n||code;
   await sb.from('solicitudes_scanner').insert({
-    nombre, telefono:phone, estado_codigo:code, estado_nombre:sname, objetivo:goal
+    nombre, telefono:phone.replace(/\D/g,''), estado_codigo:code, estado_nombre:sname, objetivo:goal
   });
-
-  // WhatsApp con el rep del estado
   const reps=stateMap[code]||[];
   const target=reps.length>0?reps[0].whatsapp:YOUR_WHATSAPP;
-  const msg=encodeURIComponent(`Hola! Vengo de Vital Health Network 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nMeta: ${goal}\nTeléfono: ${phone}\n\nMe interesa hacer mi escáner.`);
+  const msg=encodeURIComponent(`Hola! Vengo de Red Vital 🌿\n\nNombre: ${nombre}\nEstado: ${sname}\nBusco: ${goal}\nTel: ${phone}\n\nMe interesa conectar con un especialista.`);
   window.open(`https://wa.me/${target}?text=${msg}`,'_blank');
-}
-
-// ── PAGO ──────────────────────────────────────────────────────
-async function iniciarPago() {
-  const nombre=document.getElementById('m-nombre').value.trim();
-  const email=document.getElementById('m-email').value.trim();
-  const whatsapp=document.getElementById('m-whatsapp').value.trim();
-  const estadoRaw=document.getElementById('m-estado').value;
-  const ciudad=document.getElementById('m-ciudad').value.trim();
-  const bio=document.getElementById('m-bio').value.trim();
-  if(!nombre||!email||!whatsapp||!estadoRaw||!ciudad){alert('Completa todos los campos.');return;}
-  const [estado_codigo,estado_nombre]=estadoRaw.split('|');
-  const btn=document.getElementById('pay-btn');
-  btn.classList.add('loading'); btn.textContent='Procesando…';
-  try {
-    const res=await fetch('/api/create-checkout',{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({nombre,email,whatsapp,estado_codigo,estado_nombre,ciudad,bio})
-    });
-    const data=await res.json();
-    if(data.url) window.location.href=data.url;
-    else { alert(data.error||'Error. Intenta de nuevo.'); btn.classList.remove('loading'); btn.textContent='🔒 Pagar $49 / mes'; }
-  } catch(e) {
-    alert('Error de conexión.'); btn.classList.remove('loading'); btn.textContent='🔒 Pagar $49 / mes';
-  }
 }
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -710,29 +811,28 @@ function fillDropdowns() {
   document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+opts;
 }
 function updateMembAvail() {
-  document.getElementById('memb-avail').textContent=`${255-allReps.length} de 255 posiciones disponibles`;
+  document.getElementById('memb-avail').textContent=`${255-allReps.length} de 255 espacios disponibles`;
 }
-function openWA(number,name) {
-  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Vital Health Network. Me interesa el escáner corporal 🌿`);
-  window.open(`https://wa.me/${number}?text=${msg}`,'_blank');
+function openWA(n,name) {
+  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Red Vital. Me interesa conectar contigo 🌿`);
+  window.open(`https://wa.me/${n}?text=${msg}`,'_blank');
 }
-function ini(name=''){return name.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+function ini(n=''){return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
 function fmtDate(d){if(!d)return'—';return new Date(d).toLocaleDateString('es-US',{month:'short',day:'numeric'});}
 function waIcon(){return`<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;}
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function showToast(msg,ok){
-  let t=document.getElementById('toast-el');
-  if(!t){t=document.createElement('div');t.id='toast-el';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 20px;font-size:14px;font-family:Barlow,sans-serif;z-index:999;border-radius:2px;';document.body.appendChild(t);}
-  t.style.background=ok?'#1D9E75':'#C81E2D'; t.style.color='#fff'; t.textContent=msg;
-  t.style.display='block'; setTimeout(()=>{t.style.display='none';},3000);
+  let t=document.getElementById('_toast');
+  if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:12px 20px;font-size:14px;font-family:Barlow,sans-serif;z-index:999;max-width:340px;text-align:center;';document.body.appendChild(t);}
+  t.style.background=ok===false||ok==='err'?'#C81E2D':'#1D9E75';
+  t.style.color='#fff'; t.textContent=msg;
+  t.style.display='block'; setTimeout(()=>{t.style.display='none';},3500);
 }
 
 // ── INIT ──────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async()=>{
   await loadData();
   await checkSession();
-  // Si ya hay sesión activa, muestra el perfil
-  if(currentUser && currentMember) goTo('s-perfil');
   setTimeout(()=>document.getElementById('loading').classList.add('hidden'),1200);
 });
 </script>
