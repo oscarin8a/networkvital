@@ -295,12 +295,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="logo-img">
       <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="tb-right" id="tb-user-home" onclick="showLogin()" style="cursor:pointer;display:flex;align-items:center;gap:6px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span id="tb-name-home">Entrar</span>
-      </div>
-    </div>
+    <div class="tb-right">USA · 50 Estados</div>
   </div>
   <div class="scroll">
     <!-- PORTADA -->
@@ -357,12 +352,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <button class="back-btn" onclick="back()">←</button>
       <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="tb-right" id="tb-user-map" onclick="showLogin()" style="cursor:pointer;display:flex;align-items:center;gap:6px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span id="tb-name-map">Entrar</span>
-      </div>
-    </div>
+    <div class="tb-right">Mapa USA</div>
   </div>
   <div class="scroll">
     <div class="map-intro">
@@ -469,13 +459,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <button class="back-btn" onclick="back()">←</button>
       <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Escáner</div>
-      <div class="tb-right" id="tb-user-scan" onclick="showLogin()" style="cursor:pointer;display:flex;align-items:center;gap:6px;margin-left:8px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span id="tb-name-scan">Entrar</span>
-      </div>
-    </div>
+    <div class="tb-right">Escáner</div>
   </div>
   <div class="scroll">
     <div class="form-hero">
@@ -528,13 +512,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <button class="back-btn" onclick="back()">←</button>
       <span class="logo-txt">TU RED <span>VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">Membresía</div>
-      <div class="tb-right" id="tb-user-join" onclick="showLogin()" style="cursor:pointer;display:flex;align-items:center;gap:6px;margin-left:8px;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span id="tb-name-join">Entrar</span>
-      </div>
-    </div>
+    <div class="tb-right">Membresía</div>
   </div>
   <div class="scroll">
     <div class="price-hero">
@@ -605,60 +583,6 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
     <button class="bn" onclick="nav('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2" stroke-linecap="round"/></svg>Escáner</button>
     <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
-</div>
-
-
-<!-- ══════════ LOGIN MODAL ══════════ -->
-<div id="login-modal" style="display:none;position:fixed;inset:0;background:rgba(11,22,38,0.92);z-index:500;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#1E2D45;border:1px solid rgba(201,162,75,0.2);width:100%;max-width:360px;padding:28px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;">Iniciar sesión</div>
-      <button onclick="closeLogin()" style="background:none;border:none;color:#7A8FA6;font-size:22px;cursor:pointer;line-height:1;">✕</button>
-    </div>
-    <!-- Google Button -->
-    <button onclick="loginGoogle()" style="width:100%;padding:13px;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;font-family:'Barlow',sans-serif;font-size:15px;font-weight:600;color:#1E2D45;transition:opacity 0.2s;">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Continuar con Google
-    </button>
-    <!-- Divider -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-      <div style="flex:1;height:1px;background:rgba(201,162,75,0.15);"></div>
-      <span style="font-size:12px;color:#7A8FA6;">o con email</span>
-      <div style="flex:1;height:1px;background:rgba(201,162,75,0.15);"></div>
-    </div>
-    <!-- Email -->
-    <div style="margin-bottom:12px;">
-      <input id="l-email" type="email" placeholder="tu@email.com" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,75,0.18);color:#fff;padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;margin-bottom:10px;">
-      <input id="l-pass" type="password" placeholder="Contraseña" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,75,0.18);color:#fff;padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;" onkeydown="if(event.key==='Enter')loginEmail()">
-    </div>
-    <button onclick="loginEmail()" style="width:100%;padding:13px;background:#C9A24B;color:#0B1626;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Entrar</button>
-    <div id="l-err" style="color:#E85C6A;font-size:12px;text-align:center;display:none;margin-bottom:8px;">Email o contraseña incorrectos.</div>
-    <div style="text-align:center;font-size:12px;color:#7A8FA6;">¿No tienes cuenta? <a onclick="showRegister()" style="color:#C9A24B;cursor:pointer;text-decoration:none;">Regístrate gratis →</a></div>
-  </div>
-</div>
-
-<!-- ══════════ REGISTER MODAL ══════════ -->
-<div id="reg-modal" style="display:none;position:fixed;inset:0;background:rgba(11,22,38,0.92);z-index:500;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#1E2D45;border:1px solid rgba(201,162,75,0.2);width:100%;max-width:360px;padding:28px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#fff;">Crear cuenta</div>
-      <button onclick="closeRegister()" style="background:none;border:none;color:#7A8FA6;font-size:22px;cursor:pointer;line-height:1;">✕</button>
-    </div>
-    <button onclick="loginGoogle()" style="width:100%;padding:13px;background:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;font-family:'Barlow',sans-serif;font-size:15px;font-weight:600;color:#1E2D45;">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Registrarse con Google
-    </button>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-      <div style="flex:1;height:1px;background:rgba(201,162,75,0.15);"></div>
-      <span style="font-size:12px;color:#7A8FA6;">o con email</span>
-      <div style="flex:1;height:1px;background:rgba(201,162,75,0.15);"></div>
-    </div>
-    <input id="r-email" type="email" placeholder="tu@email.com" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,75,0.18);color:#fff;padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;margin-bottom:10px;">
-    <input id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,75,0.18);color:#fff;padding:12px 14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;margin-bottom:12px;" onkeydown="if(event.key==='Enter')doRegister()">
-    <button onclick="doRegister()" style="width:100%;padding:13px;background:#C9A24B;color:#0B1626;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Crear cuenta</button>
-    <div id="r-err" style="color:#E85C6A;font-size:12px;text-align:center;display:none;margin-bottom:8px;"></div>
-    <div style="text-align:center;font-size:12px;color:#7A8FA6;">¿Ya tienes cuenta? <a onclick="showLogin()" style="color:#C9A24B;cursor:pointer;text-decoration:none;">Iniciar sesión →</a></div>
-  </div>
 </div>
 
 </div><!-- /app -->
@@ -820,88 +744,9 @@ function openWA(num,name){
   window.open(`https://wa.me/${num}?text=${msg}`,'_blank');
 }
 
-// ── AUTH ──────────────────────────────────────────────────────
-let currentUser = null;
-
-function showLogin() {
-  if(currentUser) { showUserMenu(); return; }
-  document.getElementById('login-modal').style.display = 'flex';
-}
-function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
-function showRegister() {
-  document.getElementById('login-modal').style.display = 'none';
-  document.getElementById('reg-modal').style.display = 'flex';
-}
-function closeRegister() { document.getElementById('reg-modal').style.display = 'none'; }
-function showLogin2() {
-  document.getElementById('reg-modal').style.display = 'none';
-  document.getElementById('login-modal').style.display = 'flex';
-}
-
-async function loginGoogle() {
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.origin }
-  });
-  if(error) alert('Error: ' + error.message);
-}
-
-async function loginEmail() {
-  const email = document.getElementById('l-email').value.trim();
-  const pass  = document.getElementById('l-pass').value;
-  const err   = document.getElementById('l-err');
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error) { err.style.display='block'; return; }
-  err.style.display='none';
-  closeLogin();
-  setUser(data.user);
-}
-
-async function doRegister() {
-  const email = document.getElementById('r-email').value.trim();
-  const pass  = document.getElementById('r-pass').value;
-  const err   = document.getElementById('r-err');
-  if(pass.length < 6) { err.textContent='La contraseña debe tener mínimo 6 caracteres.'; err.style.display='block'; return; }
-  const { data, error } = await sb.auth.signUp({ email, password: pass });
-  if(error) { err.textContent=error.message; err.style.display='block'; return; }
-  closeRegister();
-  alert('¡Cuenta creada! Revisa tu email para confirmar.');
-}
-
-function showUserMenu() {
-  const name = currentUser?.user_metadata?.full_name || currentUser?.email?.split('@')[0] || 'Usuario';
-  if(confirm(`Sesión iniciada como ${name}\n\n¿Cerrar sesión?`)) {
-    sb.auth.signOut().then(()=>{ currentUser=null; updateTopbars(); });
-  }
-}
-
-function setUser(user) {
-  currentUser = user;
-  updateTopbars();
-}
-
-function updateTopbars() {
-  const name = currentUser
-    ? (currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Mi cuenta').split(' ')[0]
-    : 'Entrar';
-  ['home','map','scan','join'].forEach(id => {
-    const el = document.getElementById(`tb-name-${id}`);
-    if(el) el.textContent = name;
-  });
-}
-
-async function checkSession() {
-  const { data: { session } } = await sb.auth.getSession();
-  if(session?.user) setUser(session.user);
-  sb.auth.onAuthStateChange((_event, session) => {
-    setUser(session?.user || null);
-  });
-}
-
 // ── INIT ──────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async()=>{
   await loadData();
-  await checkSession();
   setTimeout(()=>document.getElementById('loading').classList.add('gone'),1300);
 });
 </script>
