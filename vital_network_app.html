@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Vital Health Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1626;
+  --navy2:#111f35;
+  --navy3:#0d1a2e;
+  --gold:#C9A24B;
+  --gold2:#dbb95c;
+  --red:#C81E2D;
+  --green:#1DB954;
+  --text:#f0e8d8;
+  --muted:#8a9ab5;
+}
+html,body{background:#050d19;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px 0 40px}
+#app{
+  width:390px;
+  min-width:320px;
+  background:var(--navy);
+  min-height:720px;
+  position:relative;
+  border-radius:24px;
+  overflow:hidden;
+  font-family:'Barlow',sans-serif;
+  color:var(--text);
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+}
+.screen{display:none;flex-direction:column;min-height:720px;padding-bottom:68px;overflow-y:auto}
+.screen.active{display:flex}
+
+/* NAV */
+.nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:390px;height:64px;
+  background:rgba(11,22,38,0.98);
+  border-top:1px solid rgba(201,162,75,0.2);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:200;
+  border-radius:0 0 24px 24px;
+}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:8px 14px;
+  color:var(--muted);font-family:'Barlow',sans-serif;font-size:10px;
+  transition:color 0.2s;
+}
+.nav-btn.active,.nav-btn:hover{color:var(--gold)}
+.nav-btn i{font-size:24px}
+
+/* SCREEN 1 */
+#s1{
+  background:linear-gradient(160deg,#0B1626 0%,#0e1e38 60%,#0B1626 100%);
+  justify-content:center;align-items:center;text-align:center;
+  padding:48px 28px 84px;gap:0;
+}
+.logo-ring{
+  width:96px;height:96px;border-radius:50%;
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:28px;
+  background:rgba(201,162,75,0.07);
+}
+.logo-ring i{font-size:46px;color:var(--gold)}
+.brand-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;letter-spacing:5px;color:var(--gold);
+  font-weight:600;text-transform:uppercase;margin-bottom:18px;
+}
+.welcome-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:42px;font-weight:800;line-height:1.0;
+  color:#fff;margin-bottom:12px;
+}
+.welcome-title span{color:var(--gold)}
+.welcome-sub{
+  font-size:14px;color:var(--muted);margin-bottom:44px;line-height:1.7;
+}
+.btn-gold{
+  width:100%;padding:20px 22px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;border-radius:14px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:700;color:#0B1626;
+  letter-spacing:0.3px;margin-bottom:14px;
+  transition:transform 0.15s;
+  text-align:left;display:flex;align-items:center;gap:14px;
+}
+.btn-gold:hover{transform:scale(1.02)}
+.btn-gold i{font-size:24px;flex-shrink:0}
+.btn-red{
+  width:100%;padding:20px 22px;
+  background:transparent;
+  border:2px solid var(--red);border-radius:14px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:700;color:#fff;
+  letter-spacing:0.3px;
+  transition:transform 0.15s,background 0.2s;
+  text-align:left;display:flex;align-items:center;gap:14px;
+}
+.btn-red:hover{transform:scale(1.02);background:rgba(200,30,45,0.12)}
+.btn-red i{font-size:24px;color:var(--red);flex-shrink:0}
+.stat-row{display:flex;gap:12px;margin-top:36px}
+.stat-box{
+  flex:1;background:rgba(201,162,75,0.07);
+  border:1px solid rgba(201,162,75,0.15);
+  border-radius:10px;padding:12px 8px;text-align:center;
+}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--gold)}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* SCREEN HEADER */
+.screen-header{
+  padding:22px 20px 14px;
+  background:var(--navy);
+  border-bottom:1px solid rgba(201,162,75,0.12);
+  flex-shrink:0;
+}
+.screen-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;color:#fff;margin-bottom:2px;
+}
+.screen-title span{color:var(--gold)}
+.screen-sub{font-size:13px;color:var(--muted)}
+
+/* SCREEN 2 MAP */
+#s2{padding-bottom:68px}
+.map-container{padding:16px;flex-shrink:0}
+.usa-svg{width:100%;border-radius:12px;overflow:hidden}
+.st-active{fill:var(--gold);cursor:pointer;transition:opacity 0.15s}
+.st-active:hover{opacity:0.8}
+.st-empty{fill:#182c47;cursor:pointer;transition:fill 0.15s}
+.st-empty:hover{fill:#1e3558}
+.state-popup{
+  display:none;background:var(--navy2);
+  border:1px solid rgba(201,162,75,0.3);border-radius:12px;
+  padding:14px 16px;margin:0 16px 12px;
+}
+.popup-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.popup-dist{font-size:13px;color:var(--text);padding:4px 0;border-bottom:1px solid rgba(201,162,75,0.1)}
+.popup-avail{font-size:13px;color:#ff6b75;font-weight:600}
+.popup-btn{
+  margin-top:10px;background:var(--gold);border:none;border-radius:8px;
+  padding:9px 18px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#0B1626;
+}
+.city-list{padding:0 16px 16px}
+.zone-header{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;
+  color:var(--gold);letter-spacing:3px;text-transform:uppercase;
+  margin:18px 0 10px;padding-bottom:6px;
+  border-bottom:1px solid rgba(201,162,75,0.15);
+}
+.city-card{
+  background:var(--navy2);border-radius:10px;
+  padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;
+  border:1px solid rgba(201,162,75,0.08);
+  transition:border-color 0.2s;
+}
+.city-card:hover{border-color:rgba(201,162,75,0.25)}
+.c-av{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:rgba(201,162,75,0.12);border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--gold);
+}
+.c-info{flex:1}
+.c-name{font-size:14px;font-weight:500;color:#fff}
+.c-loc{font-size:12px;color:var(--muted)}
+.wa-btn{
+  background:var(--green);border:none;border-radius:8px;
+  padding:8px 11px;cursor:pointer;color:#fff;font-size:12px;font-weight:600;
+  display:flex;align-items:center;gap:5px;font-family:'Barlow',sans-serif;
+  flex-shrink:0;transition:transform 0.15s;
+}
+.wa-btn:hover{transform:scale(1.05)}
+.avail-card{
+  background:rgba(200,30,45,0.06);border:1px dashed rgba(200,30,45,0.35);
+  border-radius:10px;padding:12px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:background 0.2s;
+}
+.avail-card:hover{background:rgba(200,30,45,0.1)}
+.avail-card i{font-size:22px;color:var(--red);flex-shrink:0}
+.avail-text{font-size:13px;color:#ff6b75;font-weight:600}
+.avail-sub{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* SCREEN 3 TEAM */
+#s3{padding-bottom:68px}
+#s3 .inner{padding:0 16px 16px;overflow-y:auto;flex:1}
+.zone-lbl{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;color:var(--gold);
+  letter-spacing:3px;text-transform:uppercase;
+  margin:18px 0 10px;
+}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.tcard{
+  background:var(--navy2);border-radius:12px;
+  border:1px solid rgba(201,162,75,0.1);
+  padding:16px 12px;text-align:center;cursor:pointer;
+  transition:border-color 0.2s,transform 0.15s;
+}
+.tcard:hover,.tcard.open{border-color:var(--gold);transform:scale(1.02)}
+.tav{
+  width:58px;height:58px;border-radius:50%;
+  background:rgba(201,162,75,0.1);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 10px;
+  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--gold);
+}
+.tname{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.tcity{font-size:11px;color:var(--muted)}
+.texp{
+  display:none;grid-column:1/-1;
+  background:rgba(201,162,75,0.05);border:1px solid rgba(201,162,75,0.18);
+  border-radius:10px;padding:14px;font-size:13px;color:var(--muted);line-height:1.65;
+  animation:fadeIn 0.25s ease;
+}
+.texp.show{display:block}
+.tadd{
+  border:1.5px dashed rgba(200,30,45,0.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:110px;cursor:pointer;
+}
+.tadd:hover{border-color:var(--red);background:rgba(200,30,45,0.05)}
+.join-wrap{padding:16px}
+.btn-join{
+  width:100%;padding:18px;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:19px;font-weight:700;color:#0B1626;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform 0.15s;
+}
+.btn-join:hover{transform:scale(1.02)}
+
+/* SCREEN 4 FORM */
+#s4{padding-bottom:68px}
+.form-inner{padding:18px 16px;overflow-y:auto;flex:1}
+.fg{margin-bottom:18px}
+.flabel{
+  font-size:12px;font-weight:600;color:var(--gold);
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;display:block;
+}
+.finput{
+  width:100%;padding:14px 16px;
+  background:var(--navy2);
+  border:1px solid rgba(201,162,75,0.18);border-radius:10px;
+  color:#fff;font-family:'Barlow',sans-serif;font-size:14px;
+  outline:none;transition:border-color 0.2s;
+}
+.finput:focus{border-color:var(--gold)}
+.finput::placeholder{color:var(--muted)}
+textarea.finput{resize:none;height:88px;line-height:1.6}
+.btn-submit{
+  width:100%;padding:18px;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none;cursor:pointer;margin-top:6px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px;font-weight:700;color:#0B1626;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform 0.15s;
+}
+.btn-submit:hover{transform:scale(1.02)}
+.success{display:none;text-align:center;padding:40px 24px}
+.s-icon{font-size:64px;color:var(--gold);margin-bottom:20px}
+.s-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:32px;font-weight:800;color:#fff;margin-bottom:10px;
+}
+.s-sub{font-size:14px;color:var(--muted);line-height:1.7}
+.s-sub strong{color:var(--gold)}
+
+/* SCREEN 5 ESPECIALISTA */
+#s5{padding-bottom:68px}
+.esp-inner{padding:20px 16px;overflow-y:auto;flex:1}
+.esp-q{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:26px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;
+}
+.esp-hint{font-size:13px;color:var(--muted);margin-bottom:24px}
+.h-opt{
+  background:var(--navy2);border:1.5px solid rgba(201,162,75,0.12);
+  border-radius:12px;padding:16px 18px;margin-bottom:12px;cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  transition:border-color 0.2s,background 0.2s;
+}
+.h-opt:hover,.h-opt.chosen{border-color:var(--gold);background:rgba(201,162,75,0.06)}
+.h-opt i{font-size:26px;color:var(--gold);flex-shrink:0}
+.ot{font-size:15px;font-weight:600;color:#fff}
+.os{font-size:12px;color:var(--muted);margin-top:2px}
+.spec-card{
+  display:none;background:var(--navy2);
+  border:1.5px solid var(--gold);border-radius:14px;
+  padding:20px;margin-top:20px;
+  animation:fadeIn 0.3s ease;
+}
+.spec-card.show{display:block}
+.sp-hdr{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.sp-av{
+  width:54px;height:54px;border-radius:50%;flex-shrink:0;
+  background:rgba(201,162,75,0.12);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--gold);
+}
+.sp-name{font-size:16px;font-weight:600;color:#fff}
+.sp-city{font-size:12px;color:var(--muted)}
+.sp-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.btn-wa2{
+  width:100%;padding:15px;border-radius:10px;
+  background:var(--green);border:none;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform 0.15s;
+}
+.btn-wa2:hover{transform:scale(1.02)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SCREEN 1: BIENVENIDA -->
+<div class="screen active" id="s1">
+  <div class="logo-ring">
+    <i class="ti ti-leaf" aria-hidden="true"></i>
+  </div>
+  <div class="brand-name">Vital Health Network</div>
+  <h1 class="welcome-title">La Red que<br><span>Transforma</span><br>Vidas</h1>
+  <p class="welcome-sub">Distribuidores certificados de productos<br>naturales en todo Estados Unidos.<br>Salud. Libertad. Comunidad.</p>
+  <button class="btn-gold" onclick="goTo('s4')">
+    <i class="ti ti-certificate" aria-hidden="true"></i>
+    <span>Quiero ser Distribuidor Certificado</span>
+  </button>
+  <button class="btn-red" onclick="goTo('s5')">
+    <i class="ti ti-stethoscope" aria-hidden="true"></i>
+    <span>Conectar con un Especialista en Salud</span>
+  </button>
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num">6</div>
+      <div class="stat-lbl">Estados activos</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">40K+</div>
+      <div class="stat-lbl">Comunidad</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">1M+</div>
+      <div class="stat-lbl">Alcance mensual</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: MAPA -->
+<div class="screen" id="s2">
+  <div class="screen-header">
+    <div class="screen-title">Mapa de <span>Distribuidores</span></div>
+    <div class="screen-sub">Toca un estado para ver detalles · Dorado = activo</div>
+  </div>
+  <div class="map-container">
+    <svg class="usa-svg" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="460" height="280" fill="#0d1a2e" rx="10"/>
+      <!-- Row 1 -->
+      <rect class="st-active" x="12" y="22" width="52" height="32" rx="5" onclick="popState('wa')"/><text x="38" y="42" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">WA</text>
+      <rect class="st-empty" x="68" y="22" width="48" height="32" rx="5" onclick="popState('mt')"/><text x="92" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MT</text>
+      <rect class="st-empty" x="120" y="22" width="48" height="32" rx="5" onclick="popState('nd')"/><text x="144" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">ND</text>
+      <rect class="st-empty" x="172" y="22" width="42" height="32" rx="5" onclick="popState('mn')"/><text x="193" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MN</text>
+      <rect class="st-empty" x="218" y="22" width="38" height="32" rx="5" onclick="popState('wi')"/><text x="237" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">WI</text>
+      <rect class="st-empty" x="260" y="22" width="38" height="32" rx="5" onclick="popState('mi')"/><text x="279" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MI</text>
+      <rect class="st-empty" x="302" y="22" width="34" height="32" rx="5" onclick="popState('pa')"/><text x="319" y="42" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">PA</text>
+      <rect class="st-active" x="340" y="22" width="42" height="32" rx="5" onclick="popState('ny')"/><text x="361" y="42" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">NY</text>
+      <rect class="st-empty" x="386" y="22" width="30" height="15" rx="4" onclick="popState('me')"/><text x="401" y="33" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="9" font-weight="700">ME</text>
+      <!-- Row 2 -->
+      <rect class="st-active" x="12" y="58" width="52" height="60" rx="5" onclick="popState('or')"/><text x="38" y="92" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">OR</text>
+      <rect class="st-empty" x="68" y="58" width="48" height="32" rx="5" onclick="popState('wy')"/><text x="92" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">WY</text>
+      <rect class="st-empty" x="120" y="58" width="48" height="32" rx="5" onclick="popState('sd')"/><text x="144" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">SD</text>
+      <rect class="st-empty" x="172" y="58" width="42" height="32" rx="5" onclick="popState('ia')"/><text x="193" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IA</text>
+      <rect class="st-empty" x="218" y="58" width="38" height="32" rx="5" onclick="popState('il')"/><text x="237" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IL</text>
+      <rect class="st-empty" x="260" y="58" width="38" height="32" rx="5" onclick="popState('in')"/><text x="279" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">IN</text>
+      <rect class="st-empty" x="302" y="58" width="34" height="32" rx="5" onclick="popState('oh')"/><text x="319" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">OH</text>
+      <rect class="st-empty" x="340" y="58" width="42" height="32" rx="5" onclick="popState('nj')"/><text x="361" y="78" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NJ</text>
+      <rect class="st-empty" x="386" y="42" width="30" height="50" rx="4" onclick="popState('ne2')"/><text x="401" y="70" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="9" font-weight="700">NE</text>
+      <!-- Row 3 -->
+      <rect class="st-active" x="12" y="122" width="52" height="80" rx="5" onclick="popState('ca')"/><text x="38" y="166" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">CA</text>
+      <rect class="st-empty" x="68" y="94" width="48" height="60" rx="5" onclick="popState('nv')"/><text x="92" y="128" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NV</text>
+      <rect class="st-empty" x="120" y="94" width="48" height="32" rx="5" onclick="popState('co')"/><text x="144" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">CO</text>
+      <rect class="st-empty" x="172" y="94" width="42" height="32" rx="5" onclick="popState('mo')"/><text x="193" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MO</text>
+      <rect class="st-empty" x="218" y="94" width="38" height="32" rx="5" onclick="popState('ky')"/><text x="237" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">KY</text>
+      <rect class="st-empty" x="260" y="94" width="38" height="32" rx="5" onclick="popState('va')"/><text x="279" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">VA</text>
+      <rect class="st-empty" x="302" y="94" width="34" height="32" rx="5" onclick="popState('md')"/><text x="319" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MD</text>
+      <rect class="st-empty" x="340" y="94" width="42" height="32" rx="5" onclick="popState('de')"/><text x="361" y="114" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">DE</text>
+      <!-- Row 4 -->
+      <rect class="st-empty" x="68" y="158" width="48" height="32" rx="5" onclick="popState('az')"/><text x="92" y="178" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">AZ</text>
+      <rect class="st-empty" x="120" y="130" width="48" height="32" rx="5" onclick="popState('nm')"/><text x="144" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NM</text>
+      <rect class="st-active" x="120" y="166" width="110" height="55" rx="5" onclick="popState('tx')"/><text x="175" y="197" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="13" font-weight="700">TX</text>
+      <rect class="st-empty" x="234" y="130" width="40" height="32" rx="5" onclick="popState('ar')"/><text x="254" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">AR</text>
+      <rect class="st-empty" x="278" y="130" width="40" height="32" rx="5" onclick="popState('tn')"/><text x="298" y="150" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">TN</text>
+      <rect class="st-empty" x="234" y="166" width="40" height="35" rx="5" onclick="popState('la')"/><text x="254" y="187" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">LA</text>
+      <rect class="st-empty" x="278" y="166" width="40" height="35" rx="5" onclick="popState('ms')"/><text x="298" y="187" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">MS</text>
+      <rect class="st-empty" x="322" y="130" width="40" height="35" rx="5" onclick="popState('nc')"/><text x="342" y="151" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">NC</text>
+      <rect class="st-empty" x="322" y="169" width="40" height="32" rx="5" onclick="popState('sc')"/><text x="342" y="189" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">SC</text>
+      <rect class="st-empty" x="322" y="205" width="40" height="32" rx="5" onclick="popState('ga')"/><text x="342" y="225" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="11" font-weight="700">GA</text>
+      <rect class="st-active" x="366" y="190" width="56" height="55" rx="5" onclick="popState('fl')"/><text x="394" y="221" text-anchor="middle" fill="#0B1626" font-family="Barlow Condensed" font-size="11" font-weight="700">FL</text>
+      <!-- Alaska Hawaii -->
+      <rect class="st-empty" x="12" y="218" width="46" height="34" rx="5" onclick="popState('ak')"/><text x="35" y="239" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="10" font-weight="700">AK</text>
+      <rect class="st-empty" x="62" y="218" width="46" height="34" rx="5" onclick="popState('hi')"/><text x="85" y="239" text-anchor="middle" fill="#8a9ab5" font-family="Barlow Condensed" font-size="10" font-weight="700">HI</text>
+      <!-- Legend -->
+      <rect x="12" y="258" width="10" height="10" rx="2" fill="#C9A24B"/>
+      <text x="26" y="267" fill="#8a9ab5" font-family="Barlow" font-size="10">Distribuidor activo</text>
+      <rect x="140" y="258" width="10" height="10" rx="2" fill="#182c47"/>
+      <text x="154" y="267" fill="#8a9ab5" font-family="Barlow" font-size="10">Zona disponible</text>
+    </svg>
+  </div>
+  <div class="state-popup" id="state-popup">
+    <div id="popup-content"></div>
+  </div>
+  <div class="city-list">
+    <div class="zone-header">⬡ California Norte</div>
+    <div class="city-card">
+      <div class="c-av">OO</div>
+      <div class="c-info"><div class="c-name">Oscar Ochoa</div><div class="c-loc">Modesto, CA</div></div>
+      <button class="wa-btn" onclick="openWA('Oscar Ochoa','Modesto')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="city-card">
+      <div class="c-av">MR</div>
+      <div class="c-info"><div class="c-name">María Ramírez</div><div class="c-loc">Sacramento, CA</div></div>
+      <button class="wa-btn" onclick="openWA('María Ramírez','Sacramento')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="zone-header">⬡ California Sur</div>
+    <div class="city-card">
+      <div class="c-av">JL</div>
+      <div class="c-info"><div class="c-name">José López</div><div class="c-loc">Los Ángeles, CA</div></div>
+      <button class="wa-btn" onclick="openWA('José López','Los Ángeles')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="city-card">
+      <div class="c-av">DH</div>
+      <div class="c-info"><div class="c-name">Diana Herrera</div><div class="c-loc">San Diego, CA</div></div>
+      <button class="wa-btn" onclick="openWA('Diana Herrera','San Diego')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="zone-header">⬡ Texas</div>
+    <div class="city-card">
+      <div class="c-av">AG</div>
+      <div class="c-info"><div class="c-name">Ana González</div><div class="c-loc">Houston, TX</div></div>
+      <button class="wa-btn" onclick="openWA('Ana González','Houston')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="city-card">
+      <div class="c-av">PS</div>
+      <div class="c-info"><div class="c-name">Pedro Soto</div><div class="c-loc">Dallas, TX</div></div>
+      <button class="wa-btn" onclick="openWA('Pedro Soto','Dallas')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="zone-header">⬡ Florida</div>
+    <div class="city-card">
+      <div class="c-av">CM</div>
+      <div class="c-info"><div class="c-name">Carlos Morales</div><div class="c-loc">Miami, FL</div></div>
+      <button class="wa-btn" onclick="openWA('Carlos Morales','Miami')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="city-card">
+      <div class="c-av">DR</div>
+      <div class="c-info"><div class="c-name">Diana Ríos</div><div class="c-loc">Orlando, FL</div></div>
+      <button class="wa-btn" onclick="openWA('Diana Ríos','Orlando')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="zone-header">⬡ Washington · New York</div>
+    <div class="city-card">
+      <div class="c-av">LV</div>
+      <div class="c-info"><div class="c-name">Laura Vargas</div><div class="c-loc">Seattle, WA</div></div>
+      <button class="wa-btn" onclick="openWA('Laura Vargas','Seattle')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="city-card">
+      <div class="c-av">RC</div>
+      <div class="c-info"><div class="c-name">Ramón Cruz</div><div class="c-loc">Nueva York, NY</div></div>
+      <button class="wa-btn" onclick="openWA('Ramón Cruz','Nueva York')"><i class="ti ti-brand-whatsapp" style="font-size:15px" aria-hidden="true"></i> Chat</button>
+    </div>
+    <div class="zone-header">⬡ Zonas disponibles</div>
+    <div class="avail-card" onclick="goTo('s4')">
+      <i class="ti ti-map-pin-plus" aria-hidden="true"></i>
+      <div>
+        <div class="avail-text">Colorado · Nevada · Arizona</div>
+        <div class="avail-sub">Zona disponible — Sé el primero en tu ciudad</div>
+      </div>
+    </div>
+    <div class="avail-card" onclick="goTo('s4')">
+      <i class="ti ti-map-pin-plus" aria-hidden="true"></i>
+      <div>
+        <div class="avail-text">Illinois · Georgia · Virginia</div>
+        <div class="avail-sub">Zona disponible — Sé el primero en tu ciudad</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 3: EQUIPO -->
+<div class="screen" id="s3">
+  <div class="screen-header">
+    <div class="screen-title">Nuestro <span>Equipo</span></div>
+    <div class="screen-sub">Toca una tarjeta para conocer su historia</div>
+  </div>
+  <div class="inner">
+    <div class="zone-lbl">🌊 Zona Oeste</div>
+    <div class="tgrid">
+      <div class="tcard" onclick="expandTeam(this,'Oscar es el fundador de The Master Center en Modesto, CA. Con más de 20 años de experiencia emprendedora, lidera la red en California Norte y es speaker en desarrollo humano y marketing digital.')">
+        <div class="tav">OO</div>
+        <div class="tname">Oscar Ochoa</div>
+        <div class="tcity">Modesto, CA</div>
+      </div>
+      <div class="tcard" onclick="expandTeam(this,'María construyó su negocio desde cero en Sacramento. Hoy lidera su zona con más de 50 clientes activos y organiza eventos de salud cada mes en su comunidad.')">
+        <div class="tav">MR</div>
+        <div class="tname">María Ramírez</div>
+        <div class="tcity">Sacramento, CA</div>
+      </div>
+      <div class="texp"></div>
+      <div class="tcard" onclick="expandTeam(this,'José es el distribuidor más activo en el sur de California. Su comunidad en Los Ángeles crece cada semana con nuevos clientes satisfechos y distribuidores en entrenamiento.')">
+        <div class="tav">JL</div>
+        <div class="tname">José López</div>
+        <div class="tcity">Los Ángeles, CA</div>
+      </div>
+      <div class="tcard" onclick="expandTeam(this,'Laura lidera Washington con pasión por el bienestar natural. Conecta con la comunidad latina de Seattle cada semana y ha formado un equipo de 8 distribuidores activos.')">
+        <div class="tav">LV</div>
+        <div class="tname">Laura Vargas</div>
+        <div class="tcity">Seattle, WA</div>
+      </div>
+      <div class="texp"></div>
+    </div>
+    <div class="zone-lbl">🌞 Zona Sur</div>
+    <div class="tgrid">
+      <div class="tcard" onclick="expandTeam(this,'Ana es una de las líderes más consistentes en Texas. Desde Houston coordina eventos de salud masivos y ha reclutado a más de 15 nuevos distribuidores en el último año.')">
+        <div class="tav">AG</div>
+        <div class="tname">Ana González</div>
+        <div class="tcity">Houston, TX</div>
+      </div>
+      <div class="tcard" onclick="expandTeam(this,'Carlos llegó a Miami con un sueño y hoy tiene una de las redes más grandes en Florida. Es speaker en eventos regionales y mentor de nuevos distribuidores.')">
+        <div class="tav">CM</div>
+        <div class="tname">Carlos Morales</div>
+        <div class="tcity">Miami, FL</div>
+      </div>
+      <div class="texp"></div>
+      <div class="tcard" onclick="expandTeam(this,'Pedro es el referente en Dallas. Su red crece con fuerza en la comunidad hispana de North Texas, combinando eventos presenciales y estrategia digital.')">
+        <div class="tav">PS</div>
+        <div class="tname">Pedro Soto</div>
+        <div class="tcity">Dallas, TX</div>
+      </div>
+      <div class="tcard" onclick="expandTeam(this,'Diana coordina Orlando con energía y consistencia. Es la líder que más testimonios de salud ha documentado en su zona, inspirando a cientos de personas.')">
+        <div class="tav">DR</div>
+        <div class="tname">Diana Ríos</div>
+        <div class="tcity">Orlando, FL</div>
+      </div>
+      <div class="texp"></div>
+    </div>
+    <div class="zone-lbl">🗽 Zona Este</div>
+    <div class="tgrid">
+      <div class="tcard" onclick="expandTeam(this,'Ramón representa la comunidad latina en Nueva York. Su red en el Bronx y Queens es un modelo a seguir para toda la red nacional.')">
+        <div class="tav">RC</div>
+        <div class="tname">Ramón Cruz</div>
+        <div class="tcity">Nueva York, NY</div>
+      </div>
+      <div class="tcard tadd" onclick="goTo('s4')">
+        <i class="ti ti-plus" style="font-size:30px;color:var(--red)" aria-hidden="true"></i>
+        <div class="tname" style="font-size:12px;color:var(--red);margin-top:6px">Tu zona aquí</div>
+        <div class="tcity">Únete ahora</div>
+      </div>
+      <div class="texp"></div>
+    </div>
+    <div class="join-wrap">
+      <button class="btn-join" onclick="goTo('s4')">
+        <i class="ti ti-star" aria-hidden="true"></i>
+        Únete a este equipo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: FORMULARIO -->
+<div class="screen" id="s4">
+  <div class="screen-header">
+    <div class="screen-title">Hazte <span>Distribuidor</span></div>
+    <div class="screen-sub">Completa el formulario · Te contactamos en 24 hrs</div>
+  </div>
+  <div class="form-inner">
+    <div id="form-fields">
+      <div class="fg">
+        <label class="flabel">Nombre completo</label>
+        <input class="finput" type="text" placeholder="Tu nombre y apellido" id="f-name"/>
+      </div>
+      <div class="fg">
+        <label class="flabel">Ciudad y estado</label>
+        <input class="finput" type="text" placeholder="Ej: Modesto, California" id="f-city"/>
+      </div>
+      <div class="fg">
+        <label class="flabel">WhatsApp</label>
+        <input class="finput" type="tel" placeholder="+1 (209) 000-0000" id="f-phone"/>
+      </div>
+      <div class="fg">
+        <label class="flabel">¿Por qué quieres ser distribuidor?</label>
+        <textarea class="finput" placeholder="Cuéntanos tu motivación en pocas palabras..." id="f-why"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitForm()">
+        <i class="ti ti-send" aria-hidden="true"></i>
+        Enviar mi solicitud
+      </button>
+    </div>
+    <div class="success" id="success-msg">
+      <div class="s-icon"><i class="ti ti-circle-check" aria-label="Éxito"></i></div>
+      <div class="s-title">¡Solicitud enviada!</div>
+      <p class="s-sub">Gracias por dar el primer paso.<br><br>Un líder de zona se pondrá en<br>contacto contigo en las próximas<br>24 horas.<br><br><strong>¡Bienvenido a la familia<br>Vital Health Network!</strong></p>
+      <button class="btn-gold" style="margin-top:28px;justify-content:center;border-radius:12px" onclick="resetForm()">
+        <i class="ti ti-home" aria-hidden="true"></i>
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: ESPECIALISTA -->
+<div class="screen" id="s5">
+  <div class="screen-header">
+    <div class="screen-title">Tu <span>Especialista</span></div>
+    <div class="screen-sub">Elige tu objetivo para encontrar al experto ideal</div>
+  </div>
+  <div class="esp-inner">
+    <div class="esp-q">¿Cuál es tu objetivo<br>principal de salud?</div>
+    <div class="esp-hint">Selecciona una opción a continuación</div>
+    <div class="h-opt" onclick="pickHealth(this,'peso')">
+      <i class="ti ti-chart-line-down" aria-hidden="true"></i>
+      <div>
+        <div class="ot">Bajar de peso</div>
+        <div class="os">Planes personalizados con nutrición natural</div>
+      </div>
+    </div>
+    <div class="h-opt" onclick="pickHealth(this,'energia')">
+      <i class="ti ti-bolt" aria-hidden="true"></i>
+      <div>
+        <div class="ot">Más energía y vitalidad</div>
+        <div class="os">Rendimiento y bienestar diario</div>
+      </div>
+    </div>
+    <div class="h-opt" onclick="pickHealth(this,'digestiva')">
+      <i class="ti ti-leaf" aria-hidden="true"></i>
+      <div>
+        <div class="ot">Salud digestiva</div>
+        <div class="os">Bienestar intestinal y detox natural</div>
+      </div>
+    </div>
+    <div class="h-opt" onclick="pickHealth(this,'general')">
+      <i class="ti ti-heart" aria-hidden="true"></i>
+      <div>
+        <div class="ot">Bienestar general</div>
+        <div class="os">Equilibrio total cuerpo y mente</div>
+      </div>
+    </div>
+    <div class="spec-card" id="spec-card"></div>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<nav class="nav" role="navigation" aria-label="Navegación principal">
+  <button class="nav-btn active" id="nav-s1" onclick="goTo('s1')" aria-label="Inicio">
+    <i class="ti ti-home" aria-hidden="true"></i>Inicio
+  </button>
+  <button class="nav-btn" id="nav-s2" onclick="goTo('s2')" aria-label="Mapa">
+    <i class="ti ti-map-2" aria-hidden="true"></i>Mapa
+  </button>
+  <button class="nav-btn" id="nav-s3" onclick="goTo('s3')" aria-label="Equipo">
+    <i class="ti ti-users" aria-hidden="true"></i>Equipo
+  </button>
+  <button class="nav-btn" id="nav-s4" onclick="goTo('s4')" aria-label="Unirse">
+    <i class="ti ti-user-plus" aria-hidden="true"></i>Unirse
+  </button>
+</nav>
+
+</div>
+
+<script>
+const stateInfo={
+  wa:{name:'Washington',active:true,list:['Laura Vargas — Seattle']},
+  ca:{name:'California',active:true,list:['Oscar Ochoa — Modesto','María Ramírez — Sacramento','José López — Los Ángeles','Diana Herrera — San Diego']},
+  tx:{name:'Texas',active:true,list:['Ana González — Houston','Pedro Soto — Dallas']},
+  fl:{name:'Florida',active:true,list:['Carlos Morales — Miami','Diana Ríos — Orlando']},
+  ny:{name:'Nueva York',active:true,list:['Ramón Cruz — Nueva York']},
+  or:{name:'Oregon',active:false},
+};
+
+const specs={
+  peso:{av:'AG',name:'Ana González',city:'Houston, TX',desc:'Especialista en nutrición y control de peso. Ha guiado a más de 200 personas a alcanzar su peso ideal con protocolos naturales de Vital Health.',msg:'Hola Ana! Vi tu perfil en Vital Health Network. Me interesa el programa para bajar de peso 🌿'},
+  energia:{av:'OO',name:'Oscar Ochoa',city:'Modesto, CA',desc:'Experto en vitalidad y rendimiento diario. Su programa de energía natural ha transformado la vida de emprendedores y profesionales en toda California.',msg:'Hola Oscar! Vi tu perfil en Vital Health Network. Quiero información sobre los productos de energía y vitalidad ⚡'},
+  digestiva:{av:'LV',name:'Laura Vargas',city:'Seattle, WA',desc:'Especialista en salud digestiva y detox. Maneja protocolos de microbioma y bienestar intestinal con enfoque 100% natural y personalizado.',msg:'Hola Laura! Vi tu perfil en Vital Health Network. Me interesa mejorar mi salud digestiva 🌿'},
+  general:{av:'MR',name:'María Ramírez',city:'Sacramento, CA',desc:'Consultora de bienestar integral. Trabaja con familias para construir hábitos saludables sostenibles que duran toda la vida.',msg:'Hola María! Vi tu perfil en Vital Health Network. Me gustaría conocer el programa de bienestar general ❤️'},
+};
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nav-'+id);
+  if(nb)nb.classList.add('active');
+}
+
+function popState(code){
+  const d=stateInfo[code];
+  const popup=document.getElementById('state-popup');
+  const content=document.getElementById('popup-content');
+  if(d&&d.active){
+    let html=`<div class="popup-title">${d.name} — ${d.list.length} distribuidor${d.list.length>1?'es':''}</div>`;
+    d.list.forEach(x=>{html+=`<div class="popup-dist">${x}</div>`;});
+    content.innerHTML=html;
+  } else {
+    const name=d?d.name:'Este estado';
+    content.innerHTML=`<div style="text-align:center;padding:6px 0">
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px">${name}</div>
+      <div class="popup-avail" style="margin-bottom:12px">Zona disponible — ¡Sé el primero!</div>
+      <button class="popup-btn" onclick="goTo('s4')">Aplicar ahora</button>
+    </div>`;
+  }
+  popup.style.display='block';
+  popup.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function openWA(name,city){
+  const msg=encodeURIComponent(`Hola ${name}! Vi tu perfil en Vital Health Network. Soy de ${city} y me interesa conocer los productos 🌿`);
+  window.open(`https://wa.me/?text=${msg}`,'_blank');
+}
+
+let openTeamCard=null;
+function expandTeam(el,story){
+  const grid=el.closest('.tgrid');
+  const allCards=Array.from(grid.querySelectorAll('.tcard:not(.tadd)'));
+  const allExps=Array.from(grid.querySelectorAll('.texp'));
+  const idx=allCards.indexOf(el);
+  const expIdx=Math.floor(idx/2);
+  const expEl=allExps[expIdx];
+  allCards.forEach(c=>c.classList.remove('open'));
+  if(openTeamCard===el){
+    allExps.forEach(e=>{e.textContent='';e.classList.remove('show')});
+    openTeamCard=null;return;
+  }
+  allExps.forEach(e=>{e.textContent='';e.classList.remove('show')});
+  el.classList.add('open');
+  if(expEl){expEl.textContent=story;expEl.classList.add('show');}
+  openTeamCard=el;
+}
+
+function submitForm(){
+  const n=document.getElementById('f-name').value.trim();
+  if(!n){alert('Por favor ingresa tu nombre completo');return;}
+  document.getElementById('form-fields').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+
+function resetForm(){
+  document.getElementById('form-fields').style.display='block';
+  document.getElementById('success-msg').style.display='none';
+  ['f-name','f-city','f-phone','f-why'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  goTo('s1');
+}
+
+function pickHealth(el,type){
+  document.querySelectorAll('.h-opt').forEach(o=>o.classList.remove('chosen'));
+  el.classList.add('chosen');
+  const s=specs[type];
+  const card=document.getElementById('spec-card');
+  const msgEnc=encodeURIComponent(s.msg);
+  card.innerHTML=`
+    <div class="sp-hdr">
+      <div class="sp-av">${s.av}</div>
+      <div><div class="sp-name">${s.name}</div><div class="sp-city">${s.city}</div></div>
+    </div>
+    <div class="sp-desc">${s.desc}</div>
+    <button class="btn-wa2" onclick="window.open('https://wa.me/?text=${msgEnc}','_blank')">
+      <i class="ti ti-brand-whatsapp" style="font-size:22px" aria-hidden="true"></i>
+      Contactar por WhatsApp
+    </button>`;
+  card.classList.add('show');
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+</script>
+</body>
+</html>
