@@ -1379,7 +1379,7 @@ async function pagarCamp() {
       status: 'pendiente'
     });
   } catch(e){}
-  window.open(`${STRIPE_CAMP}?prefilled_amount=${campAmtVal*100}`, '_blank');
+  window.open(`${STRIPE_CAMP}?prefilled_amount=${campAmtVal}`, '_blank');
 }
 
 // Tabs
