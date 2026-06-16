@@ -12,6 +12,9 @@ const SB_URL = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
 const SB_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
 const WA_MAIN = '12099717638';
 const STRIPE  = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
+const STRIPE_CAMP = 'https://buy.stripe.com/aFacN451M9Z02822MD9EI01';
+const CAMP_END = new Date('2026-06-17T12:00:00-07:00').getTime() + 7*24*60*60*1000;
+const CAMP_META = 10000;
 const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
 </script>
 <style>
@@ -544,6 +547,28 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       </div>
     </div>
 
+    <!-- BANNER CAMPANAS CON TIMER -->
+    <div onclick="nav('camp')" style="margin:0 14px 12px;background:#0F2040;border:1px solid rgba(201,168,76,0.45);border-radius:12px;padding:14px 16px;cursor:pointer;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;display:flex;align-items:center;gap:8px;">🔔 Patrocinar esta App</div>
+        <div style="display:flex;gap:5px;align-items:center;">
+          <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:5px;padding:4px 7px;text-align:center;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#E8C96A;" id="b-d">--</div><div style="font-size:7px;color:rgba(255,255,255,0.35);">días</div></div>
+          <div style="color:#C9A84C;font-size:15px;font-weight:900;">:</div>
+          <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:5px;padding:4px 7px;text-align:center;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#E8C96A;" id="b-h">--</div><div style="font-size:7px;color:rgba(255,255,255,0.35);">hrs</div></div>
+          <div style="color:#C9A84C;font-size:15px;font-weight:900;">:</div>
+          <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:5px;padding:4px 7px;text-align:center;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#E8C96A;" id="b-m">--</div><div style="font-size:7px;color:rgba(255,255,255,0.35);">min</div></div>
+        </div>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;margin-bottom:6px;">
+        <div style="height:100%;background:linear-gradient(90deg,#C9A84C,#E8C96A);border-radius:3px;transition:width .5s;" id="b-bar"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:8px;">
+        <span style="color:#E8C96A;font-weight:700;" id="b-total">$0 recaudados</span>
+        <span style="color:rgba(255,255,255,0.35);">Meta $10,000</span>
+      </div>
+      <div style="display:flex;gap:6px;overflow:hidden;" id="b-feed"></div>
+    </div>
+
     <div class="sec-lbl">¿Cómo funciona?</div>
     <div class="vp"><div class="vp-ic">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
     <div class="vp"><div class="vp-ic">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
@@ -780,12 +805,123 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div class="wa-big-ic">💬</div>
       <div><div class="wa-big-t">Soporte Distribuidores</div><div class="wa-big-s">Línea directa · Tu Red Vital</div></div>
     </div>
+    <!-- BOTÓN CAMPANAS DIST -->
+    <div onclick="nav('camp')" style="margin:0 14px 14px;padding:15px;background:linear-gradient(135deg,#1C3252,#0B1A2E);border:1px solid rgba(201,168,76,0.4);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:13px;">
+      <div style="width:44px;height:44px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">🔔</div>
+      <div style="flex:1;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;margin-bottom:2px;">Patrocinio de Campanas</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);">Tu recompensa semanal · Área exclusiva</div>
+      </div>
+      <div style="color:#C9A24B;font-size:20px;">→</div>
+    </div>
     <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-3">
     <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
     <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
     <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Mi Panel</button>
+  </nav>
+</div>
+
+
+<!-- ════ CAMPANAS ════ -->
+<div id="s-camp" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="top-brand">🔔 <span>Campanas</span></span>
+    </div>
+  </div>
+  <div class="scroll">
+    <!-- HERO TIMER -->
+    <div style="background:linear-gradient(160deg,#04090f 0%,#0d1e33 100%);padding:20px 16px 16px;border-bottom:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px;">⚡ Patrocinio activo — tiempo restante</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;">
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-d">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">días</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-h">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">horas</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-m">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">min</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-s">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">seg</div>
+        </div>
+      </div>
+      <!-- BARRA PROGRESO -->
+      <div style="height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:6px;">
+        <div style="height:100%;background:linear-gradient(90deg,#C9A84C,#E8C96A);border-radius:4px;transition:width .5s;" id="c2-bar"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;">
+        <span style="color:#E8C96A;font-weight:700;" id="c2-total">$0 recaudados</span>
+        <span style="color:rgba(255,255,255,0.35);">Meta: $10,000</span>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div style="display:flex;border-bottom:1px solid rgba(201,168,76,0.12);">
+      <div id="tab-p" onclick="campTab('p')" style="flex:1;padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:#E8C96A;border-bottom:2px solid #C9A84C;cursor:pointer;">PATROCINAR</div>
+      <div id="tab-f" onclick="campTab('f')" style="flex:1;padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;">PATROCINADORES</div>
+    </div>
+
+    <!-- TAB: PATROCINAR -->
+    <div id="camp-p" style="padding:16px;">
+      <div style="background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:16px;margin-bottom:14px;">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:900;color:#E8C96A;line-height:1;">$<span id="camp-amt">100</span></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;">Elige tu monto · $1 mínimo · $10,000 máximo</div>
+        </div>
+        <input type="range" min="1" max="10000" step="1" value="100" id="camp-range"
+          style="width:100%;-webkit-appearance:none;height:4px;border-radius:2px;outline:none;margin-bottom:12px;cursor:pointer;"
+          oninput="updateCampAmt(this.value)">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div onclick="setCampAmt(25)" style="padding:6px 12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:20px;font-size:11px;color:#C9A84C;cursor:pointer;">$25</div>
+          <div onclick="setCampAmt(50)" style="padding:6px 12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:20px;font-size:11px;color:#C9A84C;cursor:pointer;">$50</div>
+          <div onclick="setCampAmt(100)" style="padding:6px 12px;background:rgba(201,168,76,0.2);border:1px solid #C9A84C;border-radius:20px;font-size:11px;color:#E8C96A;cursor:pointer;font-weight:700;">$100</div>
+          <div onclick="setCampAmt(250)" style="padding:6px 12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:20px;font-size:11px;color:#C9A84C;cursor:pointer;">$250</div>
+          <div onclick="setCampAmt(500)" style="padding:6px 12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:20px;font-size:11px;color:#C9A84C;cursor:pointer;">$500</div>
+          <div onclick="setCampAmt(1000)" style="padding:6px 12px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:20px;font-size:11px;color:#C9A84C;cursor:pointer;">$1,000</div>
+        </div>
+      </div>
+      <button onclick="pagarCamp()" style="width:100%;padding:16px;background:#C9A84C;color:#0B1A2E;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:.5px;cursor:pointer;margin-bottom:8px;">
+        🔒 Patrocinar $<span id="pay-val">100</span> ahora
+      </button>
+      <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.2);line-height:1.6;">
+        Pago seguro · Stripe · Tu nombre aparecerá en la lista de patrocinadores
+      </div>
+      <div style="margin-top:14px;padding:12px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:10px;">
+        <div style="font-size:11px;color:#E8C96A;font-weight:700;margin-bottom:4px;">🔔 ¿Qué es el Patrocinio de Campanas?</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6;">Tu aportación financia las campañas que hacen crecer Tu Red Vital. Como patrocinador tu nombre aparece en el mapa y recibes beneficios exclusivos.</div>
+      </div>
+    </div>
+
+    <!-- TAB: FEED -->
+    <div id="camp-f" style="padding:16px;display:none;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        Patrocinadores activos
+        <div style="flex:1;height:1px;background:rgba(201,168,76,0.12);"></div>
+      </div>
+      <div id="camp-feed-list">
+        <div style="text-align:center;padding:24px;color:rgba(255,255,255,0.25);font-size:12px;">Sé el primero en patrocinar 🔔</div>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-4">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Campanas</button>
   </nav>
 </div>
 
@@ -1119,13 +1255,156 @@ function nextSlide() {
 
 setInterval(nextSlide, 4000);
 
+// ── CAMPANAS ──────────────────────────────────────────────
+let campPatrocinadores = [];
+let campTotal = 0;
+
+// Timer cuenta regresiva
+function tickCamp() {
+  const now = Date.now();
+  const diff = Math.max(0, CAMP_END - now);
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  const pad = n => String(n).padStart(2,'0');
+  // Banner home
+  const bd=document.getElementById('b-d'); if(bd) bd.textContent=pad(d);
+  const bh=document.getElementById('b-h'); if(bh) bh.textContent=pad(h);
+  const bm=document.getElementById('b-m'); if(bm) bm.textContent=pad(m);
+  // Pantalla campanas
+  const c2d=document.getElementById('c2-d'); if(c2d) c2d.textContent=pad(d);
+  const c2h=document.getElementById('c2-h'); if(c2h) c2h.textContent=pad(h);
+  const c2m=document.getElementById('c2-m'); if(c2m) c2m.textContent=pad(m);
+  const c2s=document.getElementById('c2-s'); if(c2s) c2s.textContent=pad(s);
+  if(diff===0) {
+    ['b-d','b-h','b-m','c2-d','c2-h','c2-m','c2-s'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='00'; });
+  }
+}
+setInterval(tickCamp, 1000);
+tickCamp();
+
+// Actualizar barra y totales
+function updateCampUI() {
+  const pct = Math.min(100, (campTotal/CAMP_META)*100);
+  const fmt = '$'+campTotal.toLocaleString()+' recaudados';
+  const bar1=document.getElementById('b-bar'); if(bar1) bar1.style.width=pct+'%';
+  const bar2=document.getElementById('c2-bar'); if(bar2) bar2.style.width=pct+'%';
+  const t1=document.getElementById('b-total'); if(t1) t1.textContent=fmt;
+  const t2=document.getElementById('c2-total'); if(t2) t2.textContent=fmt;
+  // Banner feed pills
+  const bf=document.getElementById('b-feed');
+  if(bf && campPatrocinadores.length) {
+    bf.innerHTML=campPatrocinadores.slice(0,3).map(p=>
+      `<div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:#E8C96A;white-space:nowrap;display:flex;align-items:center;gap:4px;"><div style="width:5px;height:5px;border-radius:50%;background:#2ECC8A;"></div>🔔 ${p.short}</div>`
+    ).join('');
+  }
+}
+
+// Cargar patrocinadores desde Supabase
+async function loadCampPatrocinadores() {
+  try {
+    const {data} = await sb.from('patrocinadores_camp').select('*').order('created_at',{ascending:false}).limit(20);
+    if(data && data.length) {
+      campPatrocinadores = data;
+      campTotal = data.reduce((s,p)=>s+(p.monto||0),0);
+      updateCampUI();
+      renderFeed();
+    }
+  } catch(e){}
+}
+
+function renderFeed() {
+  const list = document.getElementById('camp-feed-list');
+  if(!list) return;
+  if(!campPatrocinadores.length) {
+    list.innerHTML='<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.25);font-size:12px;">Sé el primero en patrocinar 🔔</div>';
+    return;
+  }
+  const colors = ['rgba(46,204,138,0.15)','rgba(201,168,76,0.15)','rgba(59,130,246,0.15)','rgba(224,82,82,0.15)'];
+  const tcolors = ['#2ECC8A','#E8C96A','#60a5fa','#f87171'];
+  list.innerHTML = campPatrocinadores.map((p,i)=>{
+    const ci = i%4;
+    const ini = (p.nombre||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+    const hace = timeAgo(p.created_at);
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+      <div style="width:36px;height:36px;border-radius:50%;background:${colors[ci]};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:${tcolors[ci]};flex-shrink:0;">${ini}</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:600;">${p.nombre||'Anónimo'}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px;">${p.ciudad||''} · ${hace}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#E8C96A;">$${(p.monto||0).toLocaleString()}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function timeAgo(d) {
+  if(!d) return '';
+  const diff = Date.now() - new Date(d).getTime();
+  const h = Math.floor(diff/3600000);
+  if(h<1) return 'hace menos de 1h';
+  if(h<24) return `hace ${h}h`;
+  return `hace ${Math.floor(h/24)}d`;
+}
+
+// Slider y montos rápidos
+let campAmtVal = 100;
+function updateCampAmt(v) {
+  campAmtVal = parseInt(v);
+  const el=document.getElementById('camp-amt'); if(el) el.textContent=campAmtVal.toLocaleString();
+  const pv=document.getElementById('pay-val'); if(pv) pv.textContent=campAmtVal.toLocaleString();
+  const r=document.getElementById('camp-range');
+  if(r) r.style.background=`linear-gradient(90deg,#C9A84C ${(campAmtVal/10000)*100}%,rgba(255,255,255,0.1) ${(campAmtVal/10000)*100}%)`;
+}
+function setCampAmt(v) {
+  campAmtVal=v;
+  const r=document.getElementById('camp-range'); if(r){ r.value=v; }
+  updateCampAmt(v);
+}
+
+// Pago → Stripe
+async function pagarCamp() {
+  if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada! Gracias a todos los patrocinadores.'); return; }
+  const diff = CAMP_END - Date.now();
+  if(diff <= 0){ showToast('El período de patrocinio ha terminado.'); return; }
+  // Guardar intención en Supabase
+  try {
+    await sb.from('patrocinadores_camp').insert({
+      monto: campAmtVal,
+      nombre: user ? (user.user_metadata?.full_name||user.email||'Anónimo') : 'Anónimo',
+      email: user ? user.email : '',
+      ciudad: '',
+      status: 'pendiente'
+    });
+  } catch(e){}
+  window.open(`${STRIPE_CAMP}?amount=${campAmtVal*100}`, '_blank');
+}
+
+// Tabs
+function campTab(t) {
+  const p=document.getElementById('camp-p'), f=document.getElementById('camp-f');
+  const tp=document.getElementById('tab-p'), tf=document.getElementById('tab-f');
+  if(t==='p'){
+    if(p) p.style.display='block'; if(f) f.style.display='none';
+    if(tp){ tp.style.color='#E8C96A'; tp.style.borderBottom='2px solid #C9A84C'; }
+    if(tf){ tf.style.color='var(--muted)'; tf.style.borderBottom='2px solid transparent'; }
+  } else {
+    if(p) p.style.display='none'; if(f) f.style.display='block';
+    if(tf){ tf.style.color='#E8C96A'; tf.style.borderBottom='2px solid #C9A84C'; }
+    if(tp){ tp.style.color='var(--muted)'; tp.style.borderBottom='2px solid transparent'; }
+    renderFeed();
+  }
+}
+
 // ── INICIO ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',async()=>{
   const hide=()=>document.getElementById('load').classList.add('gone');
   const timer=setTimeout(hide,2500);
   try{
     await Promise.race([
-      Promise.all([loadData(),checkSession()]),
+      Promise.all([loadData(),checkSession(),loadCampPatrocinadores()]),
       new Promise(r=>setTimeout(r,2000))
     ]);
   }catch(e){}
