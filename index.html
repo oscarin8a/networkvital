@@ -983,7 +983,17 @@ async function doJoin() {
 
 // ── AUTH ───────────────────────────────────────────────
 function openLogin() {
-  if(user){ if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`)) sb.auth.signOut().then(()=>{ user=null; updateUI(); showToast('✓ Sesión cerrada'); }); return; }
+  if(user){
+    // Si ya está en su dashboard, ofrecer cerrar sesión
+    if(cur==='dist'||cur==='client'){
+      if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`))
+        sb.auth.signOut().then(()=>{ user=null; updateUI(); nav('home'); showToast('✓ Sesión cerrada'); });
+    } else {
+      // Si no está en dashboard, abrir modal de rol
+      openModal('modal-rol');
+    }
+    return;
+  }
   openModal('modal-login');
 }
 function openModal(id){ document.getElementById(id).classList.add('open'); }
@@ -1023,6 +1033,7 @@ async function doReg(){
 }
 function setRol(r){
   closeModal('modal-rol');
+  if(!user){ openModal('modal-login'); return; }
   nav(r==='distribuidor'?'dist':'client');
 }
 function updateUI(){
@@ -1032,8 +1043,26 @@ function updateUI(){
 }
 async function checkSession(){
   const {data:{session}}=await sb.auth.getSession();
-  if(session?.user){ user=session.user; updateUI(); }
-  sb.auth.onAuthStateChange((_,s)=>{ user=s?.user||null; updateUI(); });
+  if(session?.user){
+    user=session.user;
+    updateUI();
+    // Si viene de redirect de Google OAuth, mostrar modal de rol
+    const isOAuthRedirect = window.location.hash.includes('access_token') || window.location.search.includes('code=');
+    if(isOAuthRedirect){
+      setTimeout(()=>openModal('modal-rol'), 600);
+      // Limpiar URL sin recargar
+      history.replaceState(null,'',window.location.pathname);
+    }
+  }
+  sb.auth.onAuthStateChange((event,s)=>{
+    const wasLoggedOut = !user;
+    user=s?.user||null;
+    updateUI();
+    // Abrir modal de rol cuando recién inicia sesión
+    if(event==='SIGNED_IN' && wasLoggedOut && user){
+      setTimeout(()=>openModal('modal-rol'), 300);
+    }
+  });
 }
 
 // ── HELPERS ────────────────────────────────────────────
