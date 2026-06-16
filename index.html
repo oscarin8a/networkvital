@@ -880,7 +880,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:900;color:#E8C96A;line-height:1;">$<span id="camp-amt">100</span></div>
           <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;">Elige tu monto · $1 mínimo · $10,000 máximo</div>
         </div>
-        <input type="range" min="1" max="10000" step="1" value="100" id="camp-range"
+        <input type="range" min="1" max="1000" step="1" value="100" id="camp-range"
           style="width:100%;-webkit-appearance:none;height:4px;border-radius:2px;outline:none;margin-bottom:12px;cursor:pointer;"
           oninput="updateCampAmt(this.value)">
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -1356,7 +1356,7 @@ function updateCampAmt(v) {
   const el=document.getElementById('camp-amt'); if(el) el.textContent=campAmtVal.toLocaleString();
   const pv=document.getElementById('pay-val'); if(pv) pv.textContent=campAmtVal.toLocaleString();
   const r=document.getElementById('camp-range');
-  if(r) r.style.background=`linear-gradient(90deg,#C9A84C ${(campAmtVal/10000)*100}%,rgba(255,255,255,0.1) ${(campAmtVal/10000)*100}%)`;
+  if(r) r.style.background=`linear-gradient(90deg,#C9A84C ${(campAmtVal/1000)*100}%,rgba(255,255,255,0.1) ${(campAmtVal/1000)*100}%)`;
 }
 function setCampAmt(v) {
   campAmtVal=v;
@@ -1379,7 +1379,7 @@ async function pagarCamp() {
       status: 'pendiente'
     });
   } catch(e){}
-  window.open(`${STRIPE_CAMP}?amount=${campAmtVal*100}`, '_blank');
+  window.open(`${STRIPE_CAMP}?prefilled_amount=${campAmtVal*100}`, '_blank');
 }
 
 // Tabs
