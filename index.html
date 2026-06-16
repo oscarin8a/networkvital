@@ -19,12 +19,13 @@ const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
 </script>
 <style>
 :root{
-  --bg:#07101c;--bg2:#0d1b2a;--bg3:#122030;
-  --gold:#C9A24B;--gold2:#e8c06a;--golda:rgba(201,162,75,0.12);
-  --olive:#6B8F71;--olive2:#8fad82;--olivea:rgba(107,143,113,0.14);
+  --bg:#0F0F0F;--bg2:#141414;--bg3:#1a1a1a;
+  --gold:#E6C16A;--gold2:#f0d084;--golda:rgba(230,193,106,0.12);
+  --green:#27AE60;--green2:#66BB6A;--greena:rgba(39,174,96,0.13);
   --sky:#5BA4CF;--sky2:#7ec8e3;--skya:rgba(91,164,207,0.13);
-  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
-  --text:#f0f4f8;--muted:#7A8FA6;--border:rgba(107,143,113,0.18);
+  --red:#E74C3C;--blue:#3b82f6;
+  --olive:#27AE60;--olive2:#66BB6A;--olivea:rgba(39,174,96,0.13);
+  --text:#FFFFFF;--muted:#8a9bb0;--border:rgba(230,193,106,0.14);
   --wa:#25D366;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -77,8 +78,8 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .top-left{display:flex;align-items:center;gap:10px;}
 .back-btn{
   width:36px;height:36px;border-radius:50%;
-  background:var(--golda);border:1px solid rgba(201,162,75,0.3);
-  color:var(--gold);font-size:18px;cursor:pointer;
+  background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.28);
+  color:#66BB6A;font-size:18px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;transition:background .15s;
 }
@@ -115,20 +116,20 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   letter-spacing:1px;text-transform:uppercase;transition:color .15s;
 }
 .bn svg{width:22px;height:22px;stroke-width:1.8;}
-.bn.on{color:var(--gold);}
+.bn.on{color:#E6C16A;}
 .bn.on.sky{color:var(--sky);}
 .bn.on.olive{color:var(--olive);}
 
 /* ═══ HERO ═══ */
 .hero{
   padding:30px 18px 24px;
-  background:linear-gradient(160deg,#050d18 0%,#091824 60%,#050d18 100%);
+  background:#0F0F0F;
   position:relative;overflow:hidden;
 }
 .hero::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 15% 60%,rgba(201,162,75,0.09) 0%,transparent 55%),
-             radial-gradient(ellipse at 85% 20%,rgba(201,162,75,0.05) 0%,transparent 45%);
+  background:radial-gradient(ellipse at 10% 80%,rgba(39,174,96,0.08) 0%,transparent 55%),
+             radial-gradient(ellipse at 90% 10%,rgba(230,193,106,0.07) 0%,transparent 45%);
 }
 .hero-logo{
   width:72px;height:72px;object-fit:contain;
@@ -145,16 +146,16 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .hero-pill{
   display:inline-flex;align-items:center;gap:5px;
   padding:3px 10px;border-radius:20px;
-  background:var(--golda);border:1px solid rgba(201,162,75,0.22);
+  background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.28);
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
-  letter-spacing:2px;color:var(--gold);text-transform:uppercase;
+  letter-spacing:2px;color:#66BB6A;text-transform:uppercase;
   margin-bottom:10px;position:relative;z-index:1;
 }
 .hero-t{
   font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;
   line-height:.9;letter-spacing:-1px;position:relative;z-index:1;
 }
-.hero-t .g{color:var(--gold);}
+.hero-t .g{color:#E6C16A;}
 .hero-s{font-size:13px;color:rgba(255,255,255,.42);line-height:1.6;margin-top:10px;position:relative;z-index:1;}
 .hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px;position:relative;z-index:1;}
 .hbtn{
@@ -164,7 +165,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 }
 .hbtn:active{opacity:.82;}
 .hbtn small{display:block;font-size:8px;font-weight:600;letter-spacing:1.5px;opacity:.6;text-transform:uppercase;margin-bottom:2px;}
-.hbtn.gold{background:var(--gold);color:var(--bg);}
+.hbtn.gold{background:#E6C16A;color:#0F0F0F;}
 .hbtn.dark{background:var(--bg3);border:1px solid rgba(201,162,75,0.2);color:var(--text);}
 
 /* ═══ SLIDER ═══ */
@@ -183,15 +184,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   border-top:1px solid rgba(107,143,113,0.15);border-bottom:1px solid rgba(107,143,113,0.15);
 }
 .stat{padding:13px 8px;text-align:center;background:var(--bg);}
-.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
-.stat:nth-child(2) .stat-n{color:var(--olive2);}
-.stat:nth-child(3) .stat-n{color:var(--sky2);}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E6C16A;}
+.stat:nth-child(2) .stat-n{color:#66BB6A;}
+.stat:nth-child(3) .stat-n{color:#7ec8e3;}
 .stat-l{font-size:9px;color:var(--muted);letter-spacing:.5px;margin-top:2px;}
 
 /* ═══ SECTION ═══ */
 .sec-lbl{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:3px;color:var(--olive2);text-transform:uppercase;
+  letter-spacing:3px;color:#66BB6A;text-transform:uppercase;
   padding:14px 16px 8px;display:flex;align-items:center;gap:8px;
 }
 .sec-lbl::after{content:'';flex:1;height:1px;background:rgba(107,143,113,0.2);}
@@ -283,7 +284,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .btn-gold{
-  width:100%;padding:15px;background:var(--gold);color:var(--bg);border:none;border-radius:10px;
+  width:100%;padding:15px;background:#E6C16A;color:#0F0F0F;border:none;border-radius:10px;
   cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;
   letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
 }
@@ -299,7 +300,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .ph-logo{width:56px;height:56px;object-fit:contain;margin:0 auto 12px;position:relative;z-index:1;display:block;}
 .ph-logo-fb{width:56px;height:56px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--bg);margin:0 auto 12px;position:relative;z-index:1;}
 .ph-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1;}
-.ph-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-2px;position:relative;z-index:1;}
+.ph-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:900;line-height:1;color:#E6C16A;letter-spacing:-2px;position:relative;z-index:1;}
 .ph-per{font-size:14px;color:rgba(255,255,255,.3);position:relative;z-index:1;}
 .ph-note{font-size:10px;color:rgba(255,255,255,.18);margin-top:5px;position:relative;z-index:1;}
 .bens{padding:8px 14px;}
@@ -312,7 +313,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .ben-t{font-size:13px;font-weight:600;margin-bottom:1px;}
 .ben-s{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
 .urg{margin:0 14px 12px;padding:10px 13px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;display:flex;gap:10px;align-items:center;}
-.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#f87171;letter-spacing:1px;text-transform:uppercase;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#E74C3C;letter-spacing:1px;text-transform:uppercase;}
 .urg-s{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px;}
 
 /* ═══ DASHBOARD CLIENTE ═══ */
@@ -345,7 +346,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .qa-s{font-size:10px;color:var(--muted);}
 .wa-big{
   margin:0 14px 14px;padding:15px;
-  background:linear-gradient(135deg,#1a5c45,#1a9955);
+  background:linear-gradient(135deg,#0d3320,#27AE60);
   border-radius:12px;cursor:pointer;
   display:flex;align-items:center;gap:13px;
   transition:opacity .15s;
@@ -374,7 +375,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .dist-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
 .dist-av{
   width:50px;height:50px;border-radius:50%;flex-shrink:0;
-  background:var(--golda);border:2px solid var(--gold);
+  background:rgba(230,193,106,0.1);border:2px solid #E6C16A;
   display:flex;align-items:center;justify-content:center;
   font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--gold);
 }
@@ -385,7 +386,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   padding:2px 9px;border-radius:20px;margin-top:5px;
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
 }
-.sp-active{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.22);}
+.sp-active{background:rgba(39,174,96,.12);color:#66BB6A;border:1px solid rgba(39,174,96,.3);}
 .sp-pending{background:rgba(201,162,75,.1);color:var(--gold);border:1px solid rgba(201,162,75,.22);}
 .sp-cancelled{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.22);}
 
@@ -393,7 +394,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .kpi{padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;}
 .kpi-l{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
 .kpi-v{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
-.kpi-v.gold{color:var(--gold);}
+.kpi-v.gold{color:#E6C16A;}
 .kpi-v.green{color:var(--olive2);}
 .kpi-v.sky{color:var(--sky2);}
 .kpi-sub{font-size:9px;color:rgba(255,255,255,.26);margin-top:2px;}
@@ -515,18 +516,17 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 
 <!-- ════ INICIO ════ -->
 <div id="s-home" class="screen active">
-  <div class="top">
+  <div class="top" style="background:#0F0F0F;border-bottom:1px solid rgba(230,193,106,0.12);">
     <div class="top-left">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="top-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="top-logo-fb" style="display:none;">V</div>
-      <span class="top-brand">TU RED <span>VITAL</span></span>
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" style="width:34px;height:34px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 6px rgba(230,193,106,0.4));" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;width:34px;height:34px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#0F0F0F;">V</div>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;color:#fff;">TU RED <span style="color:#E6C16A;">VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <button onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;background:var(--olivea);border:1px solid rgba(107,143,113,0.3);color:var(--olive2);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/><circle cx="19" cy="19" r="3"/><path d="M19 17v1.5M19 21v.5" stroke-linecap="round"/></svg>
-        Nosotros
+    <div style="display:flex;align-items:center;gap:7px;">
+      <button onclick="nav('about')" style="width:34px;height:34px;border-radius:50%;background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);color:#66BB6A;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Acerca de Nosotros">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
       </button>
-      <div class="top-user" onclick="openLogin()">
+      <div class="top-user" onclick="openLogin()" style="background:rgba(230,193,106,0.1);border:1px solid rgba(230,193,106,0.25);color:#E6C16A;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
         <span id="top-name">Entrar</span>
       </div>
@@ -544,25 +544,21 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
         <small>Gratis · Sin compromiso</small>Solicitar Escáner
       </div>
 
-      <!-- BTN DISTRIBUIDOR — énfasis de oportunidad -->
-      <div onclick="nav('map')" style="position:relative;z-index:1;margin-top:10px;border-radius:12px;overflow:hidden;cursor:pointer;">
-        <!-- Pulso de fondo animado -->
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,164,207,0.18),rgba(107,143,113,0.15));border-radius:12px;animation:pulseGlow 2.5s ease-in-out infinite;"></div>
-        <div style="position:relative;background:linear-gradient(135deg,#0d2235,#0e2a1e);border:1.5px solid rgba(107,143,113,0.45);border-radius:12px;padding:14px 14px 12px;">
-          <!-- Badge urgencia -->
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(107,143,113,0.2);border:1px solid rgba(107,143,113,0.4);border-radius:20px;padding:3px 10px;margin-bottom:8px;">
-            <div style="width:6px;height:6px;border-radius:50%;background:#8fad82;animation:blink 1.4s infinite;"></div>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#8fad82;text-transform:uppercase;">Espacios disponibles ahora</span>
+      <!-- BTN DISTRIBUIDOR PRINCIPAL ★ -->
+      <div onclick="nav('map')" style="position:relative;z-index:1;margin-top:10px;border-radius:14px;overflow:hidden;cursor:pointer;">
+        <div style="position:absolute;inset:0;background:rgba(39,174,96,0.06);animation:pulseGlow 2.5s ease-in-out infinite;border-radius:14px;"></div>
+        <div style="position:relative;background:#0a1f10;border:2px solid #27AE60;border-radius:14px;padding:16px 16px 13px;">
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(39,174,96,0.15);border:1px solid rgba(39,174,96,0.4);border-radius:20px;padding:3px 10px;margin-bottom:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#27AE60;animation:blink 1.4s infinite;"></div>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#66BB6A;text-transform:uppercase;">Espacios disponibles ahora</span>
           </div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff;line-height:1;margin-bottom:3px;">Sé Distribuidor en tu Ciudad</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;line-height:1;margin-bottom:5px;">Sé Distribuidor<br>en tu Ciudad</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
             <div>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--sky2);">$49/semana</span>
-              <span style="font-size:10px;color:rgba(255,255,255,0.35);margin-left:6px;">· Solo 5 por estado</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#E6C16A;">$49</span>
+              <span style="font-size:11px;color:rgba(255,255,255,0.4);margin-left:4px;">/semana · Solo 5 por estado</span>
             </div>
-            <div style="display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#8fad82;">
-              Ver mapa →
-            </div>
+            <div style="background:#27AE60;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;letter-spacing:.5px;">Ver mapa →</div>
           </div>
         </div>
       </div>
@@ -614,15 +610,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     <div class="vp" style="border-color:rgba(91,164,207,0.2);"><div class="vp-ic" style="background:var(--skya);border-radius:8px;padding:4px;">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
     <div class="vp" style="border-color:rgba(107,143,113,0.25);"><div class="vp-ic" style="background:var(--olivea);border-radius:8px;padding:4px;">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
     <div class="vp" style="border-color:rgba(91,164,207,0.2);"><div class="vp-ic" style="background:var(--skya);border-radius:8px;padding:4px;">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
-    <!-- BOTÓN NOSOTROS -->
-    <div onclick="nav('about')" style="margin:0 14px 12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:12px;">
-      <div style="width:40px;height:40px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👥</div>
-      <div style="flex:1;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--text);margin-bottom:1px;">Acerca de Nosotros</div>
-        <div style="font-size:11px;color:var(--muted);">Equipo · Contacto · Alianzas · 1424 Mitchell Rd</div>
-      </div>
-      <div style="color:var(--muted);font-size:18px;">→</div>
-    </div>
+
     <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
