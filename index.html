@@ -536,7 +536,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 <body>
 
 <div id="load">
-  <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="Tu Red Vital">
+  <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="Tu Red Vital" onerror="this.onerror=null;this.style.opacity='0'">
   <div class="ld-bar"><div class="ld-prog"></div></div>
   <div class="ld-lbl">Tu Red Vital · USA</div>
 </div>
@@ -550,7 +550,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 <div id="s-home" class="screen active">
   <div class="top">
     <div class="top-left">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="top-logo" alt="logo">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="top-logo" alt="logo" onerror="this.onerror=null;this.style.opacity='0'">
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
     <div class="top-right">
@@ -562,7 +562,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
   </div>
   <div class="scroll">
     <div class="hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="hero-logo">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="hero-logo" onerror="this.onerror=null;this.style.opacity='0'">
       <div class="hero-pill">🌿 Red Nacional · USA</div>
       <div class="hero-t">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
       <div class="hero-s">Distribuidores certificados en los 50 estados conectando personas con bienestar real.</div>
@@ -659,7 +659,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
   </div>
   <div class="scroll">
     <div class="form-hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="fh-logo">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="fh-logo" onerror="this.onerror=null;this.style.opacity='0'">
       <div class="fh-pill">🩺 Evaluación gratuita</div>
       <div class="fh-t">Solicita tu<br>escáner corporal</div>
       <div class="fh-s">Análisis IA de 45+ sistemas. Un especialista te contacta en minutos — sin costo.</div>
@@ -711,7 +711,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
   </div>
   <div class="scroll">
     <div class="price-hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="ph-logo">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="ph-logo" onerror="this.onerror=null;this.style.opacity='0'">
       <div class="ph-label">Membresía semanal</div>
       <div class="ph-price">$49</div>
       <div class="ph-per">dólares / semana</div>
@@ -986,15 +986,17 @@ function back(){
 // ── DATOS ──────────────────────────────────────────────────
 async function loadData(){
   try{
-    const [m,s]= await Promise.all([
+    const m = await Promise.race([
       sb.from('membresias').select('*').eq('status','activa'),
-      sb.from('solicitudes_scanner').select('id',{count:'exact',head:true})
+      new Promise((_,r)=>setTimeout(()=>r('timeout'),3000))
     ]);
     reps=m.data||[];
     const dist=reps.length;
-    const cli=s.count||0;
     document.getElementById('st-dist').textContent=dist;
-    document.getElementById('st-clientes').textContent=cli;
+    try {
+      const s = await sb.from('solicitudes_scanner').select('id',{count:'exact',head:true});
+      document.getElementById('st-clientes').textContent=s.count||0;
+    } catch(e2){}
   }catch(e){ reps=[]; }
   smap={};
   reps.forEach(r=>{ if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[]; smap[r.estado_codigo].push(r); });
@@ -1212,9 +1214,17 @@ let tt;
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3000); }
 
 window.addEventListener('DOMContentLoaded',async()=>{
-  await loadData();
-  await checkSession();
-  setTimeout(()=>document.getElementById('load').classList.add('gone'),1400);
+  // Always hide loader after 2.5s max — never block on network
+  const hideLoad = () => document.getElementById('load').classList.add('gone');
+  const loadTimer = setTimeout(hideLoad, 2500);
+  try {
+    await Promise.race([
+      Promise.all([loadData(), checkSession()]),
+      new Promise(resolve => setTimeout(resolve, 2000))
+    ]);
+  } catch(e) {}
+  clearTimeout(loadTimer);
+  hideLoad();
 });
 </script>
 </body>
