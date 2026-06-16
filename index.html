@@ -160,6 +160,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .hbtn.gold{background:var(--gold);color:var(--bg);}
 .hbtn.dark{background:var(--bg3);border:1px solid rgba(201,162,75,0.2);color:var(--text);}
 
+/* ═══ SLIDER ═══ */
+.slider-wrap{position:relative;overflow:hidden;background:#000;margin-bottom:2px;}
+.slider-track{display:flex;transition:transform .4s ease;}
+.slide{min-width:100%;flex-shrink:0;}
+.slide img{width:100%;height:220px;object-fit:cover;display:block;}
+.slider-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;background:var(--bg);}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(201,162,75,0.25);cursor:pointer;transition:all .2s;}
+.dot.on{background:var(--gold);width:18px;border-radius:3px;}
+
 /* ═══ STATS ═══ */
 .stats{
   display:grid;grid-template-columns:repeat(3,1fr);
@@ -519,6 +528,22 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div class="stat"><div class="stat-n" id="st-dist">—</div><div class="stat-l">Distribuidores</div></div>
       <div class="stat"><div class="stat-n" id="st-cli">—</div><div class="stat-l">Clientes</div></div>
     </div>
+    <!-- SLIDER DE BANNERS -->
+    <div class="slider-wrap">
+      <div class="slider-track" id="slider-track">
+        <div class="slide"><img src="/images/Gemini_Generated_Image_4ai1si4ai1si4ai1.png" alt="Banner 1"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_302u3g302u3g302u.png" alt="Banner 2"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_aux0rkaux0rkaux0.png" alt="Banner 3"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_v058phv058phv058.png" alt="Banner 4"></div>
+      </div>
+      <div class="slider-dots" id="slider-dots">
+        <div class="dot on" onclick="goSlide(0)"></div>
+        <div class="dot" onclick="goSlide(1)"></div>
+        <div class="dot" onclick="goSlide(2)"></div>
+        <div class="dot" onclick="goSlide(3)"></div>
+      </div>
+    </div>
+
     <div class="sec-lbl">¿Cómo funciona?</div>
     <div class="vp"><div class="vp-ic">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
     <div class="vp"><div class="vp-ic">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
@@ -1077,6 +1102,22 @@ function fillSelects(){
 }
 let tt;
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3000); }
+
+// ── SLIDER ───────────────────────────────────────────────
+let slideIdx = 0;
+const SLIDE_COUNT = 4;
+
+function goSlide(n) {
+  slideIdx = n;
+  document.getElementById('slider-track').style.transform = `translateX(-${n * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === n));
+}
+
+function nextSlide() {
+  goSlide((slideIdx + 1) % SLIDE_COUNT);
+}
+
+setInterval(nextSlide, 4000);
 
 // ── INICIO ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',async()=>{
