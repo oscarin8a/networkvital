@@ -1149,32 +1149,6 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   </div>
 </div>
 
-<!-- MODAL CONFIRMACIÓN CAMPANAS -->
-<div id="camp-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,8,15,.95);z-index:600;align-items:center;justify-content:center;padding:20px;" data-monto="100">
-  <div style="background:#0e1d30;border:1px solid rgba(201,168,76,0.3);border-radius:16px;width:100%;max-width:340px;padding:28px;text-align:center;">
-    <div style="font-size:32px;margin-bottom:12px;">🔔</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;margin-bottom:6px;">Confirma tu patrocinio</div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;line-height:1.6;">
-      Elegiste patrocinar<br>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:#E8C96A;" id="camp-confirm-monto">$100</span>
-    </div>
-    <div style="background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.25);border-radius:10px;padding:14px;margin-bottom:20px;text-align:left;">
-      <div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:8px;">⚠️ Instrucción importante</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;">
-        1. Se abrirá Stripe<br>
-        2. Verás <b style="color:#fff;">USD 1.00</b> — toca <b style="color:#E8C96A;">"Cambiar el importe"</b><br>
-        3. Escribe <b style="color:#E8C96A;" id="camp-confirm-monto2">$100</b> y confirma<br>
-        4. Completa el pago ✓
-      </div>
-    </div>
-    <button onclick="confirmarPagoCamp()" style="width:100%;padding:15px;background:#C9A84C;color:#0B1A2E;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;cursor:pointer;margin-bottom:10px;">
-      Entendido — Ir a Stripe →
-    </button>
-    <button onclick="document.getElementById('camp-confirm-overlay').style.display='none'" style="width:100%;padding:12px;background:none;border:1px solid rgba(255,255,255,0.1);border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;">
-      Cancelar
-    </button>
-  </div>
-</div>
 
 </div><!-- /app -->
 
@@ -1565,7 +1539,7 @@ function setCampAmt(v) {
   updateCampAmt(v);
 }
 
-// Pago directo por pack — links individuales de Stripe por pack
+// ADS Packs — links de precio fijo en Stripe
 const STRIPE_PACKS = {
   networker: 'https://buy.stripe.com/3cIdR8cue7QScMGbj99EI02',
   pro:       'https://buy.stripe.com/6oU3cu9i21su28272T9EI03',
@@ -1575,34 +1549,11 @@ const STRIPE_PACKS = {
 function pagarCampMonto(monto, pack) {
   if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada!'); return; }
   if(CAMP_END - Date.now() <= 0){ showToast('El período ADS ha terminado.'); return; }
-  const overlay = document.getElementById('camp-confirm-overlay');
-  const montoEl = document.getElementById('camp-confirm-monto');
-  if(overlay && montoEl){
-    montoEl.textContent = '$' + monto.toLocaleString();
-    const m2=document.getElementById('camp-confirm-monto2'); if(m2) m2.textContent='$'+monto.toLocaleString();
-    overlay.dataset.monto = monto;
-    overlay.dataset.pack = pack || 'networker';
-    overlay.style.display = 'flex';
-  }
+  const url = STRIPE_PACKS[pack] || STRIPE_PACKS.networker;
+  window.open(url, '_blank');
 }
 
-async function confirmarPagoCamp() {
-  const overlay = document.getElementById('camp-confirm-overlay');
-  const monto = parseInt(overlay.dataset.monto);
-  overlay.style.display = 'none';
-  try {
-    await sb.from('patrocinadores_camp').insert({
-      monto: monto,
-      nombre: user ? (user.user_metadata?.full_name||user.email||'Anónimo') : 'Anónimo',
-      email: user ? user.email : '',
-      ciudad: '',
-      status: 'pendiente'
-    });
-  } catch(e){}
-  const pack = overlay.dataset.pack || 'networker';
-  const stripeUrl = STRIPE_PACKS[pack] || STRIPE_CAMP;
-  window.open(stripeUrl, '_blank');
-}
+
 
 // Pago → Stripe
 async function pagarCamp() {
