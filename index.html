@@ -893,10 +893,10 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
         </div>
       </div>
       <button onclick="pagarCamp()" style="width:100%;padding:16px;background:#C9A84C;color:#0B1A2E;border:none;border-radius:12px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:.5px;cursor:pointer;margin-bottom:8px;">
-        🔒 Patrocinar $<span id="pay-val">100</span> ahora
+        🔒 Ir a pagar $<span id="pay-val">100</span>
       </button>
       <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.2);line-height:1.6;">
-        Pago seguro · Stripe · Tu nombre aparecerá en la lista de patrocinadores
+        Se abrirá Stripe · Confirma el monto elegido · Tu nombre aparecerá en la lista
       </div>
       <div style="margin-top:14px;padding:12px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:10px;">
         <div style="font-size:11px;color:#E8C96A;font-weight:700;margin-bottom:4px;">🔔 ¿Qué es el Patrocinio de Campanas?</div>
@@ -1369,7 +1369,6 @@ async function pagarCamp() {
   if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada! Gracias a todos los patrocinadores.'); return; }
   const diff = CAMP_END - Date.now();
   if(diff <= 0){ showToast('El período de patrocinio ha terminado.'); return; }
-  // Guardar intención en Supabase
   try {
     await sb.from('patrocinadores_camp').insert({
       monto: campAmtVal,
@@ -1379,7 +1378,9 @@ async function pagarCamp() {
       status: 'pendiente'
     });
   } catch(e){}
-  window.open(`${STRIPE_CAMP}?prefilled_amount=${campAmtVal}`, '_blank');
+  // Abrir Stripe — persona escribe el monto que ya eligió
+  // prefilled_amount en centavos para Stripe 'cliente elige precio'
+  window.open(STRIPE_CAMP + '?prefilled_amount=' + (campAmtVal * 100), '_blank');
 }
 
 // Tabs
