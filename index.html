@@ -191,10 +191,10 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 /* ═══ SECTION ═══ */
 .sec-lbl{
   font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  letter-spacing:3px;color:var(--olive2);text-transform:uppercase;
   padding:14px 16px 8px;display:flex;align-items:center;gap:8px;
 }
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-lbl::after{content:'';flex:1;height:1px;background:rgba(107,143,113,0.2);}
 
 .vp{display:flex;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid rgba(107,143,113,0.2);border-radius:10px;margin:0 14px 8px;}
 .vp-ic{font-size:20px;flex-shrink:0;margin-top:1px;}
@@ -482,6 +482,8 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 #load img{width:90px;height:90px;object-fit:contain;animation:lp 2s infinite;}
 #load .fb{width:90px;height:90px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--bg);animation:lp 2s infinite;}
 @keyframes lp{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.7;transform:scale(.94);}}
+@keyframes pulseGlow{0%,100%{opacity:1;}50%{opacity:.5;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
 .ld-bar{width:110px;height:2px;background:rgba(201,162,75,.12);margin-top:18px;border-radius:2px;}
 .ld-prog{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;animation:ldp 1.4s ease forwards;}
 @keyframes ldp{to{width:100%;}}
@@ -537,9 +539,32 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div class="hero-pill">🌿 Red Nacional · USA</div>
       <div class="hero-t">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
       <div class="hero-s">La Red de Bienestar más popular en Estados Unidos.</div>
-      <div class="hero-btns">
-        <div class="hbtn gold" onclick="nav('scan')"><small>Gratis</small>Solicitar Escáner</div>
-        <div class="hbtn dark" onclick="nav('join')"><small>$49/semana</small>Ser Distribuidor</div>
+      <!-- BTN ESCÁNER -->
+      <div class="hbtn gold" onclick="nav('scan')" style="margin-top:18px;position:relative;z-index:1;padding:14px 10px;">
+        <small>Gratis · Sin compromiso</small>Solicitar Escáner
+      </div>
+
+      <!-- BTN DISTRIBUIDOR — énfasis de oportunidad -->
+      <div onclick="nav('map')" style="position:relative;z-index:1;margin-top:10px;border-radius:12px;overflow:hidden;cursor:pointer;">
+        <!-- Pulso de fondo animado -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(91,164,207,0.18),rgba(107,143,113,0.15));border-radius:12px;animation:pulseGlow 2.5s ease-in-out infinite;"></div>
+        <div style="position:relative;background:linear-gradient(135deg,#0d2235,#0e2a1e);border:1.5px solid rgba(107,143,113,0.45);border-radius:12px;padding:14px 14px 12px;">
+          <!-- Badge urgencia -->
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(107,143,113,0.2);border:1px solid rgba(107,143,113,0.4);border-radius:20px;padding:3px 10px;margin-bottom:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#8fad82;animation:blink 1.4s infinite;"></div>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#8fad82;text-transform:uppercase;">Espacios disponibles ahora</span>
+          </div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff;line-height:1;margin-bottom:3px;">Sé Distribuidor en tu Ciudad</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+            <div>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--sky2);">$49/semana</span>
+              <span style="font-size:10px;color:rgba(255,255,255,0.35);margin-left:6px;">· Solo 5 por estado</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#8fad82;">
+              Ver mapa →
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="stats">
@@ -586,9 +611,9 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     </div>
 
     <div class="sec-lbl">¿Cómo funciona?</div>
-    <div class="vp"><div class="vp-ic">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
-    <div class="vp"><div class="vp-ic">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
-    <div class="vp"><div class="vp-ic">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
+    <div class="vp" style="border-color:rgba(91,164,207,0.2);"><div class="vp-ic" style="background:var(--skya);border-radius:8px;padding:4px;">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
+    <div class="vp" style="border-color:rgba(107,143,113,0.25);"><div class="vp-ic" style="background:var(--olivea);border-radius:8px;padding:4px;">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
+    <div class="vp" style="border-color:rgba(91,164,207,0.2);"><div class="vp-ic" style="background:var(--skya);border-radius:8px;padding:4px;">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
     <!-- BOTÓN NOSOTROS -->
     <div onclick="nav('about')" style="margin:0 14px 12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:12px;">
       <div style="width:40px;height:40px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👥</div>
