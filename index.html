@@ -14,7 +14,7 @@ const WA_MAIN = '12099717638';
 const STRIPE  = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
 const STRIPE_CAMP = 'https://buy.stripe.com/aFacN451M9Z02822MD9EI01';
 const CAMP_END = new Date('2026-06-17T12:00:00-07:00').getTime() + 7*24*60*60*1000;
-const CAMP_META = 10000;
+const CAMP_META = 5000;
 const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
 </script>
 <style>
@@ -550,7 +550,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     <!-- BANNER CAMPANAS CON TIMER -->
     <div onclick="nav('camp')" style="margin:0 14px 12px;background:#0F2040;border:1px solid rgba(201,168,76,0.45);border-radius:12px;padding:14px 16px;cursor:pointer;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;display:flex;align-items:center;gap:8px;">🔔 Patrocinar esta App</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;display:flex;align-items:center;gap:8px;">🚀 ADS Packs</div>
         <div style="display:flex;gap:5px;align-items:center;">
           <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:5px;padding:4px 7px;text-align:center;"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#E8C96A;" id="b-d">--</div><div style="font-size:7px;color:rgba(255,255,255,0.35);">días</div></div>
           <div style="color:#C9A84C;font-size:15px;font-weight:900;">:</div>
@@ -564,7 +564,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       </div>
       <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:8px;">
         <span style="color:#E8C96A;font-weight:700;" id="b-total">$0 recaudados</span>
-        <span style="color:rgba(255,255,255,0.35);">Meta $10,000</span>
+        <span style="color:rgba(255,255,255,0.35);">Meta $5,000</span>
       </div>
       <div style="display:flex;gap:6px;overflow:hidden;" id="b-feed"></div>
     </div>
@@ -573,6 +573,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     <div class="vp"><div class="vp-ic">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
     <div class="vp"><div class="vp-ic">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
     <div class="vp"><div class="vp-ic">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
+    <!-- BOTÓN NOSOTROS -->
+    <div onclick="nav('about')" style="margin:0 14px 12px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👥</div>
+      <div style="flex:1;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--text);margin-bottom:1px;">Acerca de Nosotros</div>
+        <div style="font-size:11px;color:var(--muted);">Equipo · Contacto · Alianzas · 1424 Mitchell Rd</div>
+      </div>
+      <div style="color:var(--muted);font-size:18px;">→</div>
+    </div>
     <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
@@ -810,7 +819,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div style="width:44px;height:44px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">🔔</div>
       <div style="flex:1;">
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;margin-bottom:2px;">Patrocinio de Campanas</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.45);">Tu recompensa semanal · Área exclusiva</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);">Impulsa tu zona · Desde $250</div>
       </div>
       <div style="color:#C9A24B;font-size:20px;">→</div>
     </div>
@@ -863,7 +872,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       </div>
       <div style="display:flex;justify-content:space-between;font-size:11px;">
         <span style="color:#E8C96A;font-weight:700;" id="c2-total">$0 recaudados</span>
-        <span style="color:rgba(255,255,255,0.35);">Meta: $10,000</span>
+        <span style="color:rgba(255,255,255,0.35);">Meta: $5,000</span>
       </div>
     </div>
 
@@ -876,40 +885,53 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     <!-- TAB: PATROCINAR -->
     <div id="camp-p" style="padding:16px;">
       <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:12px;padding:14px;margin-bottom:14px;">
-        <div style="font-size:12px;font-weight:700;color:#E8C96A;margin-bottom:6px;">🔔 ¿Qué es el Patrocinio de Campanas?</div>
+        <div style="font-size:12px;font-weight:700;color:#E8C96A;margin-bottom:6px;">🚀 ¿Qué incluye tu ADS Pack?</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7;">Tu aportación financia las campañas que hacen crecer Tu Red Vital. Como patrocinador tu nombre aparece en la lista de patrocinadores y recibes beneficios exclusivos.</div>
       </div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;">Elige tu monto — cada uno abre Stripe listo para pagar</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
-        <div onclick="pagarCampMonto(25)" style="padding:14px 8px;background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:10px;text-align:center;cursor:pointer;active:transform:scale(.95);">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$25</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:3px;">Fundador</div>
+      <!-- ADS PACKS -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+
+        <!-- NETWORKER -->
+        <div onclick="pagarCampMonto(250,'networker')" style="background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8"><circle cx="12" cy="5" r="3"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="4" cy="16" r="2"/><circle cx="20" cy="16" r="2"/><path d="M6 16h-2M20 16h-2" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Networker</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$250</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Ads básicos en tu zona · Visibilidad local</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;">→</div>
         </div>
-        <div onclick="pagarCampMonto(50)" style="padding:14px 8px;background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:10px;text-align:center;cursor:pointer;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$50</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:3px;">Bronce</div>
+
+        <!-- PRO -->
+        <div onclick="pagarCampMonto(500,'pro')" style="background:rgba(201,162,75,0.08);border:1.5px solid rgba(201,162,75,0.45);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;position:relative;">
+          <div style="position:absolute;top:-9px;right:14px;background:#C9A84C;color:#0B1A2E;font-size:8px;font-weight:900;padding:2px 10px;border-radius:10px;letter-spacing:1px;">⭐ MÁS POPULAR</div>
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(201,162,75,0.18);border:1px solid rgba(201,162,75,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8C96A" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#C9A84C;text-transform:uppercase;margin-bottom:3px;">Pro</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$500</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Ads de video + zona + grupo · Mayor alcance</div>
+          </div>
+          <div style="color:#C9A84C;font-size:20px;">→</div>
         </div>
-        <div onclick="pagarCampMonto(100)" style="padding:14px 8px;background:rgba(201,168,76,0.15);border:2px solid #C9A84C;border-radius:10px;text-align:center;cursor:pointer;position:relative;">
-          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:#C9A84C;color:#0B1A2E;font-size:8px;font-weight:800;padding:2px 6px;border-radius:10px;white-space:nowrap;">⭐ POPULAR</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$100</div>
-          <div style="font-size:9px;color:#C9A84C;margin-top:3px;">Plata</div>
+
+        <!-- MASTER -->
+        <div onclick="pagarCampMonto(1000,'master')" style="background:var(--bg2);border:1px solid rgba(201,162,75,0.2);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(83,74,183,0.15);border:1px solid rgba(83,74,183,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Master</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$1,000</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Dominio total · Ads personalizados · Máximo impacto</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;">→</div>
         </div>
-        <div onclick="pagarCampMonto(250)" style="padding:14px 8px;background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:10px;text-align:center;cursor:pointer;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$250</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:3px;">Oro</div>
-        </div>
-        <div onclick="pagarCampMonto(500)" style="padding:14px 8px;background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:10px;text-align:center;cursor:pointer;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$500</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:3px;">Diamante</div>
-        </div>
-        <div onclick="pagarCampMonto(1000)" style="padding:14px 8px;background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:10px;text-align:center;cursor:pointer;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E8C96A;">$1K</div>
-          <div style="font-size:9px;color:var(--muted);margin-top:3px;">Élite</div>
-        </div>
+
       </div>
-      <button onclick="pagarCamp()" style="width:100%;padding:14px;background:var(--bg2);border:1px solid rgba(201,168,76,0.3);border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#C9A84C;cursor:pointer;margin-bottom:6px;">
-        ✏️ Otro monto — yo lo escribo en Stripe
-      </button>
       <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.18);line-height:1.6;">🔐 Pago seguro · Stripe · Tu nombre aparece en la lista</div>
     </div>
 
@@ -931,6 +953,145 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
     <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
     <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Campanas</button>
+  </nav>
+</div>
+
+
+<!-- ════ ACERCA DE NOSOTROS ════ -->
+<div id="s-about" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="top-brand">TU RED <span>VITAL</span></span>
+    </div>
+  </div>
+  <div class="scroll">
+
+    <!-- HERO -->
+    <div style="padding:24px 16px 20px;background:linear-gradient(160deg,#040810 0%,#0a1929 100%);border-bottom:1px solid var(--border);">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" style="width:60px;height:60px;object-fit:contain;margin-bottom:12px;display:block;" onerror="this.style.display='none'">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Tu Red Vital · USA</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:8px;">La red de marketing<br>de salud más grande<br><span style="color:var(--gold);">de Estados Unidos.</span></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">Conectamos personas que buscan bienestar con quienes quieren sentirse mejor.</div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:14px 16px 8px;display:flex;align-items:center;gap:8px;">Contacto<div style="flex:1;height:1px;background:var(--border);"></div></div>
+
+    <div style="margin:0 14px 8px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div onclick="waOpen('12099717638','Hola Tu Red Vital! Necesito información.')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="width:38px;height:38px;border-radius:50%;background:#25D36622;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">📱</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Teléfono / WhatsApp</div>
+          <div style="font-size:15px;font-weight:600;color:var(--text);">(209) 971-7638</div>
+        </div>
+        <div style="margin-left:auto;color:#25D366;font-size:18px;">→</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">📍</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Dirección</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);">1424 Mitchell Rd</div>
+          <div style="font-size:12px;color:var(--muted);">Modesto, CA · The Master Center</div>
+        </div>
+      </div>
+      <div onclick="window.open('https://networkvital.com','_blank')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🌐</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Sitio web</div>
+          <div style="font-size:14px;font-weight:600;color:var(--gold);">networkvital.com</div>
+        </div>
+        <div style="margin-left:auto;color:var(--muted);font-size:18px;">→</div>
+      </div>
+    </div>
+
+    <!-- EQUIPO LIDERAZGO -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:14px 16px 8px;display:flex;align-items:center;gap:8px;">Liderazgo<div style="flex:1;height:1px;background:var(--border);"></div></div>
+
+    <!-- CEO -->
+    <div style="margin:0 14px 8px;background:linear-gradient(135deg,rgba(201,162,75,0.12),rgba(201,162,75,0.04));border:1px solid rgba(201,162,75,0.3);border-radius:10px;padding:16px;display:flex;align-items:center;gap:13px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--golda);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--gold);flex-shrink:0;">OO</div>
+      <div style="flex:1;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--text);margin-bottom:2px;">Oscar Ochoa</div>
+        <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:2px;">CEO · Fundador</div>
+        <div style="font-size:10px;color:var(--muted);">Tecnología · Ads · Finanzas · Legal · Podcasts</div>
+      </div>
+    </div>
+
+    <!-- EQUIPO CARDS -->
+    <div style="padding:0 14px;">
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:12px 0 8px;">Mercadeo y Redes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--gold);margin-bottom:8px;">WC</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Walter Cungachi</div>
+          <div style="font-size:10px;color:var(--muted);">Líder de Mercadeo</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--gold);margin-bottom:8px;">JS</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Josue · Marco</div>
+          <div style="font-size:10px;color:var(--muted);">Jefferson · Fidel</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Capacitación</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--green);margin-bottom:8px;">LE</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Laura Espino</div>
+          <div style="font-size:10px;color:var(--muted);">Capacitación · Punto Venta VH</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--green);margin-bottom:8px;">SR</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Sarai</div>
+          <div style="font-size:10px;color:var(--muted);">Capacitación · Modesto CA</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Liderazgo Regional · CRM · Estudio</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">CS</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Carolina Santos</div>
+          <div style="font-size:10px;color:var(--muted);">Líder Modesto, CA</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">RA</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Raúl · Alexa</div>
+          <div style="font-size:10px;color:var(--muted);">CRM y Soporte Admin</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">MM</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Miguel · Martina</div>
+          <div style="font-size:10px;color:var(--muted);">Estudio y Eventos</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ALIANZAS -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:0 16px 8px;display:flex;align-items:center;gap:8px;">Alianzas<div style="flex:1;height:1px;background:var(--border);"></div></div>
+    <div style="margin:0 14px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🏛️</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">The Master Center</div>
+        <div style="font-size:10px;color:var(--muted);">Modesto, CA</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🌿</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Vital Health Global</div>
+        <div style="font-size:10px;color:var(--muted);">Proveedor del producto</div>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-4">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Nosotros</button>
   </nav>
 </div>
 
@@ -988,6 +1149,33 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   </div>
 </div>
 
+<!-- MODAL CONFIRMACIÓN CAMPANAS -->
+<div id="camp-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(4,8,15,.95);z-index:600;align-items:center;justify-content:center;padding:20px;" data-monto="100">
+  <div style="background:#0e1d30;border:1px solid rgba(201,168,76,0.3);border-radius:16px;width:100%;max-width:340px;padding:28px;text-align:center;">
+    <div style="font-size:32px;margin-bottom:12px;">🔔</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;margin-bottom:6px;">Confirma tu patrocinio</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:20px;line-height:1.6;">
+      Elegiste patrocinar<br>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:#E8C96A;" id="camp-confirm-monto">$100</span>
+    </div>
+    <div style="background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.25);border-radius:10px;padding:14px;margin-bottom:20px;text-align:left;">
+      <div style="font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:8px;">⚠️ Instrucción importante</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.8;">
+        1. Se abrirá Stripe<br>
+        2. Verás <b style="color:#fff;">USD 1.00</b> — toca <b style="color:#E8C96A;">"Cambiar el importe"</b><br>
+        3. Escribe <b style="color:#E8C96A;" id="camp-confirm-monto2">$100</b> y confirma<br>
+        4. Completa el pago ✓
+      </div>
+    </div>
+    <button onclick="confirmarPagoCamp()" style="width:100%;padding:15px;background:#C9A84C;color:#0B1A2E;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;cursor:pointer;margin-bottom:10px;">
+      Entendido — Ir a Stripe →
+    </button>
+    <button onclick="document.getElementById('camp-confirm-overlay').style.display='none'" style="width:100%;padding:12px;background:none;border:1px solid rgba(255,255,255,0.1);border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;">
+      Cancelar
+    </button>
+  </div>
+</div>
+
 </div><!-- /app -->
 
 <script>
@@ -1013,8 +1201,11 @@ const US = [
 let reps=[], smap={}, user=null, cur='home';
 
 // ── NAVEGACIÓN ──────────────────────────────────────────
+let prevScreen = 'home';
+function back() { nav(prevScreen); }
 function nav(to) {
   if(cur===to) return;
+  prevScreen = cur;
   const fromEl = document.getElementById('s-'+cur);
   const toEl   = document.getElementById('s-'+to);
   fromEl.classList.add('leaving');
@@ -1374,10 +1565,31 @@ function setCampAmt(v) {
   updateCampAmt(v);
 }
 
-// Pago directo con monto específico
-async function pagarCampMonto(monto) {
+// Pago directo por pack — links individuales de Stripe por pack
+const STRIPE_PACKS = {
+  networker: 'https://buy.stripe.com/3cIdR8cue7QScMGbj99EI02',
+  pro:       'https://buy.stripe.com/6oU3cu9i21su28272T9EI03',
+  master:    'https://buy.stripe.com/eVqeVc0Lw6MOcMGgDt9EI04'
+};
+
+function pagarCampMonto(monto, pack) {
   if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada!'); return; }
-  if(CAMP_END - Date.now() <= 0){ showToast('El período terminó.'); return; }
+  if(CAMP_END - Date.now() <= 0){ showToast('El período ADS ha terminado.'); return; }
+  const overlay = document.getElementById('camp-confirm-overlay');
+  const montoEl = document.getElementById('camp-confirm-monto');
+  if(overlay && montoEl){
+    montoEl.textContent = '$' + monto.toLocaleString();
+    const m2=document.getElementById('camp-confirm-monto2'); if(m2) m2.textContent='$'+monto.toLocaleString();
+    overlay.dataset.monto = monto;
+    overlay.dataset.pack = pack || 'networker';
+    overlay.style.display = 'flex';
+  }
+}
+
+async function confirmarPagoCamp() {
+  const overlay = document.getElementById('camp-confirm-overlay');
+  const monto = parseInt(overlay.dataset.monto);
+  overlay.style.display = 'none';
   try {
     await sb.from('patrocinadores_camp').insert({
       monto: monto,
@@ -1387,8 +1599,9 @@ async function pagarCampMonto(monto) {
       status: 'pendiente'
     });
   } catch(e){}
-  // Stripe acepta ?prefilled_amount en centavos para este tipo de link
-  window.open(STRIPE_CAMP + '?prefilled_amount=' + (monto * 100), '_blank');
+  const pack = overlay.dataset.pack || 'networker';
+  const stripeUrl = STRIPE_PACKS[pack] || STRIPE_CAMP;
+  window.open(stripeUrl, '_blank');
 }
 
 // Pago → Stripe
