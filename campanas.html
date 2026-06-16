@@ -1,1 +1,1273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patrocinio de Campanas — Vital Health Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0B1A2E;
+    --navy-mid: #132338;
+    --navy-light: #1C3252;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-pale: #F5E9C8;
+    --cream: #FAF7F0;
+    --text-main: #FAF7F0;
+    --text-muted: #8FA3BC;
+    --text-dim: #4A6080;
+    --border: rgba(201,168,76,0.2);
+    --border-strong: rgba(201,168,76,0.45);
+    --success: #2ECC8A;
+    --danger: #E05252;
+    --card-bg: rgba(19,35,56,0.85);
+    --card-border: rgba(201,168,76,0.18);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── STARS BG ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(201,168,76,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 40%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 85%, rgba(201,168,76,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 80%, rgba(255,255,255,0.12) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app-shell {
+    position: relative;
+    z-index: 1;
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── ACCESS GATE ── */
+  #accessGate {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .gate-bell {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  .gate-bell svg {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 12px rgba(201,168,76,0.5));
+  }
+
+  .gate-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .gate-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .gate-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border-strong);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .gate-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gate-input {
+    width: 100%;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .gate-input::placeholder { color: var(--text-dim); }
+  .gate-input:focus { border-color: var(--gold); }
+
+  .gate-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .gate-btn:hover { background: var(--gold-light); }
+  .gate-btn:active { transform: scale(0.98); }
+
+  .gate-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  /* ── MAIN APP ── */
+  #mainApp { display: none; flex: 1; flex-direction: column; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+
+  .bell-icon-sm {
+    width: 36px;
+    height: 36px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .topbar-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .topbar-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* ── SCROLL CONTENT ── */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.25rem 5rem;
+  }
+  .scroll-content::-webkit-scrollbar { width: 3px; }
+  .scroll-content::-webkit-scrollbar-track { background: transparent; }
+  .scroll-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── HERO REWARD CARD ── */
+  .hero-card {
+    background: linear-gradient(135deg, var(--navy-light) 0%, #0E2240 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 18px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hero-reward-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .hero-reward-unit {
+    font-size: 20px;
+    color: var(--gold);
+    vertical-align: super;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  .hero-reward-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .reward-bar-bg {
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+
+  .reward-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+    transition: width 1.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  .reward-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .reward-bar-labels .current { color: var(--gold); font-weight: 600; }
+
+  .hero-meta-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 1rem;
+  }
+
+  .hero-meta-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .hero-meta-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+  .hero-meta-pill .dot-gold {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ── MI PATROCINIO ── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .my-sponsor-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .sponsor-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .sponsor-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--success);
+  }
+  .sponsor-status .pulse {
+    width: 8px; height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .sponsor-tier {
+    background: rgba(201,168,76,0.15);
+    border: 1px solid var(--border);
+    color: var(--gold-light);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sponsor-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .sponsor-metric {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .sponsor-metric-val {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+    display: block;
+  }
+  .sponsor-metric-val.gold { color: var(--gold); }
+  .sponsor-metric-val.green { color: var(--success); }
+
+  .sponsor-metric-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    display: block;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  .weekly-counter {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .weekly-counter-left { }
+  .weekly-counter-label { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+  .weekly-counter-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+  .weekly-counter-since { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+  .weekly-counter-right {
+    text-align: right;
+  }
+  .weekly-next-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
+  .weekly-next-val { font-size: 13px; font-weight: 600; color: var(--gold); }
+
+  /* ── MAPA ESTADOS ── */
+  .map-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .map-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+  .map-subtitle { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .map-legend { display: flex; gap: 10px; align-items: center; }
+  .map-legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-dim); }
+  .map-legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  .usa-map-wrap {
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    padding: 0.5rem;
+    position: relative;
+    height: 200px;
+  }
+
+  #usaMap { width: 100%; height: 100%; }
+
+  .map-state-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 0.75rem;
+  }
+
+  .map-state-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+
+  .map-state-name { font-size: 11px; color: var(--text-main); }
+  .map-state-cities { font-size: 10px; color: var(--text-dim); }
+  .map-state-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .badge-live { background: rgba(46,204,138,0.15); color: var(--success); }
+  .badge-open { background: rgba(201,168,76,0.12); color: var(--gold); }
+  .badge-full { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+
+  /* ── HOW IT WORKS ── */
+  .how-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .how-steps { display: flex; flex-direction: column; gap: 0; }
+
+  .how-step {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  .how-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 44px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .how-step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .how-step-body { padding-top: 6px; }
+  .how-step-title { font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
+  .how-step-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── SPONSORS FEED ── */
+  .feed-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .feed-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .feed-row:last-child { border-bottom: none; }
+
+  .feed-left { display: flex; align-items: center; gap: 10px; }
+
+  .feed-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .av1 { background: rgba(46,204,138,0.15); color: var(--success); }
+  .av2 { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .av3 { background: rgba(100,160,255,0.15); color: #64A0FF; }
+  .av4 { background: rgba(224,82,82,0.15); color: var(--danger); }
+
+  .feed-name { font-size: 12px; color: var(--text-main); font-weight: 500; }
+  .feed-city { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+  .feed-right { text-align: right; }
+  .feed-amount { font-size: 12px; font-weight: 600; color: var(--gold); }
+  .feed-reward { font-size: 10px; color: var(--success); margin-top: 1px; }
+
+  /* ── CTA ── */
+  .cta-card {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(201,168,76,0.05) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .cta-bell-wrap {
+    margin-bottom: 0.75rem;
+  }
+
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .cta-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
+  .cta-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s;
+    margin-bottom: 8px;
+  }
+  .cta-btn:hover { background: var(--gold-light); }
+  .cta-btn:active { transform: scale(0.98); }
+
+  .cta-note { font-size: 10px; color: var(--text-dim); }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: rgba(11,26,46,0.95);
+    border-top: 1px solid var(--border);
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0 14px;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .nav-item.active { opacity: 1; }
+  .nav-item svg { width: 22px; height: 22px; }
+  .nav-item span { font-size: 9px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; }
+  .nav-item.active span { color: var(--gold); }
+
+  /* ── BELL ANIMATION ── */
+  @keyframes bellRing {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(12deg); }
+    30% { transform: rotate(-10deg); }
+    45% { transform: rotate(8deg); }
+    60% { transform: rotate(-6deg); }
+    75% { transform: rotate(4deg); }
+    90% { transform: rotate(-2deg); }
+  }
+
+  .bell-ring { animation: bellRing 1.2s ease-in-out; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--navy-light);
+    border: 1px solid var(--border-strong);
+    color: var(--text-main);
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    z-index: 999;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── SHIMMER ── */
+  @keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+  }
+
+  .live-num {
+    display: inline-block;
+    position: relative;
+  }
+
+  /* ── TICKET CARD ── */
+  .ticket-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .ticket-top {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .ticket-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+  .ticket-price-label { font-size: 11px; color: var(--text-muted); margin-top: -2px; }
+
+  .ticket-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ticket-bottom {
+    padding: 0.75rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ticket-detail { }
+  .ticket-detail-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .ticket-detail-val { font-size: 12px; font-weight: 600; color: var(--text-main); }
+  .ticket-detail-val.gold { color: var(--gold); }
+
+  /* ── MOBILE SAFE ── */
+  @media (max-width: 430px) {
+    .sponsor-metrics { grid-template-columns: 1fr 1fr 1fr; }
+    .hero-reward-big { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ══ ACCESS GATE ══ -->
+  <div id="accessGate">
+    <div class="gate-bell" id="gateBell">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="38" stroke="#C9A84C" stroke-width="1" stroke-opacity="0.3"/>
+        <path d="M40 14C40 14 28 22 28 40V52H52V40C52 22 40 14 40 14Z" fill="#C9A84C" fill-opacity="0.15" stroke="#C9A84C" stroke-width="1.5"/>
+        <path d="M28 52H52" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+        <path d="M35 52C35 54.8 37.2 57 40 57C42.8 57 45 54.8 45 52" stroke="#C9A84C" stroke-width="1.5"/>
+        <circle cx="40" cy="14" r="3" fill="#E8C96A"/>
+        <path d="M34 36L40 42L46 36" stroke="#E8C96A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="gate-badge">
+      🔐 Área exclusiva
+    </div>
+
+    <h1 class="gate-title">Patrocinio de<br>Campanas</h1>
+    <p class="gate-subtitle">
+      Solo distribuidores verificados de Vital Health Network pueden acceder a este módulo de patrocinio.
+    </p>
+
+    <div class="gate-form">
+      <input class="gate-input" type="email" id="gateEmail" placeholder="Tu correo de distribuidor" autocomplete="email">
+      <input class="gate-input" type="password" id="gatePass" placeholder="Contraseña">
+      <button class="gate-btn" onclick="handleGateLogin()">Acceder como distribuidor</button>
+    </div>
+
+    <p class="gate-note">
+      ¿Aún no eres distribuidor?<br>
+      Primero regístrate en Vital Health Network para obtener acceso.
+    </p>
+  </div>
+
+  <!-- ══ MAIN APP ══ -->
+  <div id="mainApp">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="bell-icon-sm">
+          <svg id="topBell" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <div>
+          <div class="topbar-title">Patrocinio de Campanas</div>
+          <div class="topbar-sub">Vital Health Network · Beta</div>
+        </div>
+      </div>
+      <div class="topbar-avatar" id="userAvatar">OO</div>
+    </div>
+
+    <div class="scroll-content">
+
+      <!-- HERO REWARD -->
+      <div class="section-title" style="margin-top:0.75rem;">Recompensa activa</div>
+      <div class="hero-card">
+        <div class="hero-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Recompensa a patrocinadores
+        </div>
+        <div>
+          <span class="hero-reward-unit">%</span>
+          <span class="hero-reward-big" id="rewardPct">25</span>
+        </div>
+        <div class="hero-reward-label">de recompensa sobre tu patrocinio · ajustable según proyección</div>
+
+        <div class="reward-bar-bg">
+          <div class="reward-bar-fill" id="rewardBar" style="width:0%"></div>
+        </div>
+        <div class="reward-bar-labels">
+          <span>Mín 15%</span>
+          <span class="current" id="rewardBarLabel">Actual: 25%</span>
+          <span>Máx 60%+</span>
+        </div>
+
+        <div class="hero-meta-row">
+          <div class="hero-meta-pill"><span class="dot"></span>Red activa</div>
+          <div class="hero-meta-pill"><span class="dot-gold"></span>Fase beta</div>
+          <div class="hero-meta-pill">Recompensa ajustable</div>
+        </div>
+      </div>
+
+      <!-- MI PATROCINIO -->
+      <div class="section-title">Mi patrocinio</div>
+      <div class="my-sponsor-card">
+        <div class="sponsor-status-row">
+          <div class="sponsor-status">
+            <div class="pulse"></div>
+            Patrocinador activo
+          </div>
+          <div class="sponsor-tier">Fundador</div>
+        </div>
+
+        <div class="sponsor-metrics">
+          <div class="sponsor-metric">
+            <span class="sponsor-metric-val gold">$500</span>
+            <span class="sponsor-metric-label">Patrocinio total</span>
+          </div>
+          <div class="sponsor-metric">
+            <span class="sponsor-metric-val green" id="myReward">$125.00</span>
+            <span class="sponsor-metric-label">Recompensa acum.</span>
+          </div>
+          <div class="sponsor-metric">
+            <span class="sponsor-metric-val" id="myWeeks">10</span>
+            <span class="sponsor-metric-label">Semanas activo</span>
+          </div>
+        </div>
+
+        <div class="weekly-counter">
+          <div class="weekly-counter-left">
+            <div class="weekly-counter-label">Recompensa semanal estimada</div>
+            <div class="weekly-counter-val" id="weeklyVal">$12.50</div>
+            <div class="weekly-counter-since">Esta semana · 25% mensual</div>
+          </div>
+          <div class="weekly-counter-right">
+            <div class="weekly-next-label">Próxima entrega</div>
+            <div class="weekly-next-val" id="nextDelivery">Vie, Jun 20</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TICKET DE POSICIÓN -->
+      <div class="section-title">Tu posición en la red</div>
+      <div class="ticket-card">
+        <div class="ticket-top">
+          <div>
+            <div class="ticket-price">$49</div>
+            <div class="ticket-price-label">por semana · mantiene tu posición</div>
+          </div>
+          <div class="ticket-circle">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+        </div>
+        <div class="ticket-bottom">
+          <div class="ticket-detail">
+            <div class="ticket-detail-label">Estado</div>
+            <div class="ticket-detail-val gold">California</div>
+          </div>
+          <div class="ticket-detail">
+            <div class="ticket-detail-label">Ciudad</div>
+            <div class="ticket-detail-val">Modesto</div>
+          </div>
+          <div class="ticket-detail">
+            <div class="ticket-detail-label">Posición</div>
+            <div class="ticket-detail-val gold">#3 de 5</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAPA DE ESTADOS -->
+      <div class="section-title">Red de distribución USA</div>
+      <div class="map-card">
+        <div class="map-header">
+          <div>
+            <div class="map-title">Posiciones por estado</div>
+            <div class="map-subtitle">Mínimo 5 distribuidores por ciudad · $49/sem</div>
+          </div>
+          <div class="map-legend">
+            <div class="map-legend-item">
+              <div class="map-legend-dot" style="background:var(--success);"></div>
+              Activo
+            </div>
+            <div class="map-legend-item">
+              <div class="map-legend-dot" style="background:var(--gold);"></div>
+              Abierto
+            </div>
+          </div>
+        </div>
+
+        <div class="map-state-list">
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">California</div>
+              <div class="map-state-cities">3 ciudades</div>
+            </div>
+            <div class="map-state-badge badge-live">Activo</div>
+          </div>
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">Texas</div>
+              <div class="map-state-cities">2 ciudades</div>
+            </div>
+            <div class="map-state-badge badge-live">Activo</div>
+          </div>
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">Florida</div>
+              <div class="map-state-cities">4 ciudades</div>
+            </div>
+            <div class="map-state-badge badge-open">Abierto</div>
+          </div>
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">Illinois</div>
+              <div class="map-state-cities">2 ciudades</div>
+            </div>
+            <div class="map-state-badge badge-open">Abierto</div>
+          </div>
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">New York</div>
+              <div class="map-state-cities">5 ciudades</div>
+            </div>
+            <div class="map-state-badge badge-open">Abierto</div>
+          </div>
+          <div class="map-state-row">
+            <div>
+              <div class="map-state-name">Arizona</div>
+              <div class="map-state-cities">1 ciudad</div>
+            </div>
+            <div class="map-state-badge badge-live">Activo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CÓMO FUNCIONA -->
+      <div class="section-title">Cómo funciona</div>
+      <div class="how-card">
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-step-num">1</div>
+            <div class="how-step-body">
+              <div class="how-step-title">Eres distribuidor verificado</div>
+              <div class="how-step-desc">Solo distribuidores activos de VHN pueden acceder al módulo de Patrocinio de Campanas.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">2</div>
+            <div class="how-step-body">
+              <div class="how-step-title">Patrocinas la red de marketing</div>
+              <div class="how-step-desc">Tu patrocinio financia los anuncios que atraen nuevos distribuidores y clientes a la red nacional.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">3</div>
+            <div class="how-step-body">
+              <div class="how-step-title">Mantienes tu posición ($49/sem)</div>
+              <div class="how-step-desc">Cada posición cuesta $49 por semana. Si la liberas, pierdes tu lugar. Otras ciudades pueden tomarlo.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-step-num">4</div>
+            <div class="how-step-body">
+              <div class="how-step-title">Recibes tu recompensa</div>
+              <div class="how-step-desc">Comienza en 25%. Sube o baja según el ROI real de la red. Cuanto más crece la red, más grande es la campana.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATROCINADORES ACTIVOS -->
+      <div class="section-title">Patrocinadores activos</div>
+      <div class="feed-card">
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-avatar av1">MR</div>
+            <div>
+              <div class="feed-name">M. Rodríguez</div>
+              <div class="feed-city">Los Angeles, CA</div>
+            </div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount">$500 / sem</div>
+            <div class="feed-reward">+$125 recompensa</div>
+          </div>
+        </div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-avatar av2">CL</div>
+            <div>
+              <div class="feed-name">C. López</div>
+              <div class="feed-city">Houston, TX</div>
+            </div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount">$300 / sem</div>
+            <div class="feed-reward">+$75 recompensa</div>
+          </div>
+        </div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-avatar av3">JV</div>
+            <div>
+              <div class="feed-name">J. Villanueva</div>
+              <div class="feed-city">Miami, FL</div>
+            </div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount">$1,000 / sem</div>
+            <div class="feed-reward">+$250 recompensa</div>
+          </div>
+        </div>
+        <div class="feed-row">
+          <div class="feed-left">
+            <div class="feed-avatar av4">AM</div>
+            <div>
+              <div class="feed-name">A. Martínez</div>
+              <div class="feed-city">Chicago, IL</div>
+            </div>
+          </div>
+          <div class="feed-right">
+            <div class="feed-amount">$200 / sem</div>
+            <div class="feed-reward">+$50 recompensa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-card">
+        <div class="cta-bell-wrap">
+          <svg id="ctaBell" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <div class="cta-title">Amplía tu patrocinio</div>
+        <div class="cta-desc">
+          Más posiciones en más ciudades = mayor recompensa.<br>
+          La campana suena para toda la red.
+        </div>
+        <button class="cta-btn" onclick="handlePatrocinar()">+ Patrocinar nueva posición</button>
+        <div class="cta-note">Solo disponible para distribuidores activos verificados.</div>
+      </div>
+
+    </div><!-- /scroll-content -->
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav" id="bottomNav">
+      <div class="nav-item" onclick="handleNav('inicio')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Inicio</span>
+      </div>
+      <div class="nav-item active" onclick="handleNav('patrocinio')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span style="color:#C9A84C;">Patrocinio</span>
+      </div>
+      <div class="nav-item" onclick="handleNav('red')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="3"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="4" cy="16" r="2"/><circle cx="20" cy="16" r="2"/><path d="M6 16h-2M20 16h-2"/></svg>
+        <span>Mi Red</span>
+      </div>
+      <div class="nav-item" onclick="handleNav('perfil')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Perfil</span>
+      </div>
+    </div>
+
+  </div><!-- /mainApp -->
+
+</div><!-- /app-shell -->
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  <span id="toastMsg">Acción realizada</span>
+</div>
+
+<script>
+(function() {
+
+  function showToast(msg, duration) {
+    var t = document.getElementById('toast');
+    var m = document.getElementById('toastMsg');
+    m.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, duration || 2800);
+  }
+
+  function ringBell(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('bell-ring');
+    void el.offsetWidth;
+    el.classList.add('bell-ring');
+    setTimeout(function() { el.classList.remove('bell-ring'); }, 1300);
+  }
+
+  function handleGateLogin() {
+    var email = document.getElementById('gateEmail').value.trim();
+    var pass = document.getElementById('gatePass').value.trim();
+
+    if (!email || !pass) {
+      showToast('Ingresa tu correo y contraseña');
+      return;
+    }
+
+    ringBell('gateBell');
+
+    setTimeout(function() {
+      document.getElementById('accessGate').style.display = 'none';
+      var app = document.getElementById('mainApp');
+      app.style.display = 'flex';
+      app.style.flexDirection = 'column';
+      document.getElementById('bottomNav').style.display = 'flex';
+
+      var initials = email.split('@')[0].slice(0,2).toUpperCase();
+      document.getElementById('userAvatar').textContent = initials;
+
+      setTimeout(function() {
+        document.getElementById('rewardBar').style.width = '33%';
+        ringBell('topBell');
+        showToast('Bienvenido a Patrocinio de Campanas 🔔');
+      }, 400);
+
+      startLiveCounters();
+
+    }, 600);
+  }
+
+  window.handleGateLogin = handleGateLogin;
+
+  function handlePatrocinar() {
+    ringBell('ctaBell');
+    showToast('Módulo de nueva posición próximamente');
+  }
+  window.handlePatrocinar = handlePatrocinar;
+
+  function handleNav(section) {
+    if (section !== 'patrocinio') {
+      showToast('Módulo "' + section + '" próximamente');
+    }
+  }
+  window.handleNav = handleNav;
+
+  function startLiveCounters() {
+    var startCapital = 500;
+    var monthlyRate = 0.25;
+    var dailyRate = monthlyRate / 30;
+    var weeklyRate = monthlyRate / 4.33;
+    var elapsed = 0;
+
+    var myReward = document.getElementById('myReward');
+    var weeklyVal = document.getElementById('weeklyVal');
+
+    var baseReward = startCapital * monthlyRate * (10 / 4.33);
+
+    setInterval(function() {
+      elapsed++;
+      var extra = startCapital * dailyRate * (elapsed / 86400);
+      var total = baseReward + extra;
+      if (myReward) myReward.textContent = '$' + total.toFixed(4);
+      var weekly = startCapital * weeklyRate;
+      var weekExtra = weekly * (elapsed / 86400 / 7);
+      if (weeklyVal) weeklyVal.textContent = '$' + (weekly + weekExtra).toFixed(4);
+    }, 1000);
+
+    var rewardPct = 25;
+    var rewardBar = document.getElementById('rewardBar');
+    var rewardBarLabel = document.getElementById('rewardBarLabel');
+    var rewardPctEl = document.getElementById('rewardPct');
+
+    setInterval(function() {
+      var now = new Date();
+      var wave = Math.sin(now.getTime() / 12000) * 3;
+      var current = Math.round((rewardPct + wave) * 10) / 10;
+      if (rewardPctEl) rewardPctEl.textContent = current.toFixed(1);
+      if (rewardBarLabel) rewardBarLabel.textContent = 'Actual: ' + current.toFixed(1) + '%';
+      var pct = ((current - 15) / (60 - 15)) * 100;
+      if (rewardBar) rewardBar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    }, 3000);
+
+    var next = new Date();
+    next.setDate(next.getDate() + (5 - next.getDay() + 7) % 7 || 7);
+    var months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    var days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    var nd = document.getElementById('nextDelivery');
+    if (nd) nd.textContent = days[next.getDay()] + ', ' + months[next.getMonth()] + ' ' + next.getDate();
+
+    setInterval(function() { ringBell('topBell'); }, 18000);
+  }
+
+  document.getElementById('gateEmail').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('gatePass').focus();
+    }
+  });
+  document.getElementById('gatePass').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      handleGateLogin();
+    }
+  });
+
+  setTimeout(function() { ringBell('gateBell'); }, 1200);
+  setTimeout(function() { ringBell('gateBell'); }, 4000);
+
+})();
+</script>
+</body>
+</html>
 
