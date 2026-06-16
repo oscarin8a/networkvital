@@ -19,10 +19,12 @@ const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
 </script>
 <style>
 :root{
-  --bg:#08111e;--bg2:#0e1d30;--bg3:#152236;
+  --bg:#07101c;--bg2:#0d1b2a;--bg3:#122030;
   --gold:#C9A24B;--gold2:#e8c06a;--golda:rgba(201,162,75,0.12);
+  --olive:#6B8F71;--olive2:#8fad82;--olivea:rgba(107,143,113,0.14);
+  --sky:#5BA4CF;--sky2:#7ec8e3;--skya:rgba(91,164,207,0.13);
   --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
-  --text:#fff;--muted:#7A8FA6;--border:rgba(201,162,75,0.15);
+  --text:#f0f4f8;--muted:#7A8FA6;--border:rgba(107,143,113,0.18);
   --wa:#25D366;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -68,7 +70,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .top{
   flex-shrink:0;height:54px;
   background:rgba(8,17,30,0.96);
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid rgba(107,143,113,0.2);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 16px;backdrop-filter:blur(10px);
 }
@@ -114,11 +116,13 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 }
 .bn svg{width:22px;height:22px;stroke-width:1.8;}
 .bn.on{color:var(--gold);}
+.bn.on.sky{color:var(--sky);}
+.bn.on.olive{color:var(--olive);}
 
 /* ═══ HERO ═══ */
 .hero{
   padding:30px 18px 24px;
-  background:linear-gradient(160deg,#040810 0%,#0a1929 60%,#040810 100%);
+  background:linear-gradient(160deg,#050d18 0%,#091824 60%,#050d18 100%);
   position:relative;overflow:hidden;
 }
 .hero::before{
@@ -175,11 +179,13 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 /* ═══ STATS ═══ */
 .stats{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  gap:1px;background:rgba(107,143,113,0.12);
+  border-top:1px solid rgba(107,143,113,0.15);border-bottom:1px solid rgba(107,143,113,0.15);
 }
 .stat{padding:13px 8px;text-align:center;background:var(--bg);}
 .stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.stat:nth-child(2) .stat-n{color:var(--olive2);}
+.stat:nth-child(3) .stat-n{color:var(--sky2);}
 .stat-l{font-size:9px;color:var(--muted);letter-spacing:.5px;margin-top:2px;}
 
 /* ═══ SECTION ═══ */
@@ -190,7 +196,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 }
 .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
 
-.vp{display:flex;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin:0 14px 8px;}
+.vp{display:flex;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid rgba(107,143,113,0.2);border-radius:10px;margin:0 14px 8px;}
 .vp-ic{font-size:20px;flex-shrink:0;margin-top:1px;}
 .vp-t{font-size:13px;font-weight:600;margin-bottom:2px;}
 .vp-s{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
@@ -300,6 +306,9 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .ben{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .ben:last-child{border:none;}
 .ben-ic{width:32px;height:32px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,.18);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ben:nth-child(2) .ben-ic{background:var(--olivea);border-color:rgba(107,143,113,.25);}
+.ben:nth-child(3) .ben-ic{background:var(--skya);border-color:rgba(91,164,207,.25);}
+.ben:nth-child(4) .ben-ic{background:var(--olivea);border-color:rgba(107,143,113,.25);}
 .ben-t{font-size:13px;font-weight:600;margin-bottom:1px;}
 .ben-s{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
 .urg{margin:0 14px 12px;padding:10px 13px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;display:flex;gap:10px;align-items:center;}
@@ -336,7 +345,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .qa-s{font-size:10px;color:var(--muted);}
 .wa-big{
   margin:0 14px 14px;padding:15px;
-  background:linear-gradient(135deg,#0e6b5a,var(--wa));
+  background:linear-gradient(135deg,#1a5c45,#1a9955);
   border-radius:12px;cursor:pointer;
   display:flex;align-items:center;gap:13px;
   transition:opacity .15s;
@@ -347,7 +356,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .wa-big-s{font-size:11px;opacity:.8;}
 .upgrade-banner{
   margin:0 14px 14px;padding:14px;
-  background:rgba(201,162,75,.06);border:1px solid rgba(201,162,75,.22);
+  background:rgba(91,164,207,.06);border:1px solid rgba(91,164,207,.22);
   border-radius:12px;cursor:pointer;
   display:flex;align-items:center;gap:12px;
 }
@@ -385,7 +394,8 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .kpi-l{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
 .kpi-v{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
 .kpi-v.gold{color:var(--gold);}
-.kpi-v.green{color:var(--green);}
+.kpi-v.green{color:var(--olive2);}
+.kpi-v.sky{color:var(--sky2);}
 .kpi-sub{font-size:9px;color:rgba(255,255,255,.26);margin-top:2px;}
 
 .dsec{padding:0 14px 6px;}
@@ -509,9 +519,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div class="top-logo-fb" style="display:none;">V</div>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-user" onclick="openLogin()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-      <span id="top-name">Entrar</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;background:var(--olivea);border:1px solid rgba(107,143,113,0.3);color:var(--olive2);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/><circle cx="19" cy="19" r="3"/><path d="M19 17v1.5M19 21v.5" stroke-linecap="round"/></svg>
+        Nosotros
+      </button>
+      <div class="top-user" onclick="openLogin()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <span id="top-name">Entrar</span>
+      </div>
     </div>
   </div>
   <div class="scroll">
@@ -520,7 +536,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div class="hero-logo-fb" style="display:none;">TRV</div>
       <div class="hero-pill">🌿 Red Nacional · USA</div>
       <div class="hero-t">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
-      <div class="hero-s">Distribuidores certificados en los 50 estados conectando personas con bienestar real.</div>
+      <div class="hero-s">La Red de Bienestar más popular en Estados Unidos.</div>
       <div class="hero-btns">
         <div class="hbtn gold" onclick="nav('scan')"><small>Gratis</small>Solicitar Escáner</div>
         <div class="hbtn dark" onclick="nav('join')"><small>$49/semana</small>Ser Distribuidor</div>
@@ -944,6 +960,11 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div id="camp-feed-list">
         <div style="text-align:center;padding:24px;color:rgba(255,255,255,0.25);font-size:12px;">Sé el primero en patrocinar 🔔</div>
       </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🤝</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Independent Distributors</div>
+        <div style="font-size:10px;color:var(--muted);">Red nacional USA</div>
+      </div>
     </div>
 
     <div style="height:12px;"></div>
@@ -972,7 +993,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" style="width:60px;height:60px;object-fit:contain;margin-bottom:12px;display:block;" onerror="this.style.display='none'">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Tu Red Vital · USA</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:8px;">La red de marketing<br>de salud más grande<br><span style="color:var(--gold);">de Estados Unidos.</span></div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">Conectamos personas que buscan bienestar con quienes quieren sentirse mejor.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">La Red de Bienestar más popular en Estados Unidos.</div>
     </div>
 
     <!-- CONTACTO -->
@@ -1071,17 +1092,22 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     </div>
 
     <!-- ALIANZAS -->
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:0 16px 8px;display:flex;align-items:center;gap:8px;">Alianzas<div style="flex:1;height:1px;background:var(--border);"></div></div>
-    <div style="margin:0 14px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:0 16px 8px;display:flex;align-items:center;gap:8px;">Alianzas y Productos<div style="flex:1;height:1px;background:var(--border);"></div></div>
+    <div style="margin:0 14px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
         <div style="font-size:22px;margin-bottom:6px;">🏛️</div>
         <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">The Master Center</div>
-        <div style="font-size:10px;color:var(--muted);">Modesto, CA</div>
+        <div style="font-size:10px;color:var(--muted);">Media &amp; Advertising</div>
       </div>
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
         <div style="font-size:22px;margin-bottom:6px;">🌿</div>
         <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Vital Health Global</div>
-        <div style="font-size:10px;color:var(--muted);">Proveedor del producto</div>
+        <div style="font-size:10px;color:var(--muted);">Productos de bienestar
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🤝</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Independent Distributors</div>
+        <div style="font-size:10px;color:var(--muted);">Red nacional USA</div>
       </div>
     </div>
 
