@@ -21,7 +21,22 @@ const STRIPE = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);color:var(--white);}
-#app{position:fixed;inset:0;overflow:hidden;max-width:430px;margin:0 auto;}
+
+/* ── MOBILE: app de pantalla completa ── */
+#app{
+  position:fixed;inset:0;overflow:hidden;
+  width:100%;max-width:430px;margin:0 auto;
+}
+
+/* ── DESKTOP: centrado con sombra ── */
+@media(min-width:600px){
+  body{display:flex;align-items:flex-start;justify-content:center;background:#06101c;min-height:100vh;}
+  #app{
+    position:relative;height:100vh;max-width:390px;width:100%;
+    box-shadow:0 0 60px rgba(0,0,0,0.6);
+    margin:0 auto;
+  }
+}
 
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -55,7 +70,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
   padding:6px 10px;cursor:pointer;border-radius:3px;
 }
 
-/* BOTTOM NAV — igual en TODAS las pantallas */
+/* BOTTOM NAV */
 .bnav{
   flex-shrink:0;height:62px;
   background:var(--navy2);border-top:1px solid var(--border);
@@ -120,13 +135,8 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
 .leg-d.f{background:var(--gold);}
 .leg-d.a{background:rgba(201,162,75,0.4);}
 .leg-d.o{background:transparent;border:1.5px solid rgba(255,255,255,0.2);}
-
-/* STATE GRID */
 .states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:0 12px 12px;}
-.state-btn{
-  padding:10px 4px;background:var(--navy2);border:1px solid var(--border);
-  cursor:pointer;text-align:center;transition:all 0.15s;border-radius:3px;
-}
+.state-btn{padding:10px 4px;background:var(--navy2);border:1px solid var(--border);cursor:pointer;text-align:center;transition:all 0.15s;border-radius:3px;}
 .state-btn:active{opacity:0.75;}
 .state-btn.f{background:var(--gold);border-color:var(--gold);}
 .state-btn.f .s-code{color:var(--navy);}
@@ -136,13 +146,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
 .s-pip{width:5px;height:3px;background:rgba(255,255,255,0.15);border-radius:1px;}
 .s-pip.on{background:var(--gold);}
 .state-btn.f .s-pip.on{background:var(--navy);}
-
-/* STATE POPUP */
-.state-pop{
-  margin:0 12px 12px;padding:16px;
-  background:var(--navy2);border:1px solid rgba(201,162,75,0.3);
-  display:none;border-radius:4px;
-}
+.state-pop{margin:0 12px 12px;padding:16px;background:var(--navy2);border:1px solid rgba(201,162,75,0.3);display:none;border-radius:4px;}
 .state-pop.vis{display:block;}
 .sp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .sp-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
@@ -195,6 +199,41 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
 .urg-s{font-size:11px;color:rgba(255,255,255,0.35);margin-top:1px;}
 .secure{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;font-size:10px;color:rgba(255,255,255,0.2);}
 
+/* DASHBOARD */
+.dash-hero{padding:20px 16px 16px;background:linear-gradient(150deg,#091420 0%,#0f2038 100%);border-bottom:1px solid var(--border);flex-shrink:0;}
+.dash-avatar{width:52px;height:52px;border-radius:50%;background:rgba(201,162,75,0.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.dash-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:2px;}
+.dash-sub{font-size:12px;color:rgba(255,255,255,0.4);}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:8px;}
+.status-badge.activa{background:rgba(37,211,102,0.15);color:#25D366;border:1px solid rgba(37,211,102,0.3);}
+.status-badge.pendiente{background:rgba(201,162,75,0.15);color:var(--gold);border:1px solid rgba(201,162,75,0.3);}
+.status-badge.cancelada{background:rgba(200,30,45,0.15);color:#E85C6A;border:1px solid rgba(200,30,45,0.3);}
+.dash-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;}
+.dcard{padding:12px;background:var(--navy2);border:1px solid var(--border);border-radius:3px;}
+.dcard-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.dcard-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--white);}
+.dcard-val.gold{color:var(--gold);}
+.dcard-val.green{color:#25D366;}
+.dcard-val.red{color:#E85C6A;}
+.dcard-sub{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.dash-sec{padding:0 14px 8px;}
+.dash-sec-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:12px 0 8px;display:flex;align-items:center;gap:8px;}
+.dash-sec-lbl::after{content:'';flex:1;height:1px;background:rgba(201,162,75,0.18);}
+.pago-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.pago-row:last-child{border:none;}
+.pago-fecha{font-size:12px;color:rgba(255,255,255,0.5);}
+.pago-monto{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#25D366;}
+.pago-badge{font-size:10px;padding:2px 7px;border-radius:10px;}
+.pago-badge.ok{background:rgba(37,211,102,0.15);color:#25D366;}
+.pago-badge.fail{background:rgba(200,30,45,0.15);color:#E85C6A;}
+.contacto-row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.contacto-row:last-child{border:none;}
+.contacto-av{width:34px;height:34px;border-radius:50%;background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.contacto-nm{font-size:13px;font-weight:600;margin-bottom:2px;}
+.contacto-inf{font-size:11px;color:rgba(255,255,255,0.4);}
+.contacto-wa{width:30px;height:30px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.empty-state{text-align:center;padding:24px 16px;color:rgba(255,255,255,0.3);font-size:13px;line-height:1.7;}
+
 /* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(11,22,38,0.93);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
@@ -224,7 +263,6 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
 @keyframes ldfill{to{width:100%;}}
 .ld-txt{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:8px;}
 
-/* TOAST */
 .toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--navy2);border:1px solid rgba(201,162,75,0.3);color:var(--white);padding:10px 20px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;z-index:700;pointer-events:none;border-radius:3px;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
@@ -236,14 +274,11 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
   <div class="ld-bar"><div class="ld-fill"></div></div>
   <div class="ld-txt">Tu Red Vital · USA</div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <div id="app">
 
-<!-- ══════════════════════════════════════
-     PANTALLA: INICIO
-══════════════════════════════════════ -->
+<!-- ══ INICIO ══ -->
 <div id="s-home" class="screen active">
   <div class="top">
     <div class="top-left">
@@ -284,26 +319,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
     </div>
     <div style="height:10px;"></div>
   </div>
-  <!-- MENÚ INFERIOR — INICIO -->
   <nav class="bnav">
-    <button class="bn on" onclick="go('s-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio
-    </button>
-    <button class="bn" onclick="go('s-map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
-    </button>
-    <button class="bn" onclick="go('s-scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner
-    </button>
-    <button class="bn" onclick="go('s-join')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
-    </button>
+    <button class="bn on" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══════════════════════════════════════
-     PANTALLA: MAPA
-══════════════════════════════════════ -->
+<!-- ══ MAPA ══ -->
 <div id="s-map" class="screen">
   <div class="top">
     <div class="top-left">
@@ -311,28 +335,19 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <span class="brand">TU RED <span>VITAL</span></span>
     </div>
     <div class="top-right">
-      <div class="login-btn" onclick="openLogin()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span class="uname">Entrar</span>
-      </div>
+      <div class="login-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
     </div>
   </div>
   <div class="scroll">
-    <div class="map-head">
-      <div class="map-t">Mapa de representantes</div>
-      <div class="map-s">Toca tu estado para ver disponibilidad</div>
-    </div>
+    <div class="map-head"><div class="map-t">Mapa de representantes</div><div class="map-s">Toca tu estado para ver disponibilidad</div></div>
     <div class="legend">
-      <div class="leg"><div class="leg-d f"></div>Completo (5/5)</div>
+      <div class="leg"><div class="leg-d f"></div>Completo</div>
       <div class="leg"><div class="leg-d a"></div>Disponible</div>
       <div class="leg"><div class="leg-d o"></div>Abierto</div>
     </div>
     <div class="states-grid" id="states-grid"></div>
     <div class="state-pop" id="state-pop">
-      <div class="sp-head">
-        <div class="sp-name" id="sp-name">—</div>
-        <button class="sp-close" onclick="closePop()">✕</button>
-      </div>
+      <div class="sp-head"><div class="sp-name" id="sp-name">—</div><button class="sp-close" onclick="closePop()">✕</button></div>
       <div class="sp-slots" id="sp-slots"></div>
       <div class="sp-status" id="sp-status"></div>
       <div id="sp-reps"></div>
@@ -340,26 +355,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
     </div>
     <div style="height:10px;"></div>
   </div>
-  <!-- MENÚ INFERIOR — MAPA -->
   <nav class="bnav">
-    <button class="bn" onclick="go('s-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio
-    </button>
-    <button class="bn on" onclick="go('s-map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
-    </button>
-    <button class="bn" onclick="go('s-scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner
-    </button>
-    <button class="bn" onclick="go('s-join')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
-    </button>
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn on" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══════════════════════════════════════
-     PANTALLA: ESCÁNER
-══════════════════════════════════════ -->
+<!-- ══ ESCÁNER ══ -->
 <div id="s-scan" class="screen">
   <div class="top">
     <div class="top-left">
@@ -367,10 +371,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <span class="brand">TU RED <span>VITAL</span></span>
     </div>
     <div class="top-right">
-      <div class="login-btn" onclick="openLogin()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span class="uname">Entrar</span>
-      </div>
+      <div class="login-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
     </div>
   </div>
   <div class="scroll">
@@ -378,29 +379,22 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <img src="/images/Gemini_Generated_Image_oxvn4uoxvn4uoxvn.png" alt="logo" class="fh-logo">
       <div class="fh-ey">Para tu salud · Gratis</div>
       <div class="fh-t">Solicita tu<br>escáner corporal</div>
-      <div class="fh-s">Te conectamos con un especialista en tu zona por WhatsApp — sin costo ni compromiso.</div>
+      <div class="fh-s">Te conectamos con un especialista por WhatsApp — sin costo ni compromiso.</div>
     </div>
     <div class="fbody">
       <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="sc-nombre" type="text" placeholder="Tu nombre completo" autocomplete="name"></div>
-      <div class="fg"><label class="fl">Teléfono</label><input class="fi" id="sc-phone" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel"></div>
-      <div class="fg"><label class="fl">Estado</label>
-        <select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select>
-      </div>
+      <div class="fg"><label class="fl">Teléfono</label><input class="fi" id="sc-phone" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Estado</label><select class="fs" id="sc-estado"><option value="">Selecciona tu estado</option></select></div>
       <div class="fg"><label class="fl">Ciudad</label><input class="fi" id="sc-ciudad" type="text" placeholder="Ciudad donde vives"></div>
       <div class="fg">
         <label class="fl">¿Qué quieres mejorar?</label>
         <select class="fs" id="sc-goal">
           <option value="">Selecciona una opción</option>
-          <option>Nutrición y peso saludable</option>
-          <option>Energía y vitalidad</option>
-          <option>Salud digestiva</option>
-          <option>Dolor e inflamación</option>
-          <option>Sueño y descanso</option>
-          <option>Salud hormonal</option>
-          <option>Sistema inmune</option>
-          <option>Salud mental y emocional</option>
-          <option>Rendimiento deportivo</option>
-          <option>Salud en general</option>
+          <option>Nutrición y peso saludable</option><option>Energía y vitalidad</option>
+          <option>Salud digestiva</option><option>Dolor e inflamación</option>
+          <option>Sueño y descanso</option><option>Salud hormonal</option>
+          <option>Sistema inmune</option><option>Salud mental y emocional</option>
+          <option>Rendimiento deportivo</option><option>Salud en general</option>
         </select>
       </div>
       <button class="btn-wa" onclick="doScan()">
@@ -411,26 +405,15 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
     </div>
     <div style="height:10px;"></div>
   </div>
-  <!-- MENÚ INFERIOR — ESCÁNER -->
   <nav class="bnav">
-    <button class="bn" onclick="go('s-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio
-    </button>
-    <button class="bn" onclick="go('s-map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
-    </button>
-    <button class="bn on" onclick="go('s-scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner
-    </button>
-    <button class="bn" onclick="go('s-join')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
-    </button>
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn on" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══════════════════════════════════════
-     PANTALLA: ÚNETE
-══════════════════════════════════════ -->
+<!-- ══ ÚNETE ══ -->
 <div id="s-join" class="screen">
   <div class="top">
     <div class="top-left">
@@ -438,10 +421,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <span class="brand">TU RED <span>VITAL</span></span>
     </div>
     <div class="top-right">
-      <div class="login-btn" onclick="openLogin()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span class="uname">Entrar</span>
-      </div>
+      <div class="login-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
     </div>
   </div>
   <div class="scroll">
@@ -458,17 +438,12 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
       <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea.</div></div></div>
       <div class="ben"><div class="ben-ico">🤝</div><div><div class="ben-t">Red de contactos</div><div class="ben-s">255 distribuidores nacionales + soporte.</div></div></div>
     </div>
-    <div class="urg">
-      <div style="font-size:18px;">⚡</div>
-      <div><div class="urg-t">Espacios limitados</div><div class="urg-s">Solo 5 por estado · 255 en total</div></div>
-    </div>
+    <div class="urg"><div style="font-size:18px;">⚡</div><div><div class="urg-t">Espacios limitados</div><div class="urg-s">Solo 5 por estado · 255 en total</div></div></div>
     <div class="fbody" style="padding-top:4px;">
       <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="j-nombre" type="text" placeholder="Como aparecerá en el mapa" autocomplete="name"></div>
-      <div class="fg"><label class="fl">Tu estado</label>
-        <select class="fs" id="j-estado"><option value="">Selecciona tu estado</option></select>
-      </div>
+      <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="j-estado"><option value="">Selecciona tu estado</option></select></div>
       <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="j-ciudad" type="text" placeholder="Ciudad donde operas"></div>
-      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-whatsapp" type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-whatsapp" type="tel" placeholder="+1 (555) 000-0000"></div>
       <div class="fg"><label class="fl">Tu email</label><input class="fi" id="j-email" type="email" placeholder="Para confirmación y acceso" autocomplete="email"></div>
       <button class="btn-stripe" onclick="doJoin()">🔒 Reservar mi espacio · $49/sem</button>
       <div class="secure">🔐 Pago seguro · STRIPE · Visa · MC · Apple Pay</div>
@@ -476,26 +451,75 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
     </div>
     <div style="height:10px;"></div>
   </div>
-  <!-- MENÚ INFERIOR — ÚNETE -->
   <nav class="bnav">
-    <button class="bn" onclick="go('s-home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio
-    </button>
-    <button class="bn" onclick="go('s-map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa
-    </button>
-    <button class="bn" onclick="go('s-scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner
-    </button>
-    <button class="bn on" onclick="go('s-join')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete
-    </button>
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ══════════════════════════════════════
-     MODAL: LOGIN
-══════════════════════════════════════ -->
+<!-- ══ DASHBOARD ══ -->
+<div id="s-dash" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back" onclick="back()">←</button>
+      <span class="brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-right">
+      <div class="login-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="dash-hero">
+      <div class="dash-avatar" id="dash-av">—</div>
+      <div class="dash-name" id="dash-nombre">—</div>
+      <div class="dash-sub" id="dash-estado">—</div>
+      <div class="status-badge" id="dash-badge">—</div>
+    </div>
+    <div class="dash-cards">
+      <div class="dcard">
+        <div class="dcard-lbl">Último pago</div>
+        <div class="dcard-val green" id="d-ultimo">—</div>
+        <div class="dcard-sub" id="d-monto">—</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-lbl">Próximo cobro</div>
+        <div class="dcard-val gold" id="d-proximo">—</div>
+        <div class="dcard-sub">Renovación semanal</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-lbl">Estado</div>
+        <div class="dcard-val" id="d-ciudad">—</div>
+        <div class="dcard-sub" id="d-slot">Slot —</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-lbl">Contactos enviados</div>
+        <div class="dcard-val gold" id="d-contactos">0</div>
+        <div class="dcard-sub">Total de prospectos</div>
+      </div>
+    </div>
+
+    <div class="dash-sec">
+      <div class="dash-sec-lbl">Historial de pagos</div>
+      <div id="pagos-list"><div class="empty-state">Cargando pagos…</div></div>
+    </div>
+
+    <div class="dash-sec">
+      <div class="dash-sec-lbl">Contactos enviados</div>
+      <div id="contactos-list"><div class="empty-state">Cargando contactos…</div></div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <nav class="bnav">
+    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Mi Panel</button>
+  </nav>
+</div>
+
+<!-- ══ LOGIN MODAL ══ -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
     <div class="modal-head">
@@ -515,9 +539,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--navy);col
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     MODAL: REGISTRO
-══════════════════════════════════════ -->
+<!-- ══ REGISTRO MODAL ══ -->
 <div class="modal-overlay" id="modal-reg">
   <div class="modal">
     <div class="modal-head">
@@ -560,240 +582,226 @@ const US = [
   {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
 ];
 
-let reps=[], smap={}, hist=['s-home'], user=null;
+let reps=[], smap={}, hist=['s-home'], user=null, miMembresia=null;
 
-// ── NAVEGACIÓN ────────────────────────────────────────────────
+// ── NAVEGACIÓN ────────────────────────────────
 function go(to) {
   const cur = hist[hist.length-1];
-  if(cur === to) return;
+  if(cur===to) return;
   document.getElementById(cur).classList.add('prev');
   document.getElementById(cur).classList.remove('active');
   document.getElementById(to).classList.remove('prev');
   document.getElementById(to).classList.add('active');
   hist.push(to);
   closePop();
+  if(to==='s-dash') loadDashboard();
 }
-
 function back() {
-  if(hist.length <= 1) return;
-  const cur = hist.pop();
-  const to  = hist[hist.length-1];
+  if(hist.length<=1) return;
+  const cur=hist.pop(), to=hist[hist.length-1];
   document.getElementById(cur).classList.remove('active','prev');
   document.getElementById(to).classList.remove('prev');
   document.getElementById(to).classList.add('active');
 }
 
-// ── CARGAR DATOS ──────────────────────────────────────────────
+// ── DATOS ─────────────────────────────────────
 async function loadData() {
   try {
     const { data } = await sb.from('membresias').select('*').eq('status','activa');
     reps = data || [];
-  } catch(e) { reps = []; }
-  smap = {};
-  reps.forEach(r => {
-    if(!smap[r.estado_codigo]) smap[r.estado_codigo] = [];
-    smap[r.estado_codigo].push(r);
-  });
+  } catch(e){ reps=[]; }
+  smap={};
+  reps.forEach(r=>{ if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[]; smap[r.estado_codigo].push(r); });
   buildGrid();
   fillStateSelects();
 }
 
-// ── GRID DE ESTADOS ───────────────────────────────────────────
+// ── MAPA ──────────────────────────────────────
 function buildGrid() {
-  const grid = document.getElementById('states-grid');
-  grid.innerHTML = US.map(s => {
-    const r   = smap[s.c] || [];
-    const cls = r.length >= 5 ? 'f' : r.length > 0 ? 'a' : '';
-    const pips = Array.from({length:5}, (_,i) =>
-      `<div class="s-pip${i < r.length ? ' on' : ''}"></div>`).join('');
-    return `<div class="state-btn ${cls}" onclick="showState('${s.c}')">
-      <div class="s-code">${s.c}</div>
-      <div class="s-slots">${pips}</div>
-    </div>`;
+  const g = document.getElementById('states-grid');
+  g.innerHTML = US.map(s=>{
+    const r=smap[s.c]||[], cls=r.length>=5?'f':r.length>0?'a':'';
+    const pips=Array.from({length:5},(_,i)=>`<div class="s-pip${i<r.length?' on':''}"></div>`).join('');
+    return `<div class="state-btn ${cls}" onclick="showState('${s.c}')"><div class="s-code">${s.c}</div><div class="s-slots">${pips}</div></div>`;
   }).join('');
 }
-
 function showState(code) {
-  const r     = smap[code] || [];
-  const name  = US.find(s => s.c === code)?.n || code;
-  const avail = 5 - r.length;
-  document.getElementById('sp-name').textContent = name;
-  document.getElementById('sp-slots').innerHTML = Array.from({length:5}, (_,i) =>
-    `<div class="sp-slot ${i < r.length ? 'on' : 'off'}">${i < r.length ? '✓' : ''}</div>`).join('');
-  document.getElementById('sp-status').textContent = avail === 0
-    ? 'ZONA COMPLETA · 5/5'
-    : `${avail} espacio${avail > 1 ? 's' : ''} disponible${avail > 1 ? 's' : ''} · $49/sem`;
-  document.getElementById('sp-reps').innerHTML = r.length
-    ? r.map(x => `<div class="sp-rep">
-        <div class="sp-av">${ini(x.nombre)}</div>
-        <div style="flex:1"><div class="sp-nm">${x.nombre}</div><div class="sp-ci">${x.ciudad||''}</div></div>
-        <button class="wa-circle" onclick="openWA('${x.whatsapp}','${x.nombre.replace(/'/g,"\\'")}')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </button>
-      </div>`).join('')
-    : `<div class="sp-empty">Sé el primero en ${name}<br>$49/sem · 5 espacios disponibles</div>`;
-  const cta = document.getElementById('sp-cta');
-  cta.textContent = avail > 0 ? `Reservar espacio en ${name} →` : `Solicitar escáner en ${name} →`;
-  cta.onclick = () => go(avail > 0 ? 's-join' : 's-scan');
-  const pop = document.getElementById('state-pop');
+  const r=smap[code]||[], name=US.find(s=>s.c===code)?.n||code, avail=5-r.length;
+  document.getElementById('sp-name').textContent=name;
+  document.getElementById('sp-slots').innerHTML=Array.from({length:5},(_,i)=>`<div class="sp-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
+  document.getElementById('sp-status').textContent=avail===0?'ZONA COMPLETA · 5/5':`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/sem`;
+  document.getElementById('sp-reps').innerHTML=r.length
+    ?r.map(x=>`<div class="sp-rep"><div class="sp-av">${ini(x.nombre)}</div><div style="flex:1"><div class="sp-nm">${x.nombre}</div><div class="sp-ci">${x.ciudad||''}</div></div><button class="wa-circle" onclick="openWA('${x.whatsapp}','${x.nombre.replace(/'/g,"\\'")}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button></div>`).join('')
+    :`<div class="sp-empty">Sé el primero en ${name}<br>$49/sem · 5 espacios disponibles</div>`;
+  const cta=document.getElementById('sp-cta');
+  cta.textContent=avail>0?`Reservar espacio en ${name} →`:`Solicitar escáner en ${name} →`;
+  cta.onclick=()=>go(avail>0?'s-join':'s-scan');
+  const pop=document.getElementById('state-pop');
   pop.classList.add('vis');
-  setTimeout(() => pop.scrollIntoView({behavior:'smooth', block:'nearest'}), 80);
+  setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
 }
+function closePop(){ document.getElementById('state-pop').classList.remove('vis'); }
 
-function closePop() { document.getElementById('state-pop').classList.remove('vis'); }
-
-// ── ESCÁNER → WHATSAPP ────────────────────────────────────────
-async function doScan() {
-  const n  = document.getElementById('sc-nombre').value.trim();
-  const p  = document.getElementById('sc-phone').value.trim();
-  const c  = document.getElementById('sc-estado').value;
-  const ci = document.getElementById('sc-ciudad').value.trim();
-  const g  = document.getElementById('sc-goal').value;
-  if(!n || !p || !c || !ci || !g) { showToast('⚠️ Completa todos los campos'); return; }
-  const sn = US.find(s => s.c === c)?.n || c;
+// ── DASHBOARD ─────────────────────────────────
+async function loadDashboard() {
+  if(!user){ go('s-home'); openLogin(); return; }
   try {
-    await sb.from('solicitudes_scanner').insert({
-      nombre:n, telefono:p.replace(/\D/g,''),
-      estado_codigo:c, estado_nombre:sn, objetivo:g
-    });
-  } catch(e){}
-  const msg = encodeURIComponent(
-    `Hola! Me registré en Tu Red Vital 🌿\n\n` +
-    `👤 Nombre: ${n}\n📍 Estado: ${sn}\n🏙️ Ciudad: ${ci}\n` +
-    `📱 Teléfono: ${p}\n💚 Objetivo: ${g}\n\n` +
-    `Me interesa el escáner corporal gratuito.`
-  );
-  window.open(`https://wa.me/${WA}?text=${msg}`, '_blank');
-}
+    const { data:m } = await sb.from('membresias').select('*').eq('email', user.email).single();
+    miMembresia = m;
+    if(!m){ document.getElementById('dash-nombre').textContent='Sin membresía'; return; }
 
-// ── MEMBRESÍA → STRIPE ────────────────────────────────────────
-async function doJoin() {
-  const n  = document.getElementById('j-nombre').value.trim();
-  const e  = document.getElementById('j-estado').value;
-  const c  = document.getElementById('j-ciudad').value.trim();
-  const w  = document.getElementById('j-whatsapp').value.trim();
-  const em = document.getElementById('j-email').value.trim();
-  if(!n || !e || !c || !w || !em) { showToast('⚠️ Completa todos los campos'); return; }
-  if(!em.includes('@')) { showToast('⚠️ Email inválido'); return; }
-  const en = US.find(s => s.c === e)?.n || e;
-  try {
-    await sb.from('membresias').upsert({
-      nombre:n, email:em, whatsapp:w.replace(/\D/g,''), ciudad:c,
-      estado_codigo:e, estado_nombre:en,
-      slot:(smap[e]||[]).length + 1, status:'pendiente'
-    }, {onConflict:'email'});
-  } catch(ex){}
-  window.location.href = `${STRIPE}?prefilled_email=${encodeURIComponent(em)}`;
-}
+    document.getElementById('dash-av').textContent = ini(m.nombre);
+    document.getElementById('dash-nombre').textContent = m.nombre;
+    document.getElementById('dash-estado').textContent = `${m.estado_nombre} · ${m.ciudad||''}`;
+    document.getElementById('d-ciudad').textContent = m.estado_codigo;
+    document.getElementById('d-slot').textContent = `Slot ${m.slot || '—'} de 5`;
 
-// ── AUTH ──────────────────────────────────────────────────────
-function openLogin() {
-  if(user) {
-    if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`)) {
-      sb.auth.signOut().then(() => { user = null; updateUI(); showToast('✓ Sesión cerrada'); });
+    const badge = document.getElementById('dash-badge');
+    badge.textContent = m.status === 'activa' ? '● Activa' : m.status === 'pendiente' ? '⏳ Pendiente' : '✕ Cancelada';
+    badge.className = `status-badge ${m.status}`;
+
+    const proximo = m.fecha_renovacion ? fmtDate(m.fecha_renovacion) : '—';
+    document.getElementById('d-proximo').textContent = proximo;
+
+    // Pagos
+    const { data:pagos } = await sb.from('pagos').select('*').eq('membresia_id', m.id).order('created_at', {ascending:false}).limit(10);
+    if(pagos?.length) {
+      document.getElementById('d-ultimo').textContent = fmtDate(pagos[0].created_at);
+      document.getElementById('d-monto').textContent = `$${pagos[0].monto_usd} USD`;
+      document.getElementById('pagos-list').innerHTML = pagos.map(p=>`
+        <div class="pago-row">
+          <div>
+            <div class="pago-fecha">${fmtDate(p.created_at)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="pago-badge ${p.status==='exitoso'?'ok':'fail'}">${p.status==='exitoso'?'Pagado':'Fallido'}</span>
+            <span class="pago-monto">$${p.monto_usd}</span>
+          </div>
+        </div>`).join('');
+    } else {
+      document.getElementById('pagos-list').innerHTML = '<div class="empty-state">Sin pagos registrados aún.</div>';
     }
+
+    // Contactos enviados (solicitudes de scanner asignadas al distribuidor)
+    const { data:contactos } = await sb.from('solicitudes_scanner').select('*')
+      .eq('estado_codigo', m.estado_codigo).order('created_at', {ascending:false}).limit(20);
+    document.getElementById('d-contactos').textContent = contactos?.length || 0;
+    if(contactos?.length) {
+      document.getElementById('contactos-list').innerHTML = contactos.map(c=>`
+        <div class="contacto-row">
+          <div class="contacto-av">${ini(c.nombre)}</div>
+          <div style="flex:1">
+            <div class="contacto-nm">${c.nombre}</div>
+            <div class="contacto-inf">${c.ciudad||''} · ${c.objetivo||''}</div>
+            <div class="contacto-inf" style="margin-top:2px;">${fmtDate(c.created_at)}</div>
+          </div>
+          ${c.telefono?`<button class="contacto-wa" onclick="openWA('${c.telefono}','${c.nombre.replace(/'/g,"\\'")}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button>`:''}
+        </div>`).join('');
+    } else {
+      document.getElementById('contactos-list').innerHTML = '<div class="empty-state">Aún no hay contactos registrados en tu estado.<br>Los prospectos aparecerán aquí cuando soliciten un escáner.</div>';
+    }
+  } catch(e){ console.error(e); }
+}
+
+// ── SCAN ──────────────────────────────────────
+async function doScan() {
+  const n=document.getElementById('sc-nombre').value.trim();
+  const p=document.getElementById('sc-phone').value.trim();
+  const c=document.getElementById('sc-estado').value;
+  const ci=document.getElementById('sc-ciudad').value.trim();
+  const g=document.getElementById('sc-goal').value;
+  if(!n||!p||!c||!ci||!g){ showToast('⚠️ Completa todos los campos'); return; }
+  const sn=US.find(s=>s.c===c)?.n||c;
+  try { await sb.from('solicitudes_scanner').insert({nombre:n,telefono:p.replace(/\D/g,''),estado_codigo:c,estado_nombre:sn,objetivo:g}); } catch(e){}
+  const msg=encodeURIComponent(`Hola! Me registré en Tu Red Vital 🌿\n\n👤 Nombre: ${n}\n📍 Estado: ${sn}\n🏙️ Ciudad: ${ci}\n📱 Teléfono: ${p}\n💚 Objetivo: ${g}\n\nMe interesa el escáner corporal gratuito.`);
+  window.open(`https://wa.me/${WA}?text=${msg}`,'_blank');
+}
+
+// ── JOIN ──────────────────────────────────────
+async function doJoin() {
+  const n=document.getElementById('j-nombre').value.trim();
+  const e=document.getElementById('j-estado').value;
+  const c=document.getElementById('j-ciudad').value.trim();
+  const w=document.getElementById('j-whatsapp').value.trim();
+  const em=document.getElementById('j-email').value.trim();
+  if(!n||!e||!c||!w||!em){ showToast('⚠️ Completa todos los campos'); return; }
+  if(!em.includes('@')){ showToast('⚠️ Email inválido'); return; }
+  const en=US.find(s=>s.c===e)?.n||e;
+  try { await sb.from('membresias').upsert({nombre:n,email:em,whatsapp:w.replace(/\D/g,''),ciudad:c,estado_codigo:e,estado_nombre:en,slot:(smap[e]||[]).length+1,status:'pendiente'},{onConflict:'email'}); } catch(ex){}
+  window.location.href=`${STRIPE}?prefilled_email=${encodeURIComponent(em)}`;
+}
+
+// ── AUTH ──────────────────────────────────────
+function openLogin() {
+  if(user){
+    if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`))
+      sb.auth.signOut().then(()=>{ user=null; updateUI(); showToast('✓ Sesión cerrada'); });
     return;
   }
   openModal('modal-login');
 }
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchModal(from,to){ closeModal(from); openModal(to); }
 
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function switchModal(from, to) { closeModal(from); openModal(to); }
-
-// LOGIN CON GOOGLE
 async function loginGoogle() {
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.origin }
-  });
-  if(error) showToast('Error con Google: ' + error.message);
+  const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
+  if(error) showToast('Error con Google: '+error.message);
 }
-
-// LOGIN CON EMAIL
 async function loginEmail() {
-  const email = document.getElementById('l-email').value.trim();
-  const pass  = document.getElementById('l-pass').value;
-  const errEl = document.getElementById('l-err');
-  const btn   = document.getElementById('l-btn');
-  errEl.style.display = 'none';
-  if(!email || !pass) { errEl.textContent='Escribe email y contraseña.'; errEl.style.display='block'; return; }
-  btn.textContent = 'Entrando…'; btn.disabled = true;
-  const { data, error } = await sb.auth.signInWithPassword({ email, password:pass });
-  btn.textContent = 'Entrar'; btn.disabled = false;
-  if(error) {
-    errEl.textContent = 'Email o contraseña incorrectos.';
-    errEl.style.display = 'block';
-    return;
-  }
-  closeModal('modal-login');
-  user = data.user;
-  updateUI();
-  showToast('✓ Bienvenido');
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  const errEl=document.getElementById('l-err'), btn=document.getElementById('l-btn');
+  errEl.style.display='none';
+  if(!email||!pass){ errEl.textContent='Escribe email y contraseña.'; errEl.style.display='block'; return; }
+  btn.textContent='Entrando…'; btn.disabled=true;
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.textContent='Entrar'; btn.disabled=false;
+  if(error){ errEl.textContent='Email o contraseña incorrectos.'; errEl.style.display='block'; return; }
+  closeModal('modal-login'); user=data.user; updateUI(); showToast('✓ Bienvenido');
+  go('s-dash');
 }
-
-// REGISTRO CON EMAIL
 async function doRegister() {
-  const email = document.getElementById('r-email').value.trim();
-  const pass  = document.getElementById('r-pass').value;
-  const errEl = document.getElementById('r-err');
-  const okEl  = document.getElementById('r-ok');
-  const btn   = document.getElementById('r-btn');
-  errEl.style.display = 'none';
-  okEl.style.display  = 'none';
-  if(!email.includes('@')) { errEl.textContent='Email inválido.'; errEl.style.display='block'; return; }
-  if(pass.length < 6)      { errEl.textContent='Mínimo 6 caracteres.'; errEl.style.display='block'; return; }
-  btn.textContent = 'Creando…'; btn.disabled = true;
-  const { error } = await sb.auth.signUp({ email, password:pass });
-  btn.textContent = 'Crear cuenta'; btn.disabled = false;
-  if(error) { errEl.textContent = error.message; errEl.style.display='block'; return; }
-  okEl.style.display = 'block';
-  setTimeout(() => { closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); }, 2200);
+  const email=document.getElementById('r-email').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  const errEl=document.getElementById('r-err'), okEl=document.getElementById('r-ok'), btn=document.getElementById('r-btn');
+  errEl.style.display='none'; okEl.style.display='none';
+  if(!email.includes('@')){ errEl.textContent='Email inválido.'; errEl.style.display='block'; return; }
+  if(pass.length<6){ errEl.textContent='Mínimo 6 caracteres.'; errEl.style.display='block'; return; }
+  btn.textContent='Creando…'; btn.disabled=true;
+  const {error}=await sb.auth.signUp({email,password:pass});
+  btn.textContent='Crear cuenta'; btn.disabled=false;
+  if(error){ errEl.textContent=error.message; errEl.style.display='block'; return; }
+  okEl.style.display='block';
+  setTimeout(()=>{ closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); },2200);
 }
-
 function updateUI() {
-  const name = user
-    ? (user.user_metadata?.full_name || user.email || '').split(/[@\s]/)[0]
-    : 'Entrar';
-  document.getElementById('top-name').textContent = name;
-  document.querySelectorAll('.uname').forEach(el => el.textContent = name);
+  const name=user?(user.user_metadata?.full_name||user.email||'').split(/[@\s]/)[0]:'Entrar';
+  document.getElementById('top-name').textContent=name;
+  document.querySelectorAll('.uname').forEach(el=>el.textContent=name);
 }
-
 async function checkSession() {
-  const { data:{ session } } = await sb.auth.getSession();
-  if(session?.user) { user = session.user; updateUI(); }
-  sb.auth.onAuthStateChange((_, s) => { user = s?.user || null; updateUI(); });
+  const {data:{session}}=await sb.auth.getSession();
+  if(session?.user){ user=session.user; updateUI(); }
+  sb.auth.onAuthStateChange((_,s)=>{ user=s?.user||null; updateUI(); });
 }
 
-// ── HELPERS ──────────────────────────────────────────────────
-function ini(n='') {
-  return n.split(' ').slice(0,2).map(w => w[0]||'').join('').toUpperCase();
+// ── HELPERS ───────────────────────────────────
+function ini(n=''){ return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}); }
+function fillStateSelects(){
+  const opts=US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  document.getElementById('sc-estado').innerHTML='<option value="">Selecciona tu estado</option>'+opts;
+  document.getElementById('j-estado').innerHTML='<option value="">Selecciona tu estado</option>'+opts;
 }
-
-function fillStateSelects() {
-  const opts = US.map(s => `<option value="${s.c}">${s.n}</option>`).join('');
-  document.getElementById('sc-estado').innerHTML = '<option value="">Selecciona tu estado</option>' + opts;
-  document.getElementById('j-estado').innerHTML  = '<option value="">Selecciona tu estado</option>' + opts;
-}
-
-function openWA(num, name) {
-  window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital 🌿`)}`, '_blank');
-}
-
+function openWA(num,name){ window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hola ${name}! Vi tu perfil en Tu Red Vital 🌿`)}`, '_blank'); }
 let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-}
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000); }
 
-// ── INICIO ────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded',async()=>{
   await loadData();
   await checkSession();
-  setTimeout(() => document.getElementById('load').classList.add('gone'), 1300);
+  setTimeout(()=>document.getElementById('load').classList.add('gone'),1300);
 });
 </script>
 </body>
