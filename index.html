@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Tu Red Vital · USA</title>
 <link rel="icon" href="/images/Logo%20oficial%20Tu%20Red%20vital.png">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const SB_URL = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
@@ -15,98 +15,78 @@ const STRIPE  = 'https://buy.stripe.com/dRm6oG79U3AC3c60Ev9EI00';
 const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
 </script>
 <style>
-/* ═══════════════════════════════════════════
-   BASE
-═══════════════════════════════════════════ */
 :root{
   --bg:#08111e;--bg2:#0e1d30;--bg3:#152236;
-  --gold:#C9A24B;--gold2:#e8c06a;--gold3:rgba(201,162,75,0.12);
+  --gold:#C9A24B;--gold2:#e8c06a;--golda:rgba(201,162,75,0.12);
   --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
   --text:#fff;--muted:#7A8FA6;--border:rgba(201,162,75,0.15);
-  --wa:#25D366;--r:8px;
+  --wa:#25D366;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{height:100%;overflow:hidden;}
-body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;}
+html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;}
 
 /* ═══ APP SHELL ═══ */
 #app{
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  display:block;
-  width:100%;
-  max-width:430px;
-  margin:0 auto;
-  background:var(--bg);
-  overflow:hidden;
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  max-width:430px;margin:0 auto;
+  background:var(--bg);overflow:hidden;
 }
-/* Desktop: phone-in-browser look */
 @media(min-width:500px){
-  body{background:#040c16;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+  body{background:#030810;display:flex;align-items:center;justify-content:center;}
   #app{
-    position:fixed;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    width:390px;
-    height:100vh;
-    max-height:860px;
-    border-radius:24px;
+    position:relative;width:390px;height:100vh;max-height:860px;
+    border-radius:24px;overflow:hidden;
     box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(201,162,75,0.2);
-    overflow:hidden;
-    margin:0;
+    flex-shrink:0;
   }
 }
 
-/* ═══ SCREENS ═══ */
+/* ═══ SCREENS — clave: visibility:hidden en inactivas ═══ */
 .screen{
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  display:flex;
-  flex-direction:column;
-  transform:translateX(110%);
-  transition:transform .3s cubic-bezier(.4,0,.2,1);
-  background:var(--bg);
-  overflow:hidden;
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;
+  background:var(--bg);overflow:hidden;
   visibility:hidden;
+  transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .screen.active{
+  visibility:visible;
   transform:translateX(0);
-  visibility:visible;
 }
-.screen.prev{
-  transform:translateX(-30%);
+.screen.leaving{
   visibility:visible;
+  transform:translateX(-28%);
 }
 
 /* ═══ TOP BAR ═══ */
 .top{
-  flex-shrink:0;height:56px;
+  flex-shrink:0;height:54px;
   background:rgba(8,17,30,0.96);
   border-bottom:1px solid var(--border);
-  display:flex;align-items:center;
-  justify-content:space-between;padding:0 16px;
-  backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;backdrop-filter:blur(10px);
 }
 .top-left{display:flex;align-items:center;gap:10px;}
 .back-btn{
-  width:38px;height:38px;border-radius:50%;
-  background:var(--gold3);border:1px solid rgba(201,162,75,0.3);
-  color:var(--gold);font-size:20px;cursor:pointer;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--golda);border:1px solid rgba(201,162,75,0.3);
+  color:var(--gold);font-size:18px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  transition:background .15s;
+  flex-shrink:0;transition:background .15s;
 }
 .back-btn:active{background:rgba(201,162,75,0.25);}
-.top-logo{width:32px;height:32px;object-fit:contain;border-radius:50%;}
+.top-logo{width:30px;height:30px;object-fit:contain;border-radius:50%;}
+.top-logo-fb{width:30px;height:30px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;color:var(--bg);flex-shrink:0;}
 .top-brand{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;}
 .top-brand span{color:var(--gold);}
-.top-right{display:flex;align-items:center;gap:8px;}
-.top-user-btn{
-  display:flex;align-items:center;gap:6px;
-  padding:6px 12px;border-radius:20px;
-  background:var(--gold3);border:1px solid rgba(201,162,75,0.25);
+.top-user{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;
+  background:var(--golda);border:1px solid rgba(201,162,75,0.25);
   color:var(--gold);font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;font-weight:700;letter-spacing:1px;
-  text-transform:uppercase;cursor:pointer;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;
 }
 
 /* ═══ SCROLL ═══ */
@@ -115,9 +95,8 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 
 /* ═══ BOTTOM NAV ═══ */
 .bnav{
-  flex-shrink:0;height:64px;
-  background:var(--bg2);
-  border-top:1px solid var(--border);
+  flex-shrink:0;height:62px;
+  background:var(--bg2);border-top:1px solid var(--border);
   display:grid;
 }
 .bnav-4{grid-template-columns:repeat(4,1fr);}
@@ -127,433 +106,380 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
   gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;
   font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
   letter-spacing:1px;text-transform:uppercase;transition:color .15s;
-  -webkit-tap-highlight-color:transparent;
 }
 .bn svg{width:22px;height:22px;stroke-width:1.8;}
 .bn.on{color:var(--gold);}
-.bn.on svg{filter:drop-shadow(0 0 6px rgba(201,162,75,0.5));}
 
-/* ═══ LOADING ═══ */
-#load{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .5s;
+/* ═══ HERO ═══ */
+.hero{
+  padding:30px 18px 24px;
+  background:linear-gradient(160deg,#040810 0%,#0a1929 60%,#040810 100%);
+  position:relative;overflow:hidden;
 }
-#load.gone{opacity:0;pointer-events:none;}
-#load img{width:100px;height:100px;object-fit:contain;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.7;transform:scale(.95);}}
-.ld-bar{width:120px;height:2px;background:rgba(201,162,75,.15);margin-top:20px;border-radius:2px;}
-.ld-prog{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;animation:ldprog 1.4s ease forwards;}
-@keyframes ldprog{to{width:100%;}}
-.ld-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
-
-/* ═══ TOAST ═══ */
-.toast{
-  position:fixed;bottom:80px;left:50%;
-  transform:translateX(-50%) translateY(8px);
-  background:var(--bg3);border:1px solid var(--border);
-  color:var(--text);padding:10px 20px;
-  font-size:13px;font-weight:600;
-  opacity:0;transition:all .3s;z-index:8000;
-  pointer-events:none;border-radius:30px;white-space:nowrap;
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 60%,rgba(201,162,75,0.09) 0%,transparent 55%),
+             radial-gradient(ellipse at 85% 20%,rgba(201,162,75,0.05) 0%,transparent 45%);
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.hero-logo{
+  width:72px;height:72px;object-fit:contain;
+  position:relative;z-index:1;margin-bottom:14px;
+  filter:drop-shadow(0 0 20px rgba(201,162,75,0.35));
+}
+.hero-logo-fb{
+  width:72px;height:72px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--bg);
+  margin-bottom:14px;position:relative;z-index:1;
+  box-shadow:0 0 28px rgba(201,162,75,0.3);
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;
+  background:var(--golda);border:1px solid rgba(201,162,75,0.22);
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;color:var(--gold);text-transform:uppercase;
+  margin-bottom:10px;position:relative;z-index:1;
+}
+.hero-t{
+  font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;
+  line-height:.9;letter-spacing:-1px;position:relative;z-index:1;
+}
+.hero-t .g{color:var(--gold);}
+.hero-s{font-size:13px;color:rgba(255,255,255,.42);line-height:1.6;margin-top:10px;position:relative;z-index:1;}
+.hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px;position:relative;z-index:1;}
+.hbtn{
+  padding:14px 10px;border-radius:10px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+  border:none;text-align:center;transition:opacity .15s;
+}
+.hbtn:active{opacity:.82;}
+.hbtn small{display:block;font-size:8px;font-weight:600;letter-spacing:1.5px;opacity:.6;text-transform:uppercase;margin-bottom:2px;}
+.hbtn.gold{background:var(--gold);color:var(--bg);}
+.hbtn.dark{background:var(--bg3);border:1px solid rgba(201,162,75,0.2);color:var(--text);}
 
-/* ═══ MODAL ═══ */
+/* ═══ STATS ═══ */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.stat{padding:13px 8px;text-align:center;background:var(--bg);}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.stat-l{font-size:9px;color:var(--muted);letter-spacing:.5px;margin-top:2px;}
+
+/* ═══ SECTION ═══ */
+.sec-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  padding:14px 16px 8px;display:flex;align-items:center;gap:8px;
+}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.vp{display:flex;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin:0 14px 8px;}
+.vp-ic{font-size:20px;flex-shrink:0;margin-top:1px;}
+.vp-t{font-size:13px;font-weight:600;margin-bottom:2px;}
+.vp-s{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
+
+/* ═══ MAP ═══ */
+.map-search{
+  margin:12px 14px 0;
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:9px 13px;
+}
+.map-search svg{flex-shrink:0;}
+.map-search input{flex:1;background:none;border:none;color:var(--text);font-size:13px;outline:none;}
+.map-search input::placeholder{color:var(--muted);}
+.map-leg{display:flex;gap:12px;padding:8px 14px;}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);}
+.leg-d{width:9px;height:9px;border-radius:50%;}
+
+.states-wrap{padding:2px 14px 14px;}
+.states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.sb{
+  padding:9px 3px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:7px;cursor:pointer;text-align:center;transition:all .15s;
+}
+.sb:active{transform:scale(.94);}
+.sb.full{background:var(--gold);border-color:var(--gold);}
+.sb.full .sc{color:var(--bg);}
+.sb.some{background:rgba(201,162,75,.14);border-color:rgba(201,162,75,.38);}
+.sb.hidden{display:none;}
+.sc{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--text);}
+.spips{display:flex;gap:1px;justify-content:center;margin-top:3px;}
+.spip{width:4px;height:3px;background:rgba(255,255,255,.1);border-radius:1px;}
+.spip.on{background:var(--gold);}
+.sb.full .spip.on{background:var(--bg);}
+
+/* popup */
+.pop{
+  margin:0 14px 14px;padding:16px;
+  background:var(--bg2);border:1px solid rgba(201,162,75,.28);
+  border-radius:12px;display:none;
+}
+.pop.vis{display:block;}
+.pop-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.pop-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.pop-x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+.pop-slots{display:flex;gap:3px;margin-bottom:8px;}
+.pop-slot{flex:1;height:24px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border-radius:4px;}
+.pop-slot.on{background:var(--gold);color:var(--bg);}
+.pop-slot.off{border:1px dashed rgba(201,162,75,.2);}
+.pop-status{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.rep-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,.04);}
+.rep-av{width:36px;height:36px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.rep-nm{font-size:13px;font-weight:600;}
+.rep-ci{font-size:11px;color:var(--muted);}
+.wa-btn{width:34px;height:34px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.pop-empty{font-size:12px;color:rgba(255,255,255,.28);text-align:center;padding:12px 0;line-height:1.8;}
+.pop-cta{width:100%;margin-top:12px;padding:13px;background:var(--gold);color:var(--bg);border:none;border-radius:8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+
+/* ═══ FORMS ═══ */
+.fhero{
+  padding:22px 16px 18px;
+  background:linear-gradient(160deg,#040810 0%,#0a1929 100%);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.fh-logo{width:46px;height:46px;object-fit:contain;margin-bottom:10px;}
+.fh-logo-fb{width:46px;height:46px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--bg);margin-bottom:10px;}
+.fh-pill{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.fh-t{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;line-height:1;margin-bottom:5px;}
+.fh-s{font-size:12px;color:rgba(255,255,255,.38);line-height:1.55;}
+.fbody{padding:14px 16px;}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.fi,.fs{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,75,.14);
+  color:var(--text);padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;
+  outline:none;appearance:none;border-radius:8px;transition:border-color .2s;
+}
+.fi:focus,.fs:focus{border-color:var(--gold);}
+.fi::placeholder{color:var(--muted);}
+.fs option{background:var(--bg2);}
+.btn-wa{
+  width:100%;padding:14px;background:var(--wa);color:#fff;border:none;border-radius:10px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;
+  letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-gold{
+  width:100%;padding:15px;background:var(--gold);color:var(--bg);border:none;border-radius:10px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;
+  letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.fnote{text-align:center;margin-top:8px;font-size:10px;color:rgba(255,255,255,.2);line-height:1.6;}
+
+/* ═══ PRICE ═══ */
+.phero{
+  padding:26px 16px 20px;
+  background:linear-gradient(160deg,#040810 0%,#0a1929 100%);
+  border-bottom:1px solid var(--border);text-align:center;position:relative;overflow:hidden;flex-shrink:0;
+}
+.phero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(201,162,75,.07) 0%,transparent 60%);}
+.ph-logo{width:56px;height:56px;object-fit:contain;margin:0 auto 12px;position:relative;z-index:1;display:block;}
+.ph-logo-fb{width:56px;height:56px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--bg);margin:0 auto 12px;position:relative;z-index:1;}
+.ph-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1;}
+.ph-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-2px;position:relative;z-index:1;}
+.ph-per{font-size:14px;color:rgba(255,255,255,.3);position:relative;z-index:1;}
+.ph-note{font-size:10px;color:rgba(255,255,255,.18);margin-top:5px;position:relative;z-index:1;}
+.bens{padding:8px 14px;}
+.ben{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ben:last-child{border:none;}
+.ben-ic{width:32px;height:32px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,.18);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ben-t{font-size:13px;font-weight:600;margin-bottom:1px;}
+.ben-s{font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
+.urg{margin:0 14px 12px;padding:10px 13px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;display:flex;gap:10px;align-items:center;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#f87171;letter-spacing:1px;text-transform:uppercase;}
+.urg-s{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px;}
+
+/* ═══ DASHBOARD CLIENTE ═══ */
+.cl-hero{
+  padding:22px 16px 18px;
+  background:linear-gradient(160deg,#040810 0%,#0c1d33 100%);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.cl-av{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--golda);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);
+  margin-bottom:10px;
+}
+.cl-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:2px;}
+.cl-email{font-size:11px;color:var(--muted);}
+.cl-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;margin-top:7px;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+}
+.cb-cliente{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.22);}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px;}
+.qa{padding:14px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;}
+.qa:active{transform:scale(.96);}
+.qa.primary{background:var(--golda);border-color:rgba(201,162,75,.32);}
+.qa-ic{font-size:22px;margin-bottom:6px;}
+.qa-t{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px;}
+.qa-s{font-size:10px;color:var(--muted);}
+.wa-big{
+  margin:0 14px 14px;padding:15px;
+  background:linear-gradient(135deg,#0e6b5a,var(--wa));
+  border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;gap:13px;
+  transition:opacity .15s;
+}
+.wa-big:active{opacity:.85;}
+.wa-big-ic{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+.wa-big-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;margin-bottom:1px;}
+.wa-big-s{font-size:11px;opacity:.8;}
+.upgrade-banner{
+  margin:0 14px 14px;padding:14px;
+  background:rgba(201,162,75,.06);border:1px solid rgba(201,162,75,.22);
+  border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+}
+.ub-ic{font-size:26px;flex-shrink:0;}
+.ub-t{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;margin-bottom:2px;}
+.ub-s{font-size:10px;color:rgba(255,255,255,.38);line-height:1.4;}
+.ub-arr{font-size:18px;color:var(--gold);margin-left:auto;flex-shrink:0;}
+
+/* ═══ DASHBOARD DISTRIBUIDOR ═══ */
+.dist-hero{
+  padding:18px 16px 14px;
+  background:linear-gradient(160deg,#040810 0%,#0c1d33 100%);
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.dist-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.dist-av{
+  width:50px;height:50px;border-radius:50%;flex-shrink:0;
+  background:var(--golda);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--gold);
+}
+.dist-name{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;margin-bottom:1px;}
+.dist-loc{font-size:11px;color:var(--muted);}
+.spill{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 9px;border-radius:20px;margin-top:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+}
+.sp-active{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.22);}
+.sp-pending{background:rgba(201,162,75,.1);color:var(--gold);border:1px solid rgba(201,162,75,.22);}
+.sp-cancelled{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.22);}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px 14px;}
+.kpi{padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;}
+.kpi-l{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.kpi-v{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
+.kpi-v.gold{color:var(--gold);}
+.kpi-v.green{color:var(--green);}
+.kpi-sub{font-size:9px;color:rgba(255,255,255,.26);margin-top:2px;}
+
+.dsec{padding:0 14px 6px;}
+.dsec-hd{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
+  padding:12px 0 8px;display:flex;align-items:center;gap:8px;
+}
+.dsec-hd::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.prow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.prow:last-child{border:none;}
+.pdate{font-size:11px;color:rgba(255,255,255,.42);}
+.pright{display:flex;align-items:center;gap:6px;}
+.pbadge{font-size:9px;padding:2px 7px;border-radius:10px;}
+.pbadge.ok{background:rgba(34,197,94,.1);color:var(--green);}
+.pbadge.fail{background:rgba(239,68,68,.1);color:var(--red);}
+.pamnt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--green);}
+
+.crow{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.crow:last-child{border:none;}
+.cav{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:var(--golda);border:1px solid rgba(201,162,75,.18);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:var(--gold);}
+.cnm{font-size:12px;font-weight:600;}
+.cinfo{font-size:10px;color:var(--muted);margin-top:1px;}
+.cwa{width:30px;height:30px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.empty{text-align:center;padding:20px;color:rgba(255,255,255,.24);font-size:12px;line-height:1.8;}
+
+/* ═══ MODALS ═══ */
 .modal-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(4,12,22,.92);z-index:500;
+  display:none;position:absolute;inset:0;
+  background:rgba(4,8,15,.92);z-index:200;
   align-items:center;justify-content:center;padding:20px;
 }
 .modal-overlay.open{display:flex;}
 .modal{
   background:var(--bg2);border:1px solid rgba(201,162,75,.2);
-  width:100%;max-width:360px;padding:28px;border-radius:12px;
+  width:100%;max-width:340px;padding:24px;border-radius:12px;
 }
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
-.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;}
-.modal-x{background:none;border:none;color:var(--muted);font-size:28px;cursor:pointer;line-height:1;}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.modal-x{background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1;}
 .g-btn{
-  width:100%;padding:14px;background:#fff;border:none;cursor:pointer;
+  width:100%;padding:13px;background:#fff;border:none;border-radius:8px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:10px;
-  margin-bottom:14px;font-family:'Barlow',sans-serif;font-size:15px;
-  font-weight:600;color:#1a1a1a;border-radius:8px;transition:opacity .15s;
+  margin-bottom:14px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;color:#1a1a1a;
 }
-.g-btn:active{opacity:.85;}
-.or-sep{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.or-sep{display:flex;align-items:center;gap:8px;margin-bottom:13px;}
 .or-line{flex:1;height:1px;background:var(--border);}
-.or-txt{font-size:11px;color:var(--muted);}
+.or-txt{font-size:10px;color:var(--muted);}
 .m-input{
-  width:100%;background:rgba(255,255,255,.04);
-  border:1px solid rgba(201,162,75,.2);color:var(--text);
-  padding:13px 14px;font-family:'Barlow',sans-serif;font-size:15px;
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,75,.18);
+  color:var(--text);padding:12px 13px;font-family:'Barlow',sans-serif;font-size:14px;
   outline:none;margin-bottom:10px;display:block;border-radius:8px;
 }
 .m-input:focus{border-color:var(--gold);}
+.m-input::placeholder{color:var(--muted);}
 .m-btn{
-  width:100%;padding:14px;background:var(--gold);color:#08111e;
-  border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;
-  font-size:17px;font-weight:900;letter-spacing:1px;text-transform:uppercase;
-  margin-bottom:10px;border-radius:8px;transition:opacity .15s;
+  width:100%;padding:13px;background:var(--gold);color:var(--bg);border:none;border-radius:8px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:10px;
 }
-.m-btn:active{opacity:.85;}
-.m-err{color:var(--red);font-size:12px;display:none;margin-bottom:8px;padding:8px 12px;background:rgba(239,68,68,.08);border-radius:6px;}
-.m-ok{color:var(--green);font-size:12px;display:none;margin-bottom:8px;padding:8px 12px;background:rgba(34,197,94,.08);border-radius:6px;}
-.m-switch{text-align:center;font-size:13px;color:var(--muted);}
+.m-err{color:var(--red);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(239,68,68,.08);border-radius:6px;}
+.m-ok{color:var(--green);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(34,197,94,.08);border-radius:6px;}
+.m-switch{text-align:center;font-size:12px;color:var(--muted);}
 .m-switch a{color:var(--gold);cursor:pointer;}
-
-/* ═══ ROL MODAL ═══ */
-.rol-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+.rol-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
 .rol-card{
-  padding:20px 12px;background:var(--bg3);border:2px solid var(--border);
-  border-radius:10px;cursor:pointer;text-align:center;transition:all .2s;
-}
-.rol-card:hover,.rol-card.selected{border-color:var(--gold);background:var(--gold3);}
-.rol-icon{font-size:28px;margin-bottom:8px;}
-.rol-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;margin-bottom:3px;}
-.rol-s{font-size:11px;color:var(--muted);line-height:1.4;}
-
-/* ═══ HERO ═══ */
-.hero{
-  padding:32px 20px 26px;
-  background:linear-gradient(160deg,#04090f 0%,#0a1929 60%,#04090f 100%);
-  position:relative;overflow:hidden;flex-shrink:0;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 15% 60%,rgba(201,162,75,.1) 0%,transparent 50%),
-    radial-gradient(ellipse at 85% 20%,rgba(201,162,75,.06) 0%,transparent 45%);
-}
-.hero-logo{
-  width:80px;height:80px;object-fit:contain;
-  position:relative;z-index:1;margin-bottom:16px;
-  filter:drop-shadow(0 0 20px rgba(201,162,75,.4));
-}
-.hero-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:4px 12px;border-radius:20px;
-  background:rgba(201,162,75,.1);border:1px solid rgba(201,162,75,.25);
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:2px;color:var(--gold);text-transform:uppercase;
-  margin-bottom:12px;position:relative;z-index:1;
-}
-.hero-t{
-  font-family:'Barlow Condensed',sans-serif;font-size:46px;font-weight:900;
-  line-height:.9;letter-spacing:-1px;position:relative;z-index:1;
-}
-.hero-t .g{color:var(--gold);}
-.hero-s{
-  font-size:14px;color:rgba(255,255,255,.45);
-  line-height:1.6;margin-top:12px;position:relative;z-index:1;
-}
-.hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;position:relative;z-index:1;}
-.hbtn{
-  padding:14px 10px;border-radius:10px;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;
-  letter-spacing:.5px;border:none;transition:opacity .15s;
-}
-.hbtn:active{opacity:.8;}
-.hbtn.gold{background:var(--gold);color:#08111e;}
-.hbtn.dark{background:var(--bg3);border:1px solid rgba(201,162,75,.2);color:var(--text);}
-.hbtn small{display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;opacity:.6;text-transform:uppercase;margin-bottom:2px;}
-
-/* ═══ STATS STRIP ═══ */
-.stats-strip{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-}
-.stat-item{
-  padding:14px 8px;text-align:center;background:var(--bg);
-}
-.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--gold);}
-.stat-l{font-size:10px;color:var(--muted);letter-spacing:.5px;margin-top:2px;}
-
-/* ═══ SECTION ═══ */
-.sec{padding:0 16px 16px;}
-.sec-hd{
-  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
-  padding:16px 0 10px;display:flex;align-items:center;gap:10px;
-}
-.sec-hd::after{content:'';flex:1;height:1px;background:var(--border);}
-
-/* ═══ VALUE PROP ═══ */
-.vp{
-  display:flex;gap:14px;padding:14px;
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:10px;margin-bottom:8px;
-}
-.vp-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
-.vp-t{font-size:14px;font-weight:600;margin-bottom:3px;}
-.vp-s{font-size:12px;color:rgba(255,255,255,.4);line-height:1.5;}
-
-/* ═══ MAP ═══ */
-.map-search{
-  margin:12px 16px 0;
-  display:flex;align-items:center;gap:8px;
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:10px;padding:10px 14px;
-}
-.map-search input{
-  flex:1;background:none;border:none;color:var(--text);
-  font-family:'Barlow',sans-serif;font-size:14px;outline:none;
-}
-.map-search input::placeholder{color:var(--muted);}
-.map-legend{display:flex;gap:14px;padding:10px 16px;}
-.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
-.leg-d{width:10px;height:10px;border-radius:50%;}
-.leg-d.full{background:var(--gold);}
-.leg-d.some{background:rgba(201,162,75,.4);}
-.leg-d.open{border:1.5px solid rgba(255,255,255,.2);}
-
-/* State grid */
-.states-wrap{padding:0 16px 16px;}
-.states-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  gap:5px;
-}
-.state-btn{
-  padding:9px 4px;background:var(--bg2);
-  border:1px solid var(--border);border-radius:6px;
-  cursor:pointer;text-align:center;transition:all .15s;
-}
-.state-btn:active{transform:scale(.95);}
-.state-btn.full{background:var(--gold);border-color:var(--gold);}
-.state-btn.full .sc{color:var(--bg);}
-.state-btn.some{background:rgba(201,162,75,.15);border-color:rgba(201,162,75,.4);}
-.state-btn.hidden{display:none;}
-.sc{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--text);}
-.spips{display:flex;gap:1px;justify-content:center;margin-top:3px;}
-.spip{width:4px;height:3px;background:rgba(255,255,255,.12);border-radius:1px;}
-.spip.on{background:var(--gold);}
-.state-btn.full .spip.on{background:var(--bg);}
-
-/* State popup */
-.state-pop{
-  margin:0 16px 16px;padding:18px;
-  background:var(--bg2);border:1px solid rgba(201,162,75,.3);
-  border-radius:12px;display:none;
-}
-.state-pop.vis{display:block;}
-.sp-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.sp-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;}
-.sp-x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
-.sp-slots{display:flex;gap:4px;margin-bottom:8px;}
-.sp-slot{
-  flex:1;height:26px;display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;border-radius:4px;
-}
-.sp-slot.on{background:var(--gold);color:var(--bg);}
-.sp-slot.off{border:1px dashed rgba(201,162,75,.2);}
-.sp-status{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
-.rep-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.05);}
-.rep-av{
-  width:38px;height:38px;border-radius:50%;flex-shrink:0;
-  background:var(--bg);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--gold);
-}
-.rep-nm{font-size:13px;font-weight:600;}
-.rep-ci{font-size:11px;color:var(--muted);}
-.wa-btn{
-  width:36px;height:36px;border-radius:50%;background:var(--wa);
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  margin-left:auto;flex-shrink:0;
-}
-.sp-cta{
-  width:100%;margin-top:14px;padding:14px;
-  background:var(--gold);color:var(--bg);border:none;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;
-  letter-spacing:1px;text-transform:uppercase;border-radius:8px;
-}
-.sp-empty{font-size:13px;color:rgba(255,255,255,.3);padding:12px 0;text-align:center;line-height:1.8;}
-
-/* ═══ FORMS ═══ */
-.form-hero{
-  padding:24px 18px 20px;
-  background:linear-gradient(160deg,#04090f 0%,#0a1929 100%);
-  border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.fh-logo{width:50px;height:50px;object-fit:contain;margin-bottom:12px;}
-.fh-pill{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
-.fh-t{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;line-height:1;margin-bottom:6px;}
-.fh-s{font-size:13px;color:rgba(255,255,255,.4);line-height:1.55;}
-.fbody{padding:16px;}
-.fg{margin-bottom:14px;}
-.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
-.fi,.fs{
-  width:100%;background:rgba(255,255,255,.04);
-  border:1px solid rgba(201,162,75,.15);color:var(--text);
-  padding:12px 14px;font-family:'Barlow',sans-serif;font-size:14px;
-  outline:none;appearance:none;border-radius:8px;transition:border-color .2s;
-}
-.fi:focus,.fs:focus{border-color:var(--gold);}
-.fs option{background:var(--bg2);}
-.btn-wa{
-  width:100%;padding:15px;background:var(--wa);color:#fff;border:none;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:.5px;
-  display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;
-}
-.btn-gold{
-  width:100%;padding:16px;background:var(--gold);color:var(--bg);border:none;cursor:pointer;
-  font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;letter-spacing:.5px;
-  display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;
-}
-.fnote{text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,.2);line-height:1.6;}
-
-/* ═══ PRICE ═══ */
-.price-hero{
-  padding:28px 18px 22px;
-  background:linear-gradient(160deg,#04090f 0%,#0a1929 100%);
-  border-bottom:1px solid var(--border);text-align:center;position:relative;overflow:hidden;flex-shrink:0;
-}
-.price-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(201,162,75,.08) 0%,transparent 60%);}
-.ph-logo{width:60px;height:60px;object-fit:contain;margin-bottom:14px;position:relative;z-index:1;}
-.ph-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;position:relative;z-index:1;}
-.ph-price{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;line-height:1;color:var(--gold);letter-spacing:-2px;position:relative;z-index:1;}
-.ph-per{font-size:15px;color:rgba(255,255,255,.3);position:relative;z-index:1;}
-.ph-note{font-size:11px;color:rgba(255,255,255,.2);margin-top:6px;position:relative;z-index:1;}
-.bens{padding:10px 16px;}
-.ben{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.05);}
-.ben:last-child{border:none;}
-.ben-ico{width:34px;height:34px;border-radius:50%;background:var(--gold3);border:1px solid rgba(201,162,75,.2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.ben-t{font-size:13px;font-weight:600;margin-bottom:2px;}
-.ben-s{font-size:11px;color:rgba(255,255,255,.4);line-height:1.5;}
-.urg{margin:0 16px 14px;padding:10px 14px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;display:flex;gap:10px;align-items:center;}
-.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#f87171;letter-spacing:1px;text-transform:uppercase;}
-.urg-s{font-size:11px;color:rgba(255,255,255,.3);margin-top:1px;}
-
-/* ═══ DASHBOARD CLIENTE ═══ */
-.client-hero{
-  padding:24px 18px 20px;
-  background:linear-gradient(160deg,#04090f 0%,#0d1e33 100%);
-  border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.client-av{
-  width:60px;height:60px;border-radius:50%;
-  background:var(--gold3);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--gold);
-  margin-bottom:12px;
-}
-.client-name{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;margin-bottom:3px;}
-.client-email{font-size:12px;color:var(--muted);}
-.client-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:4px 12px;border-radius:20px;margin-top:8px;
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-.cb-cliente{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.25);}
-.cb-distribuidor{background:rgba(201,162,75,.12);color:var(--gold);border:1px solid rgba(201,162,75,.25);}
-.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px;}
-.qa-btn{
-  padding:16px 12px;background:var(--bg2);border:1px solid var(--border);
+  padding:18px 10px;background:var(--bg3);border:2px solid rgba(201,162,75,.1);
   border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;
 }
-.qa-btn:active{transform:scale(.97);}
-.qa-btn.primary{background:var(--gold3);border-color:rgba(201,162,75,.35);}
-.qa-icon{font-size:22px;margin-bottom:6px;}
-.qa-t{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px;}
-.qa-s{font-size:10px;color:var(--muted);}
-.wa-big{
-  margin:0 16px 16px;padding:16px;
-  background:linear-gradient(135deg,#128C7E,var(--wa));
-  border-radius:12px;cursor:pointer;
-  display:flex;align-items:center;gap:14px;
-  transition:opacity .15s;
-}
-.wa-big:active{opacity:.85;}
-.wa-big-ico{width:46px;height:46px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.wa-big-t{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;margin-bottom:2px;}
-.wa-big-s{font-size:12px;opacity:.8;}
+.rol-card:active{transform:scale(.96);}
+.rol-card:hover{border-color:var(--gold);background:var(--golda);}
+.rol-ic{font-size:26px;margin-bottom:7px;}
+.rol-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;margin-bottom:2px;}
+.rol-desc{font-size:10px;color:var(--muted);line-height:1.4;}
 
-/* ═══ DASHBOARD DISTRIBUIDOR ═══ */
-.dist-hero{
-  padding:20px 18px 18px;
-  background:linear-gradient(160deg,#04090f 0%,#0d1e33 100%);
-  border-bottom:1px solid var(--border);flex-shrink:0;
+/* ═══ LOADING ═══ */
+#load{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity .5s;
 }
-.dist-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.dist-av{
-  width:56px;height:56px;border-radius:50%;flex-shrink:0;
-  background:var(--gold3);border:2px solid var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);
-}
-.dist-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;margin-bottom:2px;}
-.dist-loc{font-size:12px;color:var(--muted);}
-.status-pill{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:3px 10px;border-radius:20px;
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;
-  text-transform:uppercase;margin-top:6px;
-}
-.sp-active{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);}
-.sp-pending{background:rgba(201,162,75,.12);color:var(--gold);border:1px solid rgba(201,162,75,.25);}
-.sp-cancelled{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25);}
+#load.gone{opacity:0;pointer-events:none;}
+#load img{width:90px;height:90px;object-fit:contain;animation:lp 2s infinite;}
+#load .fb{width:90px;height:90px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--bg);animation:lp 2s infinite;}
+@keyframes lp{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.7;transform:scale(.94);}}
+.ld-bar{width:110px;height:2px;background:rgba(201,162,75,.12);margin-top:18px;border-radius:2px;}
+.ld-prog{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;animation:ldp 1.4s ease forwards;}
+@keyframes ldp{to{width:100%;}}
+.ld-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:10px;}
 
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:14px 16px;}
-.kpi{padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;}
-.kpi-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-.kpi-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
-.kpi-val.gold{color:var(--gold);}
-.kpi-val.green{color:var(--green);}
-.kpi-val.red{color:var(--red);}
-.kpi-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:3px;}
-
-.dist-sec{padding:0 16px 8px;}
-.dist-sec-hd{
-  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
-  letter-spacing:3px;color:var(--gold);text-transform:uppercase;
-  padding:14px 0 10px;display:flex;align-items:center;gap:10px;
+/* ═══ TOAST ═══ */
+.toast{
+  position:fixed;bottom:78px;left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);padding:9px 18px;font-size:12px;font-weight:600;
+  opacity:0;transition:all .3s;z-index:700;
+  pointer-events:none;border-radius:30px;white-space:nowrap;
 }
-.dist-sec-hd::after{content:'';flex:1;height:1px;background:var(--border);}
-
-.pago-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
-.pago-row:last-child{border:none;}
-.pago-fecha{font-size:12px;color:rgba(255,255,255,.5);}
-.pago-right{display:flex;align-items:center;gap:8px;}
-.badge{font-size:10px;padding:2px 8px;border-radius:10px;}
-.badge.ok{background:rgba(34,197,94,.12);color:var(--green);}
-.badge.fail{background:rgba(239,68,68,.12);color:var(--red);}
-.pago-amt{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--green);}
-
-.contacto-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
-.contacto-row:last-child{border:none;}
-.c-av{
-  width:36px;height:36px;border-radius:50%;flex-shrink:0;
-  background:var(--gold3);border:1px solid rgba(201,162,75,.2);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:var(--gold);
-}
-.c-nm{font-size:13px;font-weight:600;}
-.c-info{font-size:11px;color:var(--muted);margin-top:2px;}
-.c-wa{
-  width:32px;height:32px;border-radius:50%;background:var(--wa);
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  margin-left:auto;flex-shrink:0;
-}
-.empty{text-align:center;padding:24px 16px;color:rgba(255,255,255,.25);font-size:13px;line-height:1.8;}
-.upgrade-banner{
-  margin:0 16px 16px;padding:16px;
-  background:linear-gradient(135deg,rgba(201,162,75,.12),rgba(201,162,75,.06));
-  border:1px solid rgba(201,162,75,.3);border-radius:12px;
-  display:flex;align-items:center;gap:14px;cursor:pointer;
-}
-.ub-ico{font-size:28px;flex-shrink:0;}
-.ub-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;margin-bottom:3px;}
-.ub-s{font-size:11px;color:rgba(255,255,255,.4);line-height:1.4;}
-.ub-arr{font-size:20px;color:var(--gold);margin-left:auto;flex-shrink:0;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <div id="load">
-  <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="Tu Red Vital" onerror="this.onerror=null;this.style.opacity='0'">
+  <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="Tu Red Vital" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <div class="fb" style="display:none;">TRV</div>
   <div class="ld-bar"><div class="ld-prog"></div></div>
   <div class="ld-lbl">Tu Red Vital · USA</div>
 </div>
@@ -561,122 +487,102 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 
 <div id="app">
 
-<!-- ════════════════════════════════
-     PANTALLA: INICIO
-════════════════════════════════ -->
+<!-- ════ INICIO ════ -->
 <div id="s-home" class="screen active">
   <div class="top">
     <div class="top-left">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="top-logo" alt="logo" onerror="this.onerror=null;this.style.opacity='0'">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="top-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="top-logo-fb" style="display:none;">V</div>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
-        <span id="top-name">Entrar</span>
-      </div>
+    <div class="top-user" onclick="openLogin()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+      <span id="top-name">Entrar</span>
     </div>
   </div>
   <div class="scroll">
     <div class="hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="hero-logo" onerror="this.onerror=null;this.style.opacity='0'">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="hero-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="hero-logo-fb" style="display:none;">TRV</div>
       <div class="hero-pill">🌿 Red Nacional · USA</div>
       <div class="hero-t">Tu salud.<br><span class="g">Tu red.</span><br>Tu futuro.</div>
       <div class="hero-s">Distribuidores certificados en los 50 estados conectando personas con bienestar real.</div>
       <div class="hero-btns">
-        <div class="hbtn gold" onclick="go('s-scan')">
-          <small>Gratis</small>
-          Solicitar Escáner
-        </div>
-        <div class="hbtn dark" onclick="go('s-join')">
-          <small>$49/semana</small>
-          Ser Distribuidor
-        </div>
+        <div class="hbtn gold" onclick="nav('scan')"><small>Gratis</small>Solicitar Escáner</div>
+        <div class="hbtn dark" onclick="nav('join')"><small>$49/semana</small>Ser Distribuidor</div>
       </div>
     </div>
-    <div class="stats-strip">
-      <div class="stat-item"><div class="stat-n" id="st-estados">50</div><div class="stat-l">Estados</div></div>
-      <div class="stat-item"><div class="stat-n" id="st-dist">—</div><div class="stat-l">Distribuidores</div></div>
-      <div class="stat-item"><div class="stat-n" id="st-clientes">—</div><div class="stat-l">Clientes</div></div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">50</div><div class="stat-l">Estados</div></div>
+      <div class="stat"><div class="stat-n" id="st-dist">—</div><div class="stat-l">Distribuidores</div></div>
+      <div class="stat"><div class="stat-n" id="st-cli">—</div><div class="stat-l">Clientes</div></div>
     </div>
-    <div class="sec">
-      <div class="sec-hd">¿Cómo funciona?</div>
-      <div class="vp"><div class="vp-icon">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 minutos. Plan personalizado con especialista en tu zona.</div></div></div>
-      <div class="vp"><div class="vp-icon">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles en tu estado.</div></div></div>
-      <div class="vp"><div class="vp-icon">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
-    </div>
-    <div style="height:10px;"></div>
+    <div class="sec-lbl">¿Cómo funciona?</div>
+    <div class="vp"><div class="vp-ic">💚</div><div><div class="vp-t">Escáner IA gratuito</div><div class="vp-s">Evaluación no invasiva en 5 min. Plan personalizado con especialista en tu zona.</div></div></div>
+    <div class="vp"><div class="vp-ic">🗺️</div><div><div class="vp-t">Red en 50 estados</div><div class="vp-s">Toca el mapa para ver distribuidores disponibles cerca de ti.</div></div></div>
+    <div class="vp"><div class="vp-ic">🚀</div><div><div class="vp-t">Crece con nosotros</div><div class="vp-s">Como distribuidor recibe clientes, campaña local y soporte completo.</div></div></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
-    <button class="bn on" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn on" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ════════════════════════════════
-     PANTALLA: MAPA
-════════════════════════════════ -->
+<!-- ════ MAPA ════ -->
 <div id="s-map" class="screen">
   <div class="top">
     <div class="top-left">
-      <button class="back-btn" onclick="back()">←</button>
+      <button class="back-btn" onclick="nav('home')">←</button>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
-    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
   </div>
   <div class="scroll">
     <div class="map-search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" stroke-linecap="round"/></svg>
-      <input type="text" id="map-search" placeholder="Busca tu estado..." oninput="filterStates(this.value)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7A8FA6" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Busca tu estado..." oninput="filterStates(this.value)">
     </div>
-    <div class="map-legend">
-      <div class="leg"><div class="leg-d full"></div>Completo</div>
-      <div class="leg"><div class="leg-d some"></div>Disponible</div>
-      <div class="leg"><div class="leg-d open"></div>Abierto</div>
+    <div class="map-leg">
+      <div class="leg"><div class="leg-d" style="background:var(--gold);"></div>Completo</div>
+      <div class="leg"><div class="leg-d" style="background:rgba(201,162,75,.35);"></div>Disponible</div>
+      <div class="leg"><div class="leg-d" style="border:1.5px solid rgba(255,255,255,.18);"></div>Abierto</div>
     </div>
     <div class="states-wrap">
-      <div class="states-grid" id="states-grid"></div>
+      <div class="states-grid" id="sg"></div>
     </div>
-    <div class="state-pop" id="state-pop">
-      <div class="sp-hd">
-        <div class="sp-title" id="sp-name">—</div>
-        <button class="sp-x" onclick="closePop()">✕</button>
-      </div>
-      <div class="sp-slots" id="sp-slots"></div>
-      <div class="sp-status" id="sp-status"></div>
-      <div id="sp-reps"></div>
-      <button class="sp-cta" id="sp-cta">—</button>
+    <div class="pop" id="pop">
+      <div class="pop-hd"><div class="pop-title" id="pop-name">—</div><button class="pop-x" onclick="closePop()">✕</button></div>
+      <div class="pop-slots" id="pop-slots"></div>
+      <div class="pop-status" id="pop-status"></div>
+      <div id="pop-reps"></div>
+      <button class="pop-cta" id="pop-cta">—</button>
     </div>
-    <div style="height:10px;"></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
-    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn on" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn on" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ════════════════════════════════
-     PANTALLA: ESCÁNER
-════════════════════════════════ -->
+<!-- ════ ESCÁNER ════ -->
 <div id="s-scan" class="screen">
   <div class="top">
     <div class="top-left">
-      <button class="back-btn" onclick="back()">←</button>
+      <button class="back-btn" onclick="nav('home')">←</button>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
-    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
   </div>
   <div class="scroll">
-    <div class="form-hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="fh-logo" onerror="this.onerror=null;this.style.opacity='0'">
+    <div class="fhero">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="fh-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="fh-logo-fb" style="display:none;">TRV</div>
       <div class="fh-pill">🩺 Evaluación gratuita</div>
       <div class="fh-t">Solicita tu<br>escáner corporal</div>
       <div class="fh-s">Análisis IA de 45+ sistemas. Un especialista te contacta en minutos — sin costo.</div>
@@ -698,196 +604,160 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
         </select>
       </div>
       <button class="btn-wa" onclick="doScan()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Conectar con especialista
       </button>
       <div class="fnote">Respuesta en minutos · Gratis · Sin compromiso</div>
     </div>
-    <div style="height:10px;"></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
-    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="bn on" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="bn" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ════════════════════════════════
-     PANTALLA: ÚNETE
-════════════════════════════════ -->
+<!-- ════ ÚNETE ════ -->
 <div id="s-join" class="screen">
   <div class="top">
     <div class="top-left">
-      <button class="back-btn" onclick="back()">←</button>
+      <button class="back-btn" onclick="nav('home')">←</button>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
-    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
   </div>
   <div class="scroll">
-    <div class="price-hero">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" class="ph-logo" onerror="this.onerror=null;this.style.opacity='0'">
-      <div class="ph-label">Membresía semanal</div>
-      <div class="ph-price">$49</div>
+    <div class="phero">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="ph-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ph-logo-fb" style="display:none;">TRV</div>
+      <div class="ph-lbl">Membresía semanal</div>
+      <div class="ph-num">$49</div>
       <div class="ph-per">dólares / semana</div>
       <div class="ph-note">Cancela cuando quieras · Sin contratos</div>
     </div>
     <div class="bens">
-      <div class="ben"><div class="ben-ico">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles en tu estado.</div></div></div>
-      <div class="ben"><div class="ben-ico">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas locales para atraer clientes.</div></div></div>
-      <div class="ben"><div class="ben-ico">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea.</div></div></div>
-      <div class="ben"><div class="ben-ico">📊</div><div><div class="ben-t">Dashboard de distribuidores</div><div class="ben-s">Panel personal con pagos, contactos y estadísticas.</div></div></div>
+      <div class="ben"><div class="ben-ic">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles en tu estado para clientes de tu zona.</div></div></div>
+      <div class="ben"><div class="ben-ic">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas locales para atraer clientes a tu comunidad.</div></div></div>
+      <div class="ben"><div class="ben-ic">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea con soporte completo.</div></div></div>
+      <div class="ben"><div class="ben-ic">📊</div><div><div class="ben-t">Dashboard personal</div><div class="ben-s">Panel con pagos, prospectos y estadísticas de tu zona.</div></div></div>
     </div>
-    <div class="urg"><div style="font-size:20px;">⚡</div><div><div class="urg-t">Espacios limitados</div><div class="urg-s">Solo 5 por estado · 255 en total en USA</div></div></div>
+    <div class="urg"><div style="font-size:18px;">⚡</div><div><div class="urg-t">Espacios limitados</div><div class="urg-s">Solo 5 por estado · 255 en total en USA</div></div></div>
     <div class="fbody" style="padding-top:4px;">
       <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="j-nombre" type="text" placeholder="Como aparecerá en el mapa" autocomplete="name"></div>
       <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="j-estado"><option value="">Selecciona tu estado</option></select></div>
       <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="j-ciudad" type="text" placeholder="Ciudad donde operas"></div>
-      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-whatsapp" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-wa" type="tel" placeholder="+1 (555) 000-0000"></div>
       <div class="fg"><label class="fl">Tu email</label><input class="fi" id="j-email" type="email" placeholder="Para acceso a tu panel" autocomplete="email"></div>
       <button class="btn-gold" onclick="doJoin()">🔒 Reservar mi espacio · $49/sem</button>
       <div class="fnote">🔐 Pago seguro · Stripe · Visa · MC · Apple Pay<br>Al pagar aparecerás en el mapa y recibirás tu panel.</div>
     </div>
-    <div style="height:10px;"></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-4">
-    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
-    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
-    <button class="bn on" onclick="go('s-join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
   </nav>
 </div>
 
-<!-- ════════════════════════════════
-     PANTALLA: DASHBOARD CLIENTE
-════════════════════════════════ -->
+<!-- ════ DASHBOARD CLIENTE ════ -->
 <div id="s-client" class="screen">
   <div class="top">
     <div class="top-left">
-      <button class="back-btn" onclick="back()">←</button>
+      <button class="back-btn" onclick="nav('home')">←</button>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
-    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Salir</span></div>
   </div>
   <div class="scroll">
-    <div class="client-hero">
-      <div class="client-av" id="cl-av">—</div>
-      <div class="client-name" id="cl-name">—</div>
-      <div class="client-email" id="cl-email">—</div>
-      <div class="client-badge cb-cliente" id="cl-badge">Cliente</div>
+    <div class="cl-hero">
+      <div class="cl-av" id="cl-av">?</div>
+      <div class="cl-name" id="cl-name">—</div>
+      <div class="cl-email" id="cl-email">—</div>
+      <div class="cl-badge cb-cliente">● Cliente</div>
     </div>
-    <div class="quick-actions">
-      <div class="qa-btn primary" onclick="go('s-scan')">
-        <div class="qa-icon">🩺</div>
+    <div class="qa-grid">
+      <div class="qa primary" onclick="nav('scan')">
+        <div class="qa-ic">🩺</div>
         <div class="qa-t">Solicitar Escáner</div>
         <div class="qa-s">Evaluación gratuita</div>
       </div>
-      <div class="qa-btn" onclick="go('s-map')">
-        <div class="qa-icon">🗺️</div>
+      <div class="qa" onclick="nav('map')">
+        <div class="qa-ic">🗺️</div>
         <div class="qa-t">Ver el Mapa</div>
         <div class="qa-s">Distribuidores cerca</div>
       </div>
     </div>
-    <!-- Botón grande WhatsApp -->
-    <div class="wa-big" onclick="openWA(WA_MAIN,'Soporte Tu Red Vital')">
-      <div class="wa-big-ico">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      </div>
+    <div class="wa-big" onclick="waOpen(WA_MAIN,'Hola Tu Red Vital! Necesito información.')">
+      <div class="wa-big-ic">💬</div>
       <div>
         <div class="wa-big-t">Servicio al Cliente</div>
         <div class="wa-big-s">Respuesta inmediata · Tu Red Vital</div>
       </div>
     </div>
-    <!-- Upgrade banner -->
-    <div class="upgrade-banner" onclick="go('s-join')">
-      <div class="ub-ico">🚀</div>
+    <div class="upgrade-banner" onclick="nav('join')">
+      <div class="ub-ic">🚀</div>
       <div>
         <div class="ub-t">Conviértete en Distribuidor</div>
         <div class="ub-s">$49/sem · Gana dinero ayudando a tu comunidad</div>
       </div>
       <div class="ub-arr">→</div>
     </div>
-    <div style="height:10px;"></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-3">
-    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn" onclick="go('s-scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('scan')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3" stroke-linecap="round"/></svg>Escáner</button>
     <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Mi Perfil</button>
   </nav>
 </div>
 
-<!-- ════════════════════════════════
-     PANTALLA: DASHBOARD DISTRIBUIDOR
-════════════════════════════════ -->
+<!-- ════ DASHBOARD DISTRIBUIDOR ════ -->
 <div id="s-dist" class="screen">
   <div class="top">
     <div class="top-left">
-      <button class="back-btn" onclick="back()">←</button>
+      <button class="back-btn" onclick="nav('home')">←</button>
       <span class="top-brand">TU RED <span>VITAL</span></span>
     </div>
-    <div class="top-right">
-      <div class="top-user-btn" onclick="openLogin()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Salir</span></div>
-    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Salir</span></div>
   </div>
   <div class="scroll">
     <div class="dist-hero">
       <div class="dist-top">
-        <div class="dist-av" id="d-av">—</div>
+        <div class="dist-av" id="d-av">?</div>
         <div>
           <div class="dist-name" id="d-nombre">—</div>
           <div class="dist-loc" id="d-loc">—</div>
-          <div class="status-pill" id="d-pill">—</div>
+          <div class="spill" id="d-pill">—</div>
         </div>
       </div>
     </div>
-
-    <div class="kpi-grid">
-      <div class="kpi">
-        <div class="kpi-lbl">Último pago</div>
-        <div class="kpi-val green" id="d-last-pay">—</div>
-        <div class="kpi-sub" id="d-last-amt">—</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-lbl">Próximo cobro</div>
-        <div class="kpi-val gold" id="d-next-pay">—</div>
-        <div class="kpi-sub">Renovación semanal</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-lbl">Tu posición</div>
-        <div class="kpi-val gold" id="d-slot">—</div>
-        <div class="kpi-sub">de 5 slots en tu estado</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-lbl">Prospectos</div>
-        <div class="kpi-val gold" id="d-prospectos">0</div>
-        <div class="kpi-sub">Contactos en tu zona</div>
-      </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-l">Último pago</div><div class="kpi-v green" id="d-lastpay">—</div><div class="kpi-sub" id="d-lastamt">—</div></div>
+      <div class="kpi"><div class="kpi-l">Próximo cobro</div><div class="kpi-v gold" id="d-nextpay">—</div><div class="kpi-sub">Renovación semanal</div></div>
+      <div class="kpi"><div class="kpi-l">Tu posición</div><div class="kpi-v gold" id="d-slot">—</div><div class="kpi-sub">de 5 en tu estado</div></div>
+      <div class="kpi"><div class="kpi-l">Prospectos</div><div class="kpi-v gold" id="d-prosp">0</div><div class="kpi-sub">En tu zona</div></div>
     </div>
-
-    <div class="dist-sec">
-      <div class="dist-sec-hd">Historial de pagos</div>
-      <div id="pagos-list"><div class="empty">Cargando…</div></div>
+    <div class="dsec">
+      <div class="dsec-hd">Historial de pagos</div>
+      <div id="pagos-list"><div class="empty">Cargando pagos…</div></div>
     </div>
-
-    <div class="dist-sec">
-      <div class="dist-sec-hd">Prospectos en tu estado</div>
-      <div id="contactos-list"><div class="empty">Cargando…</div></div>
+    <div class="dsec">
+      <div class="dsec-hd">Prospectos en tu estado</div>
+      <div id="contactos-list"><div class="empty">Cargando prospectos…</div></div>
     </div>
-
-    <!-- Botón WA soporte -->
-    <div class="wa-big" style="margin:0 16px 16px;" onclick="openWA(WA_MAIN,'Soporte Distribuidor Tu Red Vital')">
-      <div class="wa-big-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-      <div><div class="wa-big-t">Soporte para Distribuidores</div><div class="wa-big-s">Línea directa · Tu Red Vital</div></div>
+    <div class="wa-big" style="margin:0 14px 14px;" onclick="waOpen(WA_MAIN,'Hola! Soy distribuidor de Tu Red Vital, necesito soporte.')">
+      <div class="wa-big-ic">💬</div>
+      <div><div class="wa-big-t">Soporte Distribuidores</div><div class="wa-big-s">Línea directa · Tu Red Vital</div></div>
     </div>
-    <div style="height:10px;"></div>
+    <div style="height:12px;"></div>
   </div>
   <nav class="bnav bnav-3">
-    <button class="bn" onclick="go('s-home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
-    <button class="bn" onclick="go('s-map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
     <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Mi Panel</button>
   </nav>
 </div>
@@ -895,12 +765,9 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 <!-- ════ MODAL: LOGIN ════ -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title">Iniciar sesión</div>
-      <button class="modal-x" onclick="closeModal('modal-login')">✕</button>
-    </div>
+    <div class="modal-hd"><div class="modal-t">Iniciar sesión</div><button class="modal-x" onclick="closeModal('modal-login')">✕</button></div>
     <button class="g-btn" onclick="loginGoogle()">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Continuar con Google
     </button>
     <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
@@ -915,41 +782,35 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 <!-- ════ MODAL: REGISTRO ════ -->
 <div class="modal-overlay" id="modal-reg">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title">Crear cuenta</div>
-      <button class="modal-x" onclick="closeModal('modal-reg')">✕</button>
-    </div>
+    <div class="modal-hd"><div class="modal-t">Crear cuenta</div><button class="modal-x" onclick="closeModal('modal-reg')">✕</button></div>
     <button class="g-btn" onclick="loginGoogle()">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Registrarse con Google
     </button>
     <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
     <input class="m-input" id="r-email" type="email" placeholder="tu@email.com" autocomplete="email">
-    <input class="m-input" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+    <input class="m-input" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter')doReg()">
     <div class="m-err" id="r-err"></div>
-    <div class="m-ok" id="r-ok">✓ ¡Cuenta creada! Revisa tu email.</div>
-    <button class="m-btn" id="r-btn" onclick="doRegister()">Crear cuenta</button>
+    <div class="m-ok" id="r-ok">✓ ¡Cuenta creada! Revisa tu email para confirmar.</div>
+    <button class="m-btn" id="r-btn" onclick="doReg()">Crear cuenta</button>
     <div class="m-switch">¿Ya tienes cuenta? <a onclick="switchModal('modal-reg','modal-login')">Inicia sesión →</a></div>
   </div>
 </div>
 
-<!-- ════ MODAL: ELEGIR ROL ════ -->
+<!-- ════ MODAL: ROL ════ -->
 <div class="modal-overlay" id="modal-rol">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-title">¿Cómo quieres entrar?</div>
-      <button class="modal-x" onclick="closeModal('modal-rol')">✕</button>
-    </div>
+    <div class="modal-hd"><div class="modal-t">¿Cómo quieres entrar?</div><button class="modal-x" onclick="closeModal('modal-rol')">✕</button></div>
     <div class="rol-cards">
       <div class="rol-card" onclick="setRol('cliente')">
-        <div class="rol-icon">🌿</div>
-        <div class="rol-t">Soy Cliente</div>
-        <div class="rol-s">Quiero mejorar mi salud con el escáner</div>
+        <div class="rol-ic">🌿</div>
+        <div class="rol-name">Soy Cliente</div>
+        <div class="rol-desc">Quiero mejorar mi salud con el escáner</div>
       </div>
       <div class="rol-card" onclick="setRol('distribuidor')">
-        <div class="rol-icon">🚀</div>
-        <div class="rol-t">Soy Distribuidor</div>
-        <div class="rol-s">Tengo membresía activa</div>
+        <div class="rol-ic">🚀</div>
+        <div class="rol-name">Distribuidor</div>
+        <div class="rol-desc">Tengo membresía activa</div>
       </div>
     </div>
   </div>
@@ -958,7 +819,7 @@ body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color:var(
 </div><!-- /app -->
 
 <script>
-const { createClient } = supabase;
+const {createClient} = supabase;
 const sb = createClient(SB_URL, SB_KEY);
 
 const US = [
@@ -977,161 +838,124 @@ const US = [
   {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
 ];
 
-let reps=[], smap={}, hist=['s-home'], user=null, rol=null;
+let reps=[], smap={}, user=null, cur='home';
 
-// ── NAVEGACIÓN ──────────────────────────────────────────────
-function go(to){
-  const cur=hist[hist.length-1];
+// ── NAVEGACIÓN ──────────────────────────────────────────
+function nav(to) {
   if(cur===to) return;
-  document.getElementById(cur).classList.add('prev');
-  document.getElementById(cur).classList.remove('active');
-  document.getElementById(to).classList.remove('prev');
-  document.getElementById(to).classList.add('active');
-  hist.push(to);
-  closePop();
-  if(to==='s-dist') loadDistDash();
-  if(to==='s-client') loadClientDash();
-}
-function back(){
-  if(hist.length<=1) return;
-  const cur=hist.pop(), to=hist[hist.length-1];
-  document.getElementById(cur).classList.remove('active','prev');
-  document.getElementById(to).classList.remove('prev');
-  document.getElementById(to).classList.add('active');
+  const fromEl = document.getElementById('s-'+cur);
+  const toEl   = document.getElementById('s-'+to);
+  fromEl.classList.add('leaving');
+  toEl.classList.add('active');
+  setTimeout(()=>{ fromEl.classList.remove('active','leaving'); }, 300);
+  cur = to;
+  if(to==='dist') loadDist();
+  if(to==='client') loadClient();
 }
 
-// ── DATOS ──────────────────────────────────────────────────
-async function loadData(){
-  try{
-    const m = await Promise.race([
-      sb.from('membresias').select('*').eq('status','activa'),
-      new Promise((_,r)=>setTimeout(()=>r('timeout'),3000))
-    ]);
-    reps=m.data||[];
-    const dist=reps.length;
-    document.getElementById('st-dist').textContent=dist;
-    try {
-      const s = await sb.from('solicitudes_scanner').select('id',{count:'exact',head:true});
-      document.getElementById('st-clientes').textContent=s.count||0;
-    } catch(e2){}
-  }catch(e){ reps=[]; }
+// ── DATOS ───────────────────────────────────────────────
+async function loadData() {
+  try {
+    const p1 = sb.from('membresias').select('*').eq('status','activa');
+    const p2 = sb.from('solicitudes_scanner').select('id',{count:'exact',head:true});
+    const t  = new Promise((_,r)=>setTimeout(()=>r('t'),3000));
+    const [m,s] = await Promise.race([Promise.all([p1,p2]), t.then(()=>[{data:[]},{count:0}])]);
+    reps = m?.data||[];
+    document.getElementById('st-dist').textContent = reps.length;
+    document.getElementById('st-cli').textContent  = s?.count||0;
+  } catch(e){ reps=[]; }
   smap={};
   reps.forEach(r=>{ if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[]; smap[r.estado_codigo].push(r); });
-  buildGrid();
+  buildMap();
   fillSelects();
 }
 
-// ── MAPA ───────────────────────────────────────────────────
-function buildGrid(){
-  const g=document.getElementById('states-grid');
-  g.innerHTML=US.map(s=>{
+// ── MAPA ────────────────────────────────────────────────
+function buildMap() {
+  const g = document.getElementById('sg');
+  g.innerHTML = US.map(s=>{
     const r=smap[s.c]||[];
     const cls=r.length>=5?'full':r.length>0?'some':'';
     const pips=Array.from({length:5},(_,i)=>`<div class="spip${i<r.length?' on':''}"></div>`).join('');
-    return `<div class="state-btn ${cls}" data-name="${s.n.toLowerCase()}" onclick="showState('${s.c}')">
-      <div class="sc">${s.c}</div><div class="spips">${pips}</div>
-    </div>`;
+    return `<div class="sb ${cls}" data-n="${s.n.toLowerCase()}" onclick="showPop('${s.c}')"><div class="sc">${s.c}</div><div class="spips">${pips}</div></div>`;
   }).join('');
 }
 
-function filterStates(q){
+function filterStates(q) {
   const v=q.toLowerCase();
-  document.querySelectorAll('.state-btn').forEach(el=>{
-    el.classList.toggle('hidden', v.length>0 && !el.dataset.name.includes(v) && !el.querySelector('.sc').textContent.toLowerCase().includes(v));
+  document.querySelectorAll('.sb').forEach(el=>{
+    el.classList.toggle('hidden', v.length>0 && !el.dataset.n.includes(v) && !el.querySelector('.sc').textContent.toLowerCase().includes(v));
   });
 }
 
-function showState(code){
+function showPop(code) {
   const r=smap[code]||[], name=US.find(s=>s.c===code)?.n||code, avail=5-r.length;
-  document.getElementById('sp-name').textContent=name;
-  document.getElementById('sp-slots').innerHTML=Array.from({length:5},(_,i)=>`<div class="sp-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
-  document.getElementById('sp-status').textContent=avail===0?'ZONA COMPLETA · 5/5':`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/sem`;
-  document.getElementById('sp-reps').innerHTML=r.length
-    ?r.map(x=>`<div class="rep-row">
-        <div class="rep-av">${ini(x.nombre)}</div>
-        <div><div class="rep-nm">${x.nombre}</div><div class="rep-ci">${x.ciudad||''}</div></div>
-        <button class="wa-btn" onclick="openWA('${x.whatsapp}','${x.nombre.replace(/'/g,"\\'")}')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </button>
-      </div>`).join('')
-    :`<div class="sp-empty">Sé el primero en ${name}<br>$49/sem · 5 espacios disponibles</div>`;
-  const cta=document.getElementById('sp-cta');
+  document.getElementById('pop-name').textContent=name;
+  document.getElementById('pop-slots').innerHTML=Array.from({length:5},(_,i)=>`<div class="pop-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
+  document.getElementById('pop-status').textContent=avail===0?'ZONA COMPLETA · 5/5':`${avail} espacio${avail>1?'s':''} disponible${avail>1?'s':''} · $49/sem`;
+  const waIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+  document.getElementById('pop-reps').innerHTML = r.length
+    ? r.map(x=>`<div class="rep-row"><div class="rep-av">${ini(x.nombre)}</div><div style="flex:1"><div class="rep-nm">${x.nombre}</div><div class="rep-ci">${x.ciudad||''}</div></div><button class="wa-btn" onclick="waOpen('${x.whatsapp}','Hola ${x.nombre.replace(/'/g,"\\'")}! Vi tu perfil en Tu Red Vital 🌿')">${waIcon}</button></div>`).join('')
+    : `<div class="pop-empty">Sé el primero en ${name}<br>$49/sem · ${avail} espacios disponibles</div>`;
+  const cta=document.getElementById('pop-cta');
   cta.textContent=avail>0?`Reservar espacio en ${name} →`:`Solicitar escáner en ${name} →`;
-  cta.onclick=()=>go(avail>0?'s-join':'s-scan');
-  const pop=document.getElementById('state-pop');
+  cta.onclick=()=>nav(avail>0?'join':'scan');
+  const pop=document.getElementById('pop');
   pop.classList.add('vis');
   setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
 }
-function closePop(){ document.getElementById('state-pop').classList.remove('vis'); }
+function closePop(){ document.getElementById('pop').classList.remove('vis'); }
 
-// ── DASHBOARD DISTRIBUIDOR ──────────────────────────────────
-async function loadDistDash(){
+// ── DASHBOARD DISTRIBUIDOR ───────────────────────────────
+async function loadDist() {
   if(!user) return;
-  try{
-    const {data:m}=await sb.from('membresias').select('*').eq('email',user.email).single();
+  try {
+    const {data:m} = await sb.from('membresias').select('*').eq('email',user.email).single();
     if(!m){ showToast('No tienes membresía activa'); return; }
-    document.getElementById('d-av').textContent=ini(m.nombre);
-    document.getElementById('d-nombre').textContent=m.nombre;
-    document.getElementById('d-loc').textContent=`${m.estado_nombre} · ${m.ciudad||''}`;
-    document.getElementById('d-slot').textContent=`#${m.slot||'—'}`;
-    document.getElementById('d-next-pay').textContent=m.fecha_renovacion?fmtDate(m.fecha_renovacion):'—';
-    const pill=document.getElementById('d-pill');
-    pill.className='status-pill '+(m.status==='activa'?'sp-active':m.status==='pendiente'?'sp-pending':'sp-cancelled');
-    pill.textContent=m.status==='activa'?'● Membresía Activa':m.status==='pendiente'?'⏳ Pendiente':'✕ Cancelada';
-
-    const {data:pagos}=await sb.from('pagos').select('*').eq('membresia_id',m.id).order('created_at',{ascending:false}).limit(10);
-    if(pagos?.length){
-      document.getElementById('d-last-pay').textContent=fmtDate(pagos[0].created_at);
-      document.getElementById('d-last-amt').textContent=`$${pagos[0].monto_usd} USD`;
-      document.getElementById('pagos-list').innerHTML=pagos.map(p=>`
-        <div class="pago-row">
-          <div class="pago-fecha">${fmtDate(p.created_at)}</div>
-          <div class="pago-right">
-            <span class="badge ${p.status==='exitoso'?'ok':'fail'}">${p.status==='exitoso'?'Pagado':'Fallido'}</span>
-            <span class="pago-amt">$${p.monto_usd}</span>
-          </div>
-        </div>`).join('');
+    document.getElementById('d-av').textContent      = ini(m.nombre);
+    document.getElementById('d-nombre').textContent  = m.nombre;
+    document.getElementById('d-loc').textContent     = `${m.estado_nombre||''} · ${m.ciudad||''}`;
+    document.getElementById('d-slot').textContent    = `#${m.slot||'—'}`;
+    document.getElementById('d-nextpay').textContent = m.fecha_renovacion ? fmtDate(m.fecha_renovacion) : '—';
+    const pill = document.getElementById('d-pill');
+    pill.className = 'spill '+(m.status==='activa'?'sp-active':m.status==='pendiente'?'sp-pending':'sp-cancelled');
+    pill.textContent = m.status==='activa'?'● Membresía Activa':m.status==='pendiente'?'⏳ Pendiente':'✕ Cancelada';
+    const {data:pagos} = await sb.from('pagos').select('*').eq('membresia_id',m.id).order('created_at',{ascending:false}).limit(10);
+    if(pagos?.length) {
+      document.getElementById('d-lastpay').textContent = fmtDate(pagos[0].created_at);
+      document.getElementById('d-lastamt').textContent = `$${pagos[0].monto_usd} USD`;
+      document.getElementById('pagos-list').innerHTML = pagos.map(p=>`
+        <div class="prow"><span class="pdate">${fmtDate(p.created_at)}</span>
+        <div class="pright"><span class="pbadge ${p.status==='exitoso'?'ok':'fail'}">${p.status==='exitoso'?'Pagado':'Fallido'}</span>
+        <span class="pamnt">$${p.monto_usd}</span></div></div>`).join('');
     } else {
-      document.getElementById('pagos-list').innerHTML='<div class="empty">Sin pagos registrados aún.</div>';
+      document.getElementById('pagos-list').innerHTML = '<div class="empty">Sin pagos registrados aún.</div>';
     }
-
-    const {data:cx}=await sb.from('solicitudes_scanner').select('*').eq('estado_codigo',m.estado_codigo).order('created_at',{ascending:false}).limit(20);
-    document.getElementById('d-prospectos').textContent=cx?.length||0;
-    if(cx?.length){
-      document.getElementById('contactos-list').innerHTML=cx.map(c=>`
-        <div class="contacto-row">
-          <div class="c-av">${ini(c.nombre)}</div>
-          <div style="flex:1">
-            <div class="c-nm">${c.nombre}</div>
-            <div class="c-info">${c.ciudad||''} · ${c.objetivo||''} · ${fmtDate(c.created_at)}</div>
-          </div>
-          ${c.telefono?`<button class="c-wa" onclick="openWA('${c.telefono}','${c.nombre.replace(/'/g,"\\'")}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button>`:''}
-        </div>`).join('');
+    const {data:cx} = await sb.from('solicitudes_scanner').select('*').eq('estado_codigo',m.estado_codigo).order('created_at',{ascending:false}).limit(20);
+    document.getElementById('d-prosp').textContent = cx?.length||0;
+    if(cx?.length) {
+      const waIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+      document.getElementById('contactos-list').innerHTML = cx.map(c=>`
+        <div class="crow"><div class="cav">${ini(c.nombre)}</div>
+        <div style="flex:1"><div class="cnm">${c.nombre}</div><div class="cinfo">${c.ciudad||''} · ${c.objetivo||''} · ${fmtDate(c.created_at)}</div></div>
+        ${c.telefono?`<button class="cwa" onclick="waOpen('${c.telefono}','Hola ${c.nombre.replace(/'/g,"\\'")}! Te contacto desde Tu Red Vital 🌿')">${waIcon}</button>`:''}</div>`).join('');
     } else {
-      document.getElementById('contactos-list').innerHTML='<div class="empty">Los prospectos de tu estado aparecerán aquí cuando soliciten un escáner.</div>';
+      document.getElementById('contactos-list').innerHTML = '<div class="empty">Los prospectos de tu estado aparecerán aquí cuando soliciten un escáner.</div>';
     }
-  }catch(e){ console.error(e); }
+  } catch(e){ console.error(e); }
 }
 
-// ── DASHBOARD CLIENTE ───────────────────────────────────────
-function loadClientDash(){
+// ── DASHBOARD CLIENTE ─────────────────────────────────
+function loadClient() {
   if(!user) return;
-  const name=user.user_metadata?.full_name||user.email||'';
-  document.getElementById('cl-av').textContent=ini(name)||'?';
-  document.getElementById('cl-name').textContent=name.split('@')[0]||'—';
-  document.getElementById('cl-email').textContent=user.email||'';
+  const name = user.user_metadata?.full_name||user.email||'';
+  document.getElementById('cl-av').textContent    = ini(name)||'?';
+  document.getElementById('cl-name').textContent  = name.split('@')[0]||'—';
+  document.getElementById('cl-email').textContent = user.email||'';
 }
 
-// ── ROL ─────────────────────────────────────────────────────
-function setRol(r){
-  rol=r;
-  closeModal('modal-rol');
-  if(r==='distribuidor') go('s-dist');
-  else go('s-client');
-}
-
-// ── SCAN → WA ───────────────────────────────────────────────
-async function doScan(){
+// ── SCAN → WA ─────────────────────────────────────────
+async function doScan() {
   const n=document.getElementById('sc-nombre').value.trim();
   const p=document.getElementById('sc-phone').value.trim();
   const c=document.getElementById('sc-estado').value;
@@ -1140,16 +964,15 @@ async function doScan(){
   if(!n||!p||!c||!ci||!g){ showToast('⚠️ Completa todos los campos'); return; }
   const sn=US.find(s=>s.c===c)?.n||c;
   try{ await sb.from('solicitudes_scanner').insert({nombre:n,telefono:p.replace(/\D/g,''),estado_codigo:c,estado_nombre:sn,objetivo:g}); }catch(e){}
-  const msg=encodeURIComponent(`Hola! Me registré en Tu Red Vital 🌿\n\n👤 ${n}\n📍 ${sn} · ${ci}\n📱 ${p}\n💚 ${g}\n\nMe interesa el escáner gratuito.`);
-  window.open(`https://wa.me/${WA_MAIN}?text=${msg}`,'_blank');
+  waOpen(WA_MAIN,`Hola! Me registré en Tu Red Vital 🌿\n\n👤 ${n}\n📍 ${sn} · ${ci}\n📱 ${p}\n💚 ${g}\n\nMe interesa el escáner gratuito.`);
 }
 
-// ── JOIN → STRIPE ────────────────────────────────────────────
-async function doJoin(){
+// ── JOIN → STRIPE ──────────────────────────────────────
+async function doJoin() {
   const n=document.getElementById('j-nombre').value.trim();
   const e=document.getElementById('j-estado').value;
   const c=document.getElementById('j-ciudad').value.trim();
-  const w=document.getElementById('j-whatsapp').value.trim();
+  const w=document.getElementById('j-wa').value.trim();
   const em=document.getElementById('j-email').value.trim();
   if(!n||!e||!c||!w||!em){ showToast('⚠️ Completa todos los campos'); return; }
   if(!em.includes('@')){ showToast('⚠️ Email inválido'); return; }
@@ -1158,13 +981,9 @@ async function doJoin(){
   window.location.href=`${STRIPE}?prefilled_email=${encodeURIComponent(em)}`;
 }
 
-// ── AUTH ─────────────────────────────────────────────────────
-function openLogin(){
-  if(user){
-    if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`))
-      sb.auth.signOut().then(()=>{ user=null; rol=null; updateUI(); showToast('✓ Sesión cerrada'); });
-    return;
-  }
+// ── AUTH ───────────────────────────────────────────────
+function openLogin() {
+  if(user){ if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`)) sb.auth.signOut().then(()=>{ user=null; updateUI(); showToast('✓ Sesión cerrada'); }); return; }
   openModal('modal-login');
 }
 function openModal(id){ document.getElementById(id).classList.add('open'); }
@@ -1185,11 +1004,10 @@ async function loginEmail(){
   const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   btn.textContent='Entrar'; btn.disabled=false;
   if(error){ errEl.textContent='Email o contraseña incorrectos.'; errEl.style.display='block'; return; }
-  closeModal('modal-login');
-  user=data.user; updateUI();
+  closeModal('modal-login'); user=data.user; updateUI();
   openModal('modal-rol');
 }
-async function doRegister(){
+async function doReg(){
   const email=document.getElementById('r-email').value.trim();
   const pass=document.getElementById('r-pass').value;
   const errEl=document.getElementById('r-err'), okEl=document.getElementById('r-ok'), btn=document.getElementById('r-btn');
@@ -1203,45 +1021,44 @@ async function doRegister(){
   okEl.style.display='block';
   setTimeout(()=>{ closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); },2200);
 }
-
+function setRol(r){
+  closeModal('modal-rol');
+  nav(r==='distribuidor'?'dist':'client');
+}
 function updateUI(){
   const name=user?(user.user_metadata?.full_name||user.email||'').split(/[@\s]/)[0]:'Entrar';
   document.getElementById('top-name').textContent=name;
   document.querySelectorAll('.uname').forEach(el=>el.textContent=name);
 }
-
 async function checkSession(){
   const {data:{session}}=await sb.auth.getSession();
   if(session?.user){ user=session.user; updateUI(); }
-  sb.auth.onAuthStateChange((_,s)=>{
-    user=s?.user||null; updateUI();
-    if(user && !rol) openModal('modal-rol');
-  });
+  sb.auth.onAuthStateChange((_,s)=>{ user=s?.user||null; updateUI(); });
 }
 
-// ── HELPERS ──────────────────────────────────────────────────
+// ── HELPERS ────────────────────────────────────────────
 function ini(n=''){ return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
 function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}); }
+function waOpen(num,msg){ window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank'); }
 function fillSelects(){
   const opts=US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
   ['sc-estado','j-estado'].forEach(id=>{ document.getElementById(id).innerHTML='<option value="">Selecciona tu estado</option>'+opts; });
 }
-function openWA(num,name){ window.open(`https://wa.me/${num}?text=${encodeURIComponent(`Hola ${name}! Contáctame desde Tu Red Vital 🌿`)}`, '_blank'); }
 let tt;
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3000); }
 
+// ── INICIO ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',async()=>{
-  // Always hide loader after 2.5s max — never block on network
-  const hideLoad = () => document.getElementById('load').classList.add('gone');
-  const loadTimer = setTimeout(hideLoad, 2500);
-  try {
+  const hide=()=>document.getElementById('load').classList.add('gone');
+  const timer=setTimeout(hide,2500);
+  try{
     await Promise.race([
-      Promise.all([loadData(), checkSession()]),
-      new Promise(resolve => setTimeout(resolve, 2000))
+      Promise.all([loadData(),checkSession()]),
+      new Promise(r=>setTimeout(r,2000))
     ]);
-  } catch(e) {}
-  clearTimeout(loadTimer);
-  hideLoad();
+  }catch(e){}
+  clearTimeout(timer);
+  hide();
 });
 </script>
 </body>
