@@ -1170,61 +1170,6 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
   </nav>
 </div>
 
-<!-- ════ MODAL: LOGIN ════ -->
-<div class="modal-overlay" id="modal-login">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-t">Iniciar sesión</div><button class="modal-x" onclick="closeModal('modal-login')">✕</button></div>
-    <button class="g-btn" onclick="loginGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Continuar con Google
-    </button>
-    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
-    <input class="m-input" id="l-email" type="email" placeholder="tu@email.com" autocomplete="email">
-    <input class="m-input" id="l-pass" type="password" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')loginEmail()">
-    <div class="m-err" id="l-err"></div>
-    <button class="m-btn" id="l-btn" onclick="loginEmail()">Entrar</button>
-    <div class="m-switch">¿No tienes cuenta? <a onclick="switchModal('modal-login','modal-reg')">Regístrate →</a></div>
-  </div>
-</div>
-
-<!-- ════ MODAL: REGISTRO ════ -->
-<div class="modal-overlay" id="modal-reg">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-t">Crear cuenta</div><button class="modal-x" onclick="closeModal('modal-reg')">✕</button></div>
-    <button class="g-btn" onclick="loginGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Registrarse con Google
-    </button>
-    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
-    <input class="m-input" id="r-email" type="email" placeholder="tu@email.com" autocomplete="email">
-    <input class="m-input" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter')doReg()">
-    <div class="m-err" id="r-err"></div>
-    <div class="m-ok" id="r-ok">✓ ¡Cuenta creada! Revisa tu email para confirmar.</div>
-    <button class="m-btn" id="r-btn" onclick="doReg()">Crear cuenta</button>
-    <div class="m-switch">¿Ya tienes cuenta? <a onclick="switchModal('modal-reg','modal-login')">Inicia sesión →</a></div>
-  </div>
-</div>
-
-<!-- ════ MODAL: ROL ════ -->
-<div class="modal-overlay" id="modal-rol">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-t">¿Cómo quieres entrar?</div><button class="modal-x" onclick="closeModal('modal-rol')">✕</button></div>
-    <div class="rol-cards">
-      <div class="rol-card" onclick="setRol('cliente')">
-        <div class="rol-ic">🌿</div>
-        <div class="rol-name">Soy Cliente</div>
-        <div class="rol-desc">Quiero mejorar mi salud con el escáner</div>
-      </div>
-      <div class="rol-card" onclick="setRol('distribuidor')">
-        <div class="rol-ic">🚀</div>
-        <div class="rol-name">Distribuidor</div>
-        <div class="rol-desc">Tengo membresía activa</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 </div><!-- /app -->
 
 <script>
@@ -1733,5 +1678,59 @@ window.addEventListener('DOMContentLoaded',async()=>{
   hide();
 });
 </script>
+<!-- ════ MODAL: LOGIN ════ -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">Iniciar sesión</div><button class="modal-x" onclick="closeModal('modal-login')">✕</button></div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar con Google
+    </button>
+    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="m-input" id="l-email" type="email" placeholder="tu@email.com" autocomplete="email">
+    <input class="m-input" id="l-pass" type="password" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')loginEmail()">
+    <div class="m-err" id="l-err"></div>
+    <button class="m-btn" id="l-btn" onclick="loginEmail()">Entrar</button>
+    <div class="m-switch">¿No tienes cuenta? <a onclick="switchModal('modal-login','modal-reg')">Regístrate →</a></div>
+  </div>
+</div>
+
+<!-- ════ MODAL: REGISTRO ════ -->
+<div class="modal-overlay" id="modal-reg">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">Crear cuenta</div><button class="modal-x" onclick="closeModal('modal-reg')">✕</button></div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Registrarse con Google
+    </button>
+    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="m-input" id="r-email" type="email" placeholder="tu@email.com" autocomplete="email">
+    <input class="m-input" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter')doReg()">
+    <div class="m-err" id="r-err"></div>
+    <div class="m-ok" id="r-ok">✓ ¡Cuenta creada! Revisa tu email para confirmar.</div>
+    <button class="m-btn" id="r-btn" onclick="doReg()">Crear cuenta</button>
+    <div class="m-switch">¿Ya tienes cuenta? <a onclick="switchModal('modal-reg','modal-login')">Inicia sesión →</a></div>
+  </div>
+</div>
+
+<!-- ════ MODAL: ROL ════ -->
+<div class="modal-overlay" id="modal-rol">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">¿Cómo quieres entrar?</div><button class="modal-x" onclick="closeModal('modal-rol')">✕</button></div>
+    <div class="rol-cards">
+      <div class="rol-card" onclick="setRol('cliente')">
+        <div class="rol-ic">🌿</div>
+        <div class="rol-name">Soy Cliente</div>
+        <div class="rol-desc">Quiero mejorar mi salud con el escáner</div>
+      </div>
+      <div class="rol-card" onclick="setRol('distribuidor')">
+        <div class="rol-ic">🚀</div>
+        <div class="rol-name">Distribuidor</div>
+        <div class="rol-desc">Tengo membresía activa</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
