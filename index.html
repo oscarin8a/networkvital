@@ -527,14 +527,17 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div style="display:none;width:34px;height:34px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#0F0F0F;">V</div>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;color:#fff;">TU RED <span style="color:#E6C16A;">VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:7px;">
-      <button onclick="nav('about')" style="width:34px;height:34px;border-radius:50%;background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);color:#66BB6A;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Acerca de Nosotros">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/><path d="M12 11v5" stroke-linecap="round"/></svg>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <!-- BOTÓN NOSOTROS -->
+      <button onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;background:rgba(39,174,96,0.1);border:1.5px solid rgba(39,174,96,0.35);color:#66BB6A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:36px;-webkit-tap-highlight-color:rgba(39,174,96,0.2);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Nosotros
       </button>
-      <div class="top-user" onclick="openLogin()" style="background:rgba(230,193,106,0.1);border:1px solid rgba(230,193,106,0.25);color:#E6C16A;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+      <!-- BOTÓN LOGIN -->
+      <button onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;background:rgba(230,193,106,0.12);border:1.5px solid rgba(230,193,106,0.4);color:#E6C16A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:36px;-webkit-tap-highlight-color:rgba(230,193,106,0.2);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         <span id="top-name">Entrar</span>
-      </div>
+      </button>
     </div>
   </div>
   <div class="scroll">
