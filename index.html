@@ -523,20 +523,18 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 <div id="s-home" class="screen active">
   <div class="top" style="background:#0F0F0F;border-bottom:1px solid rgba(230,193,106,0.12);">
     <div class="top-left">
-      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" style="width:34px;height:34px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 6px rgba(230,193,106,0.4));" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div style="display:none;width:34px;height:34px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#0F0F0F;">V</div>
-      <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;color:#fff;">TU RED <span style="color:#E6C16A;">VITAL</span></span>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px;">
-      <button type="button" onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:20px;background:rgba(39,174,96,0.1);border:1.5px solid rgba(39,174,96,0.3);color:#66BB6A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:38px;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <button type="button" onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:20px;background:rgba(39,174,96,0.1);border:1.5px solid rgba(39,174,96,0.28);color:#66BB6A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Nosotros
       </button>
-      <button type="button" id="btn-login" onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:20px;background:rgba(230,193,106,0.12);border:1.5px solid rgba(230,193,106,0.38);color:#E6C16A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:38px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        <span id="top-name">Entrar</span>
-      </button>
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" style="width:30px;height:30px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 5px rgba(230,193,106,0.35));" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;width:30px;height:30px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;color:#0F0F0F;">V</div>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;color:#fff;">TU RED <span style="color:#E6C16A;">VITAL</span></span>
     </div>
+    <button type="button" id="btn-login" onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:8px 15px;border-radius:22px;background:rgba(230,193,106,0.13);border:1.5px solid rgba(230,193,106,0.4);color:#E6C16A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:.5px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      <span id="top-name">Entrar</span>
+    </button>
   </div>
   <div class="scroll">
     <div class="hero">
@@ -1460,21 +1458,20 @@ async function checkSession(){
   if(session?.user){
     user=session.user;
     updateUI();
-    // Si viene de redirect de Google OAuth, mostrar modal de rol
+    // Si viene de redirect de Google OAuth, limpiar URL y abrir modal-rol
     const isOAuthRedirect = window.location.hash.includes('access_token') || window.location.search.includes('code=');
     if(isOAuthRedirect){
-      setTimeout(()=>openModal('modal-rol'), 600);
-      // Limpiar URL sin recargar
       history.replaceState(null,'',window.location.pathname);
+      setTimeout(()=>openModal('modal-rol'), 800);
     }
   }
   sb.auth.onAuthStateChange((event,s)=>{
     const wasLoggedOut = !user;
     user=s?.user||null;
     updateUI();
-    // Abrir modal de rol cuando recién inicia sesión
-    if(event==='SIGNED_IN' && wasLoggedOut && user){
-      setTimeout(()=>openModal('modal-rol'), 300);
+    // Solo abrir modal-rol si el evento es un login nuevo por Google OAuth
+    if(event==='SIGNED_IN' && wasLoggedOut && user && window.location.search.includes('code=')){
+      setTimeout(()=>openModal('modal-rol'), 500);
     }
   });
 }
