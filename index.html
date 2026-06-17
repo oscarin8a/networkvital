@@ -430,8 +430,8 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 
 /* ═══ MODALS ═══ */
 .modal-overlay{
-  display:none;position:absolute;inset:0;
-  background:rgba(4,8,15,.95);z-index:500;
+  display:none;position:fixed;inset:0;
+  background:rgba(4,8,15,.96);z-index:9000;
   align-items:center;justify-content:center;padding:20px;
 }
 .modal-overlay.open{display:flex;}
@@ -1412,9 +1412,23 @@ function openLogin() {
   }
   openModal('modal-login');
 }
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function switchModal(a,b){ closeModal(a); openModal(b); }
+function openModal(id){ 
+  document.getElementById(id).classList.add('open');
+  // Evitar que las screens intercepten clicks mientras el modal está abierto
+  document.getElementById('app').style.pointerEvents = 'none';
+}
+function _closeModalBase(id) {
+  document.getElementById(id).classList.remove('open');
+  // Solo restaurar si no hay otros modales abiertos
+  const anyOpen = document.querySelectorAll('.modal-overlay.open').length;
+  if(anyOpen === 0) document.getElementById('app').style.pointerEvents = '';
+}
+function closeModal(id){ _closeModalBase(id); }
+function switchModal(a,b){ 
+  document.getElementById(a).classList.remove('open'); 
+  document.getElementById(b).classList.add('open');
+  document.getElementById('app').style.pointerEvents = 'none';
+}
 
 async function loginGoogle(){
   const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
@@ -1448,7 +1462,8 @@ async function doReg(){
   setTimeout(()=>{ closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); },2200);
 }
 function setRol(r){
-  closeModal('modal-rol');
+  document.getElementById('modal-rol').classList.remove('open');
+  document.getElementById('app').style.pointerEvents = '';
   if(!user){ openModal('modal-login'); return; }
   nav(r==='distribuidor'?'dist':'client');
 }
