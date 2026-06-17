@@ -427,16 +427,17 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 /* ═══ MODALS ═══ */
 .modal-overlay{
   display:none;position:absolute;inset:0;
-  background:rgba(4,8,15,.92);z-index:200;
+  background:rgba(4,8,15,.95);z-index:500;
   align-items:center;justify-content:center;padding:20px;
 }
 .modal-overlay.open{display:flex;}
 .modal{
-  background:var(--bg2);border:1px solid rgba(201,162,75,.2);
-  width:100%;max-width:340px;padding:24px;border-radius:12px;
+  background:#141414;border:1px solid rgba(230,193,106,0.2);
+  width:100%;max-width:340px;padding:24px;border-radius:14px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
 }
 .modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.modal-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.modal-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#fff;}
 .modal-x{background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1;}
 .g-btn{
   width:100%;padding:13px;background:#fff;border:none;border-radius:8px;cursor:pointer;
@@ -447,28 +448,28 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 .or-line{flex:1;height:1px;background:var(--border);}
 .or-txt{font-size:10px;color:var(--muted);}
 .m-input{
-  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,75,.18);
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(230,193,106,.18);
   color:var(--text);padding:12px 13px;font-family:'Barlow',sans-serif;font-size:14px;
   outline:none;margin-bottom:10px;display:block;border-radius:8px;
 }
-.m-input:focus{border-color:var(--gold);}
+.m-input:focus{border-color:#E6C16A;}
 .m-input::placeholder{color:var(--muted);}
 .m-btn{
-  width:100%;padding:13px;background:var(--gold);color:var(--bg);border:none;border-radius:8px;cursor:pointer;
+  width:100%;padding:13px;background:#E6C16A;color:#0F0F0F;border:none;border-radius:8px;cursor:pointer;
   font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;
   text-transform:uppercase;margin-bottom:10px;
 }
 .m-err{color:var(--red);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(239,68,68,.08);border-radius:6px;}
 .m-ok{color:var(--green);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(34,197,94,.08);border-radius:6px;}
 .m-switch{text-align:center;font-size:12px;color:var(--muted);}
-.m-switch a{color:var(--gold);cursor:pointer;}
+.m-switch a{color:#E6C16A;cursor:pointer;}
 .rol-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
 .rol-card{
-  padding:18px 10px;background:var(--bg3);border:2px solid rgba(201,162,75,.1);
+  padding:18px 10px;background:#1a1a1a;border:2px solid rgba(230,193,106,0.12);
   border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;
 }
 .rol-card:active{transform:scale(.96);}
-.rol-card:hover{border-color:var(--gold);background:var(--golda);}
+.rol-card:hover{border-color:#E6C16A;background:rgba(230,193,106,0.08);}
 .rol-ic{font-size:26px;margin-bottom:7px;}
 .rol-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;margin-bottom:2px;}
 .rol-desc{font-size:10px;color:var(--muted);line-height:1.4;}
@@ -524,7 +525,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
     </div>
     <div style="display:flex;align-items:center;gap:7px;">
       <button onclick="nav('about')" style="width:34px;height:34px;border-radius:50%;background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);color:#66BB6A;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Acerca de Nosotros">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/><path d="M12 11v5" stroke-linecap="round"/></svg>
       </button>
       <div class="top-user" onclick="openLogin()" style="background:rgba(230,193,106,0.1);border:1px solid rgba(230,193,106,0.25);color:#E6C16A;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>
