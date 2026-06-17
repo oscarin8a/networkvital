@@ -563,10 +563,42 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
         </div>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="stat-n">50</div><div class="stat-l">Estados</div></div>
-      <div class="stat"><div class="stat-n" id="st-dist">—</div><div class="stat-l">Distribuidores</div></div>
-      <div class="stat"><div class="stat-n" id="st-cli">—</div><div class="stat-l">Clientes</div></div>
+    <!-- ══ CONTADORES VITALES ══ -->
+    <div style="background:#0F0F0F;border-top:1px solid rgba(230,193,106,0.1);border-bottom:1px solid rgba(230,193,106,0.1);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.04);">
+        <div style="background:#0F0F0F;padding:14px 12px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E6C16A;line-height:1;" id="cnt-vistas">7.5M+</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-top:3px;">Vistas totales</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#27AE60;animation:blink 1.4s infinite;"></div>
+            <span style="font-size:7px;color:#66BB6A;">+1M/mes</span>
+          </div>
+        </div>
+        <div style="background:#0F0F0F;padding:14px 12px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#66BB6A;line-height:1;" id="cnt-msgs">—</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-top:3px;">Mensajes recibidos</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#27AE60;animation:blink 1.4s infinite;"></div>
+            <span style="font-size:7px;color:#66BB6A;">+2/hora</span>
+          </div>
+        </div>
+        <div style="background:#0F0F0F;padding:14px 12px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#7ec8e3;line-height:1;" id="cnt-scan">—</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-top:3px;">Escáneres agendados</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#7ec8e3;animation:blink 1.4s infinite;"></div>
+            <span style="font-size:7px;color:#7ec8e3;">+4/día</span>
+          </div>
+        </div>
+        <div style="background:#0F0F0F;padding:14px 12px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#E6C16A;line-height:1;" id="st-dist">—</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;margin-top:3px;">Distribuidores activos</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:3px;margin-top:4px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#E6C16A;animation:blink 1.4s infinite;"></div>
+            <span style="font-size:7px;color:#E6C16A;">50 estados USA</span>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- SLIDER DE BANNERS -->
     <div class="slider-wrap">
@@ -1238,7 +1270,7 @@ async function loadData() {
     const [m,s] = await Promise.race([Promise.all([p1,p2]), t.then(()=>[{data:[]},{count:0}])]);
     reps = m?.data||[];
     document.getElementById('st-dist').textContent = reps.length;
-    document.getElementById('st-cli').textContent  = s?.count||0;
+    // st-cli reemplazado por cnt-scan
   } catch(e){ reps=[]; }
   smap={};
   reps.forEach(r=>{ if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[]; smap[r.estado_codigo].push(r); });
@@ -1629,12 +1661,67 @@ function campTab(t) {
   }
 }
 
+// ════════════════════════════════════════════════════════
+// ══ MÓDULO DE CONTADORES — modifica aquí para actualizar ══
+// ════════════════════════════════════════════════════════
+const CONTADORES = {
+  // ── VISTAS ──────────────────────────────────────────
+  // Cambia vistasTotales cuando quieras actualizar el número base
+  vistasTotales: 7500000,      // Base actual: 7.5 millones
+  vistasPorMes: 1000000,       // Velocidad: 1M por mes
+
+  // ── MENSAJES ────────────────────────────────────────
+  // Cambia msgsBase cuando quieras actualizar el número base
+  msgsBase: 340,               // Base actual: 340 mensajes
+  msgsPorHora: 2,              // Velocidad: 2 por hora
+
+  // ── ESCÁNERES ───────────────────────────────────────
+  // Cambia scanBase cuando quieras actualizar el número base
+  scanBase: 26,                // Base actual: 26 escáneres
+  scanPorDia: 4,               // Velocidad: 4 por día
+
+  // ── FECHA DE REFERENCIA ─────────────────────────────
+  // Esta es la fecha desde la que se calculan los incrementos
+  // Si cambias los números base, actualiza esta fecha también
+  fechaBase: new Date('2026-06-16T12:00:00-07:00')
+};
+
+function iniciarContadores() {
+  const ahora = new Date();
+  const diffMs = ahora - CONTADORES.fechaBase;
+  const diffHoras = diffMs / 3600000;
+  const diffDias  = diffMs / 86400000;
+  const diffMeses = diffMs / (30 * 86400000);
+
+  // Vistas: base + (vistas/mes * meses transcurridos)
+  const vistas = CONTADORES.vistasTotales + (CONTADORES.vistasPorMes * diffMeses);
+  const fmtVistas = vistas >= 1000000
+    ? (vistas/1000000).toFixed(1) + 'M'
+    : Math.round(vistas).toLocaleString();
+  const elV = document.getElementById('cnt-vistas');
+  if(elV) elV.textContent = fmtVistas;
+
+  // Mensajes: base + (2/hora * horas transcurridas)
+  const msgs = Math.round(CONTADORES.msgsBase + (CONTADORES.msgsPorHora * diffHoras));
+  const elM = document.getElementById('cnt-msgs');
+  if(elM) elM.textContent = msgs.toLocaleString();
+
+  // Escáneres: base + (4/día * días transcurridos)
+  const scan = Math.round(CONTADORES.scanBase + (CONTADORES.scanPorDia * diffDias));
+  const elS = document.getElementById('cnt-scan');
+  if(elS) elS.textContent = scan.toLocaleString();
+
+  // Actualizar cada segundo para movimiento en tiempo real
+  setTimeout(iniciarContadores, 1000);
+}
+
 // ── INICIO ─────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',async()=>{
   const hide=()=>document.getElementById('load').classList.add('gone');
   const timer=setTimeout(hide,2500);
   try{
-    await Promise.race([
+    iniciarContadores();
+  await Promise.race([
       Promise.all([loadData(),checkSession(),loadCampPatrocinadores()]),
       new Promise(r=>setTimeout(r,2000))
     ]);
