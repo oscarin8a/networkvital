@@ -431,7 +431,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
 /* ═══ MODALS ═══ */
 .modal-overlay{
   display:none;position:fixed;inset:0;
-  background:rgba(4,8,15,.96);z-index:9000;
+  background:rgba(4,8,15,.95);z-index:9000;
   align-items:center;justify-content:center;padding:20px;
 }
 .modal-overlay.open{display:flex;}
@@ -527,14 +527,12 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:var(--bg);color
       <div style="display:none;width:34px;height:34px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#0F0F0F;">V</div>
       <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;color:#fff;">TU RED <span style="color:#E6C16A;">VITAL</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <!-- BOTÓN NOSOTROS -->
-      <button onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;background:rgba(39,174,96,0.1);border:1.5px solid rgba(39,174,96,0.35);color:#66BB6A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:36px;-webkit-tap-highlight-color:rgba(39,174,96,0.2);">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <button type="button" onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:20px;background:rgba(39,174,96,0.1);border:1.5px solid rgba(39,174,96,0.3);color:#66BB6A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:38px;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Nosotros
       </button>
-      <!-- BOTÓN LOGIN -->
-      <button onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;background:rgba(230,193,106,0.12);border:1.5px solid rgba(230,193,106,0.4);color:#E6C16A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:36px;-webkit-tap-highlight-color:rgba(230,193,106,0.2);">
+      <button type="button" id="btn-login" onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:20px;background:rgba(230,193,106,0.12);border:1.5px solid rgba(230,193,106,0.38);color:#E6C16A;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;min-height:38px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         <span id="top-name">Entrar</span>
       </button>
@@ -1412,23 +1410,9 @@ function openLogin() {
   }
   openModal('modal-login');
 }
-function openModal(id){ 
-  document.getElementById(id).classList.add('open');
-  // Evitar que las screens intercepten clicks mientras el modal está abierto
-  document.getElementById('app').style.pointerEvents = 'none';
-}
-function _closeModalBase(id) {
-  document.getElementById(id).classList.remove('open');
-  // Solo restaurar si no hay otros modales abiertos
-  const anyOpen = document.querySelectorAll('.modal-overlay.open').length;
-  if(anyOpen === 0) document.getElementById('app').style.pointerEvents = '';
-}
-function closeModal(id){ _closeModalBase(id); }
-function switchModal(a,b){ 
-  document.getElementById(a).classList.remove('open'); 
-  document.getElementById(b).classList.add('open');
-  document.getElementById('app').style.pointerEvents = 'none';
-}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchModal(a,b){ closeModal(a); openModal(b); }
 
 async function loginGoogle(){
   const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
@@ -1462,8 +1446,7 @@ async function doReg(){
   setTimeout(()=>{ closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); },2200);
 }
 function setRol(r){
-  document.getElementById('modal-rol').classList.remove('open');
-  document.getElementById('app').style.pointerEvents = '';
+  closeModal('modal-rol');
   if(!user){ openModal('modal-login'); return; }
   nav(r==='distribuidor'?'dist':'client');
 }
