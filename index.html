@@ -1336,7 +1336,7 @@ function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString(
 function waOpen(num,msg){ window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank'); }
 function fillSelects(){
   const opts=US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
-  ['sc-estado','j-estado'].forEach(id=>{ document.getElementById(id).innerHTML='<option value="">Selecciona tu estado</option>'+opts; });
+  const jEl = document.getElementById('j-estado'); if(jEl) jEl.innerHTML='<option value="">Selecciona tu estado</option>'+opts;
 }
 let tt;
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3000); }
