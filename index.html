@@ -259,7 +259,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:#E8EAF0;color:v
 .rep-ci{font-size:11px;color:var(--muted);}
 .wa-btn{width:34px;height:34px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
 .pop-empty{font-size:12px;color:rgba(255,255,255,.28);text-align:center;padding:12px 0;line-height:1.8;}
-.pop-cta{width:100%;margin-top:12px;padding:13px;background:#27AE60;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.pop-cta{width:100%;margin-top:12px;padding:13px;background:#27AE60;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;-webkit-tap-highlight-color:rgba(39,174,96,0.3);}
 
 /* ═══ FORMS ═══ */
 .fhero{
@@ -642,7 +642,7 @@ html,body{height:100%;font-family:'Barlow',sans-serif;background:#E8EAF0;color:v
         <div style="width:44px;height:44px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#27AE60;flex-shrink:0;">LE</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Laura Espino</div>
-          <div style="font-size:11px;color:#9CA3AF;">Distribuidora certificada · Modesto, California</div>
+          <div style="font-size:11px;color:#9CA3AF;">Distribuidora certificada · Mattawa, Washington</div>
         </div>
       </div>
     </div>
@@ -1178,7 +1178,7 @@ function showPop(code) {
     : `<div class="pop-empty">Sé el primero en ${name}<br>$199/mes · ${avail} espacios disponibles</div>`;
   const cta=document.getElementById('pop-cta');
   cta.textContent=avail>0?`🔒 Asegurar mi territorio en ${name} · $199/mes`:`✓ Zona completa — Ver lista de espera`;
-  cta.onclick=()=>nav(avail>0?'join':'home');
+  cta.onclick=function(){ closePop(); nav(avail>0?'join':'home'); };
   const pop=document.getElementById('pop');
   pop.classList.add('vis');
   setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
