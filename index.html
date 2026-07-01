@@ -3,400 +3,1796 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sé la Cara de nuestra Red Vital — Fase 1 Fundadores</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<title>Tu Red Vital · USA</title>
+<link rel="icon" href="/images/Logo%20oficial%20Tu%20Red%20vital.png">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SB_URL = 'https://cglbffkzvjlhfsxwpjbb.supabase.co';
+const SB_KEY = 'sb_publishable_jsQm6zuitTfspy6hs2NuLw_rl1nqImA';
+const WA_MAIN = '12099717638';
+const STRIPE  = 'https://buy.stripe.com/cNi4gy0Lw5IKfYS86X9EI05';
+const STRIPE_CAMP = 'https://buy.stripe.com/aFacN451M9Z02822MD9EI01';
+const CAMP_END = new Date('2026-06-17T12:00:00-07:00').getTime() + 7*24*60*60*1000;
+const CAMP_META = 5000;
+const LOGO    = '/images/Logo%20oficial%20Tu%20Red%20vital.png';
+</script>
 <style>
-  :root{
-    --cream: #F7F5EC;
-    --white: #FFFFFF;
-    --green-deep: #0F3D2A;
-    --green: #1C6E4A;
-    --green-soft: #E7F1EA;
-    --gold: #C99A3C;
-    --gold-soft: #F3E4C0;
-    --alert: #E4572E;
-    --alert-soft: #FCE6DE;
-    --text: #16281F;
-    --text-dim: #5C6E64;
-    --line: #E4E1D6;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background: var(--cream);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    line-height: 1.5;
-  }
-  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; color: var(--green-deep); }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-  a{ color:inherit; text-decoration:none; }
-  .wrap{ max-width: 720px; margin:0 auto; padding: 0 22px; }
+:root{
+  --bg:#F7F8FA;--bg2:#FFFFFF;--bg3:#F0F2F5;
+  --gold:#C9A84C;--gold2:#E6C16A;--golda:rgba(201,168,76,0.1);
+  --green:#27AE60;--green2:#1a8a48;--greena:rgba(39,174,96,0.1);
+  --sky:#2980B9;--sky2:#3498DB;--skya:rgba(41,128,185,0.1);
+  --red:#E74C3C;--blue:#2980B9;
+  --olive:#27AE60;--olive2:#1a8a48;--olivea:rgba(39,174,96,0.1);
+  --text:#1a1a1a;--muted:#6B7280;--border:rgba(0,0,0,0.08);
+  --wa:#25D366;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:'Barlow',sans-serif;background:#E8EAF0;color:var(--text);overflow:hidden;}
 
-  header{
-    padding: 16px 22px; display:flex; align-items:center; justify-content:space-between;
-    background: var(--white); border-bottom: 1px solid var(--line);
-    position: sticky; top:0; z-index: 10;
+/* ═══ APP SHELL ═══ */
+#app{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  max-width:430px;margin:0 auto;
+  background:var(--bg);overflow:hidden;
+}
+@media(min-width:500px){
+  body{background:#E8EAF0;display:flex;align-items:center;justify-content:center;}
+  #app{
+    position:relative;width:390px;height:100vh;max-height:860px;
+    border-radius:24px;overflow:hidden;
+    box-shadow:0 8px 40px rgba(0,0,0,0.15),0 0 0 1px rgba(0,0,0,0.06);
+    flex-shrink:0;
   }
-  .brand{ display:flex; align-items:center; gap:9px; font-weight:800; font-size:14px; color: var(--green-deep); }
-  .brand .leaf{ width:20px; height:20px; }
-  .back-link{ font-size:12.5px; color: var(--text-dim); font-weight:600; }
+}
 
-  .eyebrow-chip{
-    display:inline-flex; align-items:center; gap:6px;
-    background: var(--alert-soft); color: var(--alert);
-    font-size: 12.5px; font-weight:700;
-    padding: 7px 14px; border-radius: 999px;
-    margin-bottom: 20px;
-  }
+/* ═══ SCREENS — fade suave ═══ */
+.screen{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  display:flex;flex-direction:column;
+  background:#F7F8FA;overflow:hidden;
+  visibility:hidden;
+  opacity:0;
+  transition:opacity .18s ease, visibility 0s linear .18s;
+}
+.screen.active{
+  visibility:visible;
+  opacity:1;
+  transition:opacity .18s ease, visibility 0s linear 0s;
+}
+.screen.leaving{
+  visibility:visible;
+  opacity:0;
+  transition:opacity .12s ease, visibility 0s linear .12s;
+}
 
-  .hero{ text-align:center; padding: 44px 22px 30px; }
-  .hero h1{ font-size: clamp(32px, 7.5vw, 46px); line-height:1.08; }
-  .hero h1 .accent{ color: var(--green); display:block; }
-  .hero p.sub{ max-width:480px; margin: 16px auto 0; color: var(--text-dim); font-size:16px; }
+/* ═══ TOP BAR ═══ */
+.top{
+  flex-shrink:0;height:54px;
+  background:rgba(8,17,30,0.96);
+  border-bottom:1px solid rgba(107,143,113,0.2);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;backdrop-filter:blur(10px);
+}
+.top-left{display:flex;align-items:center;gap:10px;}
+.back-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:#F0F2F5;border:1px solid rgba(0,0,0,0.1);
+  color:#27AE60;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .15s;
+}
+.back-btn:active{background:rgba(201,162,75,0.25);}
+.top-logo{width:30px;height:30px;object-fit:contain;border-radius:50%;}
+.top-logo-fb{width:30px;height:30px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;color:var(--bg);flex-shrink:0;}
+.top-brand{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.5px;}
+.top-brand span{color:var(--gold);}
+.top-user{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:22px;
+  background:rgba(230,193,106,0.12);border:1.5px solid rgba(230,193,106,0.35);
+  color:#E6C16A;font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;min-height:40px;min-width:80px;
+  justify-content:center;
+  -webkit-tap-highlight-color:rgba(230,193,106,0.2);
+  transition:background .15s;
+}
+.top-user:active{background:rgba(230,193,106,0.25);}
 
-  .urgency-panel{
-    max-width: 420px; margin: 30px auto 0;
-    background: var(--green-deep);
-    border-radius: 18px;
-    padding: 22px 20px;
-    color: var(--white);
-    position: relative;
-    overflow: hidden;
-  }
-  .urgency-panel::before{
-    content:""; position:absolute; inset:0;
-    background: radial-gradient(circle at 85% 0%, rgba(201,154,60,0.25), transparent 55%);
-  }
-  .urgency-panel .row{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:14px; }
-  .urgency-panel .label{ font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#B7CFC2; }
-  .urgency-panel .cap{ position:relative; font-size:12.5px; color:#9FBCAC; margin-top:10px; }
+/* ═══ SCROLL ═══ */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
 
-  .clock{ position:relative; display:flex; align-items:flex-end; justify-content:center; gap:6px; }
-  .clock-seg{ display:flex; flex-direction:column; align-items:center; min-width:52px; }
-  .clock-num{
-    font-size: 30px; font-weight:700; color: var(--gold-soft);
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; padding: 4px 6px; width: 100%; text-align:center;
-    font-variant-numeric: tabular-nums;
-  }
-  .clock-num.pulse-sec{ color: var(--alert-soft); animation: tick 1s steps(1) infinite; }
-  @keyframes tick{ 0%{ transform: scale(1); } 15%{ transform: scale(1.12); } 100%{ transform: scale(1); } }
-  .clock-lbl{ font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:#9FBCAC; margin-top:4px; }
-  .clock-colon{ font-family:'JetBrains Mono', monospace; font-size:22px; color:#9FBCAC; padding-bottom:16px; }
+/* ═══ BOTTOM NAV ═══ */
+.bnav{
+  flex-shrink:0;height:62px;
+  background:#FFFFFF;border-top:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 -2px 8px rgba(0,0,0,0.06);
+  display:grid;
+}
+.bnav-4{grid-template-columns:repeat(4,1fr);}
+.bnav-3{grid-template-columns:repeat(3,1fr);}
+.bn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:none;border:none;color:#9CA3AF;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;transition:color .15s;
+}
+.bn svg{width:22px;height:22px;stroke-width:1.8;}
+.bn.on{color:#27AE60;}
+.bn.on.sky{color:var(--sky);}
+.bn.on.olive{color:var(--olive);}
 
-  .zone-scarcity{ position:relative; margin-top:18px; padding-top:16px; border-top:1px dashed rgba(255,255,255,0.15); }
-  .zone-scarcity-row{ display:flex; align-items:center; justify-content:space-between; }
-  .zone-bar{ height:8px; background: rgba(255,255,255,0.1); border-radius:999px; margin-top:8px; overflow:hidden; }
-  .zone-bar-fill{ height:100%; background: linear-gradient(90deg, var(--alert), var(--gold)); border-radius:999px; transition: width 0.6s ease; }
+/* ═══ HERO ═══ */
+.hero{
+  padding:30px 18px 24px;
+  background:linear-gradient(160deg,#1a472a 0%,#27AE60 60%,#1a472a 100%);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 10% 80%,rgba(0,0,0,0.1) 0%,transparent 55%),
+             radial-gradient(ellipse at 90% 10%,rgba(255,255,255,0.08) 0%,transparent 45%);
+}
+.hero-logo{
+  width:72px;height:72px;object-fit:contain;
+  position:relative;z-index:1;margin-bottom:14px;
+  filter:drop-shadow(0 0 20px rgba(201,162,75,0.35));
+}
+.hero-logo-fb{
+  width:72px;height:72px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--bg);
+  margin-bottom:14px;position:relative;z-index:1;
+  box-shadow:0 0 28px rgba(201,162,75,0.3);
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;color:#FFFFFF;text-transform:uppercase;
+  margin-bottom:10px;position:relative;z-index:1;
+}
+.hero-t{
+  font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;
+  line-height:.9;letter-spacing:-1px;position:relative;z-index:1;color:#FFFFFF;
+}
+.hero-t .g{color:#F0D084;}
+.hero-s{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;margin-top:10px;position:relative;z-index:1;}
+.hero-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px;position:relative;z-index:1;}
+.hbtn{
+  padding:14px 10px;border-radius:10px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+  border:none;text-align:center;transition:opacity .15s;
+}
+.hbtn:active{opacity:.82;}
+.hbtn small{display:block;font-size:8px;font-weight:600;letter-spacing:1.5px;opacity:.6;text-transform:uppercase;margin-bottom:2px;}
+.hbtn.gold{background:#27AE60;color:#FFFFFF;}
+.hbtn.dark{background:#FFFFFF;border:1.5px solid #27AE60;color:#27AE60;}
 
-  .cta{
-    display:inline-flex; align-items:center; gap:9px;
-    background: var(--green); color:#fff;
-    font-weight:700; font-size:16px;
-    padding:16px 28px; border-radius:11px;
-    margin-top: 26px;
-    box-shadow: 0 12px 26px -10px rgba(28,110,74,0.55);
-  }
-  .cta.alt{ background: var(--alert); box-shadow: 0 12px 26px -10px rgba(228,87,46,0.55); }
-  .cta-sub{ display:block; margin-top:10px; font-size:12px; color: var(--text-dim); }
+/* ═══ SLIDER ═══ */
+.slider-wrap{position:relative;overflow:hidden;background:#000;margin-bottom:2px;}
+.slider-track{display:flex;transition:transform .4s ease;}
+.slide{min-width:100%;flex-shrink:0;}
+.slide img{width:100%;height:260px;object-fit:cover;object-position:center top;display:block;vertical-align:top;}
+.slider-dots{display:flex;justify-content:center;gap:6px;padding:8px 0;background:var(--bg);}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(201,162,75,0.25);cursor:pointer;transition:all .2s;}
+.dot.on{background:var(--gold);width:18px;border-radius:3px;}
 
-  section{ padding: 42px 22px; border-top: 1px solid var(--line); }
-  .kicker{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.09em; color: var(--green); text-transform:uppercase; margin-bottom:8px; }
-  section h2{ font-size:26px; margin-bottom: 12px; }
-  section p.desc{ color: var(--text-dim); font-size:15px; max-width:560px; }
+/* ═══ STATS ═══ */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(0,0,0,0.06);
+  border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.stat{padding:13px 8px;text-align:center;background:#FFFFFF;}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#27AE60;}
+.stat:nth-child(2) .stat-n{color:#C9A84C;}
+.stat:nth-child(3) .stat-n{color:#2980B9;}
+.stat-l{font-size:9px;color:#6B7280;letter-spacing:.5px;margin-top:2px;}
 
-  .stat-row{ display:grid; grid-template-columns: repeat(2,1fr); gap:10px; margin-top:26px; }
-  .stat{ background: var(--white); border:1px solid var(--line); border-radius:12px; padding:16px 8px; text-align:center; }
-  .stat .num{ font-family:'Fraunces', serif; font-size:26px; color: var(--green); }
-  .stat .lbl{ font-size:11px; color: var(--text-dim); margin-top:4px; line-height:1.3; }
-  @media (min-width:480px){ .stat-row{ grid-template-columns: repeat(4,1fr); } }
+/* ═══ SECTION ═══ */
+.sec-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:3px;color:#27AE60;text-transform:uppercase;
+  padding:14px 16px 8px;display:flex;align-items:center;gap:8px;
+}
+.sec-lbl::after{content:'';flex:1;height:1px;background:rgba(0,0,0,0.08);}
 
-  .step{ display:flex; gap:16px; padding:18px 0; border-top:1px solid var(--line); }
-  .step:first-of-type{ border-top:none; }
-  .step .ico{ font-size:22px; }
-  .step h3{ font-size:16.5px; margin-bottom:3px; }
-  .step p{ font-size:14px; color: var(--text-dim); }
+.vp{display:flex;gap:12px;padding:12px 14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;margin:0 14px 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.vp-ic{font-size:20px;flex-shrink:0;margin-top:1px;}
+.vp-t{font-size:13px;font-weight:600;margin-bottom:2px;color:#1a1a1a;}
+.vp-s{font-size:11px;color:#6B7280;line-height:1.5;}
 
-  .testimonial{ background: var(--white); border:1px solid var(--line); border-radius:14px; padding:22px; margin-top:22px; }
-  .stars{ color: var(--gold); letter-spacing:2px; margin-bottom:10px; }
-  .testimonial p{ font-size:14.5px; color: var(--text); font-style:italic; }
-  .testimonial .who{ display:flex; align-items:center; gap:10px; margin-top:14px; }
-  .testimonial .avatar{ width:34px; height:34px; border-radius:50%; background: var(--green-soft); color:var(--green); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
-  .testimonial .name{ font-weight:700; font-size:13.5px; }
-  .testimonial .loc{ font-size:12px; color: var(--text-dim); }
+/* ═══ MAP ═══ */
+.map-search{
+  margin:12px 14px 0;
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:9px 13px;
+}
+.map-search svg{flex-shrink:0;}
+.map-search input{flex:1;background:none;border:none;color:var(--text);font-size:13px;outline:none;}
+.map-search input::placeholder{color:var(--muted);}
+.map-leg{display:flex;gap:12px;padding:8px 14px;}
+.leg{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);}
+.leg-d{width:9px;height:9px;border-radius:50%;}
 
-  .phase{ display:flex; gap:14px; padding:18px 0; border-top:1px solid var(--line); }
-  .phase:first-of-type{ border-top:none; }
-  .phase .idx{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color: var(--green); min-width:52px; }
-  .phase.active .idx{ color: var(--alert); font-weight:700; }
-  .phase h3{ font-size:16px; margin-bottom:3px; }
-  .phase p{ font-size:13.5px; color: var(--text-dim); }
-  .tag{ display:inline-block; margin-left:6px; font-size:10px; font-family:'JetBrains Mono',monospace; background: var(--alert-soft); color: var(--alert); padding:2px 8px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em; vertical-align:middle; }
+.states-wrap{padding:2px 14px 14px;}
+.states-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.sb{
+  padding:9px 3px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.08);
+  border-radius:7px;cursor:pointer;text-align:center;transition:all .15s;
+}
+.sb:active{transform:scale(.94);}
+.sb.full{background:#27AE60;border-color:#27AE60;}
+.sb.full .sc{color:#FFFFFF;}
+.sb.some{background:rgba(39,174,96,.1);border-color:rgba(39,174,96,.3);}
+.sb.hidden{display:none;}
+.sc{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#1a1a1a;}
+.spips{display:flex;gap:1px;justify-content:center;margin-top:3px;}
+.spip{width:4px;height:3px;background:rgba(255,255,255,.1);border-radius:1px;}
+.spip.on{background:var(--gold);}
+.sb.full .spip.on{background:var(--bg);}
 
-  .zone-map{
-    position: relative; height: 260px;
-    background: var(--green-soft); border: 1px solid var(--line);
-    border-radius: 16px; margin-top: 22px; overflow: hidden;
-  }
-  .zone-map::before{
-    content:""; position:absolute; inset:0;
-    background-image: radial-gradient(circle, rgba(28,110,74,0.14) 1px, transparent 1.5px);
-    background-size: 22px 22px;
-  }
-  .zone-ring{ position:absolute; border-radius:50%; border: 1.5px dashed rgba(28,110,74,0.35); top:50%; left:50%; transform: translate(-50%,-50%); }
-  .zone-ring.r1{ width:90%; height:90%; }
-  .zone-ring.r2{ width:60%; height:60%; }
-  .zone-you{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:14px; height:14px; border-radius:50%; background: var(--green);
-    box-shadow: 0 0 0 6px rgba(28,110,74,0.18); z-index:3;
-  }
-  .pin{
-    position:absolute; width:11px; height:11px; border-radius:50%;
-    background: var(--alert); border: 2px solid var(--white);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15); cursor: pointer; z-index:4;
-  }
-  .pin::after{ content:""; position:absolute; inset:-6px; border-radius:50%; background: rgba(228,87,46,0.35); animation: pinpulse 2.4s ease-out infinite; z-index:-1; }
-  @keyframes pinpulse{ 0%{ transform:scale(0.6); opacity:0.8;} 100%{ transform:scale(2.2); opacity:0;} }
-  .pin-tip{
-    position:absolute; bottom: calc(100% + 8px); left:50%; transform: translateX(-50%);
-    background: var(--green-deep); color:#fff; font-size:11.5px; padding:7px 10px; border-radius:8px;
-    white-space:nowrap; opacity:0; pointer-events:none; transition: opacity 0.15s ease;
-    font-family:'JetBrains Mono', monospace;
-  }
-  .pin:hover .pin-tip, .pin:focus .pin-tip{ opacity:1; }
-  .map-caption{ margin-top:12px; font-size:12.5px; color: var(--text-dim); }
-  .map-caption strong{ color: var(--green); }
+/* popup */
+.pop{
+  margin:0 14px 14px;padding:16px;
+  background:#FFFFFF;border:1px solid rgba(39,174,96,.25);
+  border-radius:12px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.pop.vis{display:block;}
+.pop-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.pop-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.pop-x{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+.pop-slots{display:flex;gap:3px;margin-bottom:8px;}
+.pop-slot{flex:1;height:24px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border-radius:4px;}
+.pop-slot.on{background:var(--gold);color:var(--bg);}
+.pop-slot.off{border:1px dashed rgba(201,162,75,.2);}
+.pop-status{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.rep-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid rgba(255,255,255,.04);}
+.rep-av{width:36px;height:36px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.rep-nm{font-size:13px;font-weight:600;}
+.rep-ci{font-size:11px;color:var(--muted);}
+.wa-btn{width:34px;height:34px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.pop-empty{font-size:12px;color:rgba(255,255,255,.28);text-align:center;padding:12px 0;line-height:1.8;}
+.pop-cta{width:100%;margin-top:12px;padding:13px;background:#27AE60;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;-webkit-tap-highlight-color:rgba(39,174,96,0.3);}
 
-  .panel-preview{
-    background: var(--white); border:1px solid var(--line); border-radius:16px;
-    padding: 20px; margin-top: 22px; position: relative;
-  }
-  .panel-lock{
-    display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;
-    color: var(--green-deep); background: var(--green-soft); border-radius:999px;
-    padding: 6px 12px; width:fit-content; margin-bottom:16px;
-  }
-  .lead-row{ display:flex; align-items:center; gap:12px; padding: 10px 0; border-top:1px solid var(--line); }
-  .lead-row:first-of-type{ border-top:none; }
-  .lead-avatar{
-    width:38px; height:38px; border-radius:50%; background: var(--green-soft);
-    display:flex; align-items:center; justify-content:center; font-weight:700; color: var(--green); font-size:13px; flex-shrink:0;
-  }
-  .lead-row .info{ flex:1; }
-  .lead-row .info .n{ font-size:13.5px; font-weight:600; }
-  .lead-row .info .s{ font-size:12px; color: var(--text-dim); }
-  .lead-row .status{ font-size:11px; font-family:'JetBrains Mono', monospace; color: var(--gold); background: var(--gold-soft); padding:3px 8px; border-radius:999px; }
+/* ═══ FORMS ═══ */
+.fhero{
+  padding:22px 16px 18px;
+  background:linear-gradient(160deg,#1a472a 0%,#27AE60 100%);
+  border-bottom:1px solid rgba(0,0,0,0.08);flex-shrink:0;
+}
+.fh-logo{width:46px;height:46px;object-fit:contain;margin-bottom:10px;}
+.fh-logo-fb{width:46px;height:46px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--bg);margin-bottom:10px;}
+.fh-pill{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.85);text-transform:uppercase;margin-bottom:6px;}
+.fh-t{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;line-height:1;margin-bottom:5px;color:#FFFFFF;}
+.fh-s{font-size:12px;color:rgba(255,255,255,.8);line-height:1.55;}
+.fbody{padding:14px 16px;}
+.fg{margin-bottom:12px;}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.fi,.fs{
+  width:100%;background:#FFFFFF;border:1px solid rgba(0,0,0,.12);
+  color:#1a1a1a;padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;
+  outline:none;appearance:none;border-radius:8px;transition:border-color .2s;
+}
+.fi:focus,.fs:focus{border-color:#27AE60;}
+.fi::placeholder{color:#9CA3AF;}
+.fs option{background:var(--bg2);}
+.btn-wa{
+  width:100%;padding:14px;background:var(--wa);color:#fff;border:none;border-radius:10px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;
+  letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-gold{
+  width:100%;padding:15px;background:#27AE60;color:#FFFFFF;border:none;border-radius:10px;
+  cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;
+  letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.fnote{text-align:center;margin-top:8px;font-size:10px;color:rgba(255,255,255,.2);line-height:1.6;}
 
-  .guarantee{ background: var(--white); border:1.5px solid var(--gold); border-radius:16px; padding:24px 20px; margin-top:20px; }
-  .guarantee h3{ font-size:19px; margin-bottom:8px; }
-  .guarantee p{ color: var(--text-dim); font-size:14.5px; }
-  .guarantee .bonus{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); display:flex; gap:10px; }
-  .guarantee .bonus span.ico{ font-size:20px; }
-  .guarantee .bonus strong{ color: var(--text); }
+/* ═══ PRICE ═══ */
+.phero{
+  padding:26px 16px 20px;
+  background:linear-gradient(160deg,#1a472a 0%,#27AE60 100%);
+  border-bottom:1px solid rgba(0,0,0,0.08);text-align:center;position:relative;overflow:hidden;flex-shrink:0;
+}
+.phero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(201,162,75,.07) 0%,transparent 60%);}
+.ph-logo{width:56px;height:56px;object-fit:contain;margin:0 auto 12px;position:relative;z-index:1;display:block;}
+.ph-logo-fb{width:56px;height:56px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--bg);margin:0 auto 12px;position:relative;z-index:1;}
+.ph-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.85);text-transform:uppercase;margin-bottom:6px;position:relative;z-index:1;}
+.ph-num{font-family:'Barlow Condensed',sans-serif;font-size:68px;font-weight:900;line-height:1;color:#FFFFFF;letter-spacing:-2px;position:relative;z-index:1;}
+.ph-per{font-size:14px;color:rgba(255,255,255,.8);position:relative;z-index:1;}
+.ph-note{font-size:10px;color:rgba(255,255,255,.18);margin-top:5px;position:relative;z-index:1;}
+.bens{padding:8px 14px;}
+.ben{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ben:last-child{border:none;}
+.ben-ic{width:32px;height:32px;border-radius:50%;background:var(--golda);border:1px solid rgba(201,162,75,.18);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ben:nth-child(2) .ben-ic{background:var(--olivea);border-color:rgba(107,143,113,.25);}
+.ben:nth-child(3) .ben-ic{background:var(--skya);border-color:rgba(91,164,207,.25);}
+.ben:nth-child(4) .ben-ic{background:var(--olivea);border-color:rgba(107,143,113,.25);}
+.ben-t{font-size:13px;font-weight:600;margin-bottom:1px;color:#1a1a1a;}
+.ben-s{font-size:11px;color:#6B7280;line-height:1.5;}
+.urg{margin:0 14px 12px;padding:10px 13px;background:rgba(231,76,60,.06);border:1px solid rgba(231,76,60,.2);border-radius:8px;display:flex;gap:10px;align-items:center;}
+.urg-t{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:#E74C3C;letter-spacing:1px;text-transform:uppercase;}
+.urg-s{font-size:10px;color:rgba(255,255,255,.28);margin-top:1px;}
 
-  footer{ padding: 34px 22px 100px; text-align:center; border-top:1px solid var(--line); }
-  footer p{ color: var(--text-dim); font-size:12.5px; margin-top:4px; }
+/* ═══ DASHBOARD CLIENTE ═══ */
+.cl-hero{
+  padding:22px 16px 18px;
+  background:linear-gradient(160deg,#1a472a 0%,#27AE60 100%);
+  border-bottom:1px solid rgba(0,0,0,0.08);flex-shrink:0;
+}
+.cl-av{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--golda);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold);
+  margin-bottom:10px;
+}
+.cl-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;margin-bottom:2px;}
+.cl-email{font-size:11px;color:var(--muted);}
+.cl-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;margin-top:7px;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+}
+.cb-cliente{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.22);}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px;}
+.qa{padding:14px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;}
+.qa:active{transform:scale(.96);}
+.qa.primary{background:var(--golda);border-color:rgba(201,162,75,.32);}
+.qa-ic{font-size:22px;margin-bottom:6px;}
+.qa-t{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;margin-bottom:2px;}
+.qa-s{font-size:10px;color:var(--muted);}
+.wa-big{
+  margin:0 14px 14px;padding:15px;
+  background:linear-gradient(135deg,#1a8a48,#27AE60);
+  border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;gap:13px;
+  transition:opacity .15s;
+}
+.wa-big:active{opacity:.85;}
+.wa-big-ic{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+.wa-big-t{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;margin-bottom:1px;}
+.wa-big-s{font-size:11px;opacity:.8;}
+.upgrade-banner{display:none;margin:0 14px 14px;padding:14px;
+  background:rgba(39,174,96,.06);border:1px solid rgba(39,174,96,.2);
+  border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+}
+.ub-ic{font-size:26px;flex-shrink:0;}
+.ub-t{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;margin-bottom:2px;}
+.ub-s{font-size:10px;color:rgba(255,255,255,.38);line-height:1.4;}
+.ub-arr{font-size:18px;color:var(--gold);margin-left:auto;flex-shrink:0;}
 
-  .sticky-cta{
-    position: fixed; bottom:0; left:0; right:0; z-index:20;
-    background: linear-gradient(0deg, var(--cream) 55%, transparent);
-    padding: 14px 20px 18px; display:flex; justify-content:center;
-  }
-  .sticky-cta .cta{ width:100%; max-width:420px; justify-content:center; margin-top:0; }
+/* ═══ DASHBOARD DISTRIBUIDOR ═══ */
+.dist-hero{
+  padding:18px 16px 14px;
+  background:linear-gradient(160deg,#1a472a 0%,#27AE60 100%);
+  border-bottom:1px solid rgba(0,0,0,0.08);flex-shrink:0;
+}
+.dist-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.dist-av{
+  width:50px;height:50px;border-radius:50%;flex-shrink:0;
+  background:rgba(230,193,106,0.1);border:2px solid #E6C16A;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--gold);
+}
+.dist-name{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:900;margin-bottom:1px;}
+.dist-loc{font-size:11px;color:var(--muted);}
+.spill{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 9px;border-radius:20px;margin-top:5px;
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+}
+.sp-active{background:rgba(39,174,96,.12);color:#66BB6A;border:1px solid rgba(39,174,96,.3);}
+.sp-pending{background:rgba(201,162,75,.1);color:var(--gold);border:1px solid rgba(201,162,75,.22);}
+.sp-cancelled{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.22);}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px 14px;}
+.kpi{padding:12px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.kpi-l{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:#9CA3AF;text-transform:uppercase;margin-bottom:5px;}
+.kpi-v{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;}
+.kpi-v.gold{color:#C9A84C;}
+.kpi-v.green{color:#27AE60;}
+.kpi-v.sky{color:var(--sky2);}
+.kpi-sub{font-size:9px;color:rgba(255,255,255,.26);margin-top:2px;}
+
+.dsec{padding:0 14px 6px;}
+.dsec-hd{
+  font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;color:#27AE60;text-transform:uppercase;
+  padding:12px 0 8px;display:flex;align-items:center;gap:8px;
+}
+.dsec-hd::after{content:'';flex:1;height:1px;background:rgba(0,0,0,0.08);}
+
+.prow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.prow:last-child{border:none;}
+.pdate{font-size:11px;color:rgba(255,255,255,.42);}
+.pright{display:flex;align-items:center;gap:6px;}
+.pbadge{font-size:9px;padding:2px 7px;border-radius:10px;}
+.pbadge.ok{background:rgba(34,197,94,.1);color:var(--green);}
+.pbadge.fail{background:rgba(239,68,68,.1);color:var(--red);}
+.pamnt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--green);}
+
+.crow{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.crow:last-child{border:none;}
+.cav{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:var(--golda);border:1px solid rgba(201,162,75,.18);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;color:var(--gold);}
+.cnm{font-size:12px;font-weight:600;}
+.cinfo{font-size:10px;color:var(--muted);margin-top:1px;}
+.cwa{width:30px;height:30px;border-radius:50%;background:var(--wa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+.empty{text-align:center;padding:20px;color:rgba(255,255,255,.24);font-size:12px;line-height:1.8;}
+
+/* ═══ MODALS ═══ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:9000;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:#FFFFFF;border:1px solid rgba(0,0,0,0.1);
+  width:100%;max-width:340px;padding:24px;border-radius:14px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.15);
+}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-t{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#1a1a1a;}
+.modal-x{background:none;border:none;color:#9CA3AF;font-size:26px;cursor:pointer;line-height:1;}
+.g-btn{
+  width:100%;padding:13px;background:#fff;border:none;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:14px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;color:#1a1a1a;
+}
+.or-sep{display:flex;align-items:center;gap:8px;margin-bottom:13px;}
+.or-line{flex:1;height:1px;background:var(--border);}
+.or-txt{font-size:10px;color:var(--muted);}
+.m-input{
+  width:100%;background:#F7F8FA;border:1px solid rgba(0,0,0,.12);
+  color:#1a1a1a;padding:12px 13px;font-family:'Barlow',sans-serif;font-size:14px;
+  outline:none;margin-bottom:10px;display:block;border-radius:8px;
+}
+.m-input:focus{border-color:#27AE60;}
+.m-input::placeholder{color:#9CA3AF;}
+.m-btn{
+  width:100%;padding:13px;background:#27AE60;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.m-err{color:var(--red);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(239,68,68,.08);border-radius:6px;}
+.m-ok{color:var(--green);font-size:11px;display:none;margin-bottom:8px;padding:8px 10px;background:rgba(34,197,94,.08);border-radius:6px;}
+.m-switch{text-align:center;font-size:12px;color:#6B7280;}
+.m-switch a{color:#27AE60;cursor:pointer;}
+.rol-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.rol-card{
+  padding:18px 10px;background:#F7F8FA;border:2px solid rgba(0,0,0,0.08);
+  border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;
+}
+.rol-card:active{transform:scale(.96);}
+.rol-card:hover{border-color:#27AE60;background:rgba(39,174,96,0.06);}
+.rol-ic{font-size:26px;margin-bottom:7px;}
+.rol-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;margin-bottom:2px;color:#1a1a1a;}
+.rol-desc{font-size:10px;color:#6B7280;line-height:1.4;}
+
+/* ═══ LOADING ═══ */
+#load{
+  position:fixed;inset:0;background:#27AE60;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity .5s;
+}
+#load.gone{opacity:0;pointer-events:none;}
+#load img{width:90px;height:90px;object-fit:contain;animation:lp 2s infinite;}
+#load .fb{width:90px;height:90px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--bg);animation:lp 2s infinite;}
+@keyframes lp{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.7;transform:scale(.94);}}
+@keyframes pulseGlow{0%,100%{opacity:1;}50%{opacity:.5;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes pinPulse{0%{transform:scale(0.6);opacity:0.8;}100%{transform:scale(2.4);opacity:0;}}
+.ld-bar{width:110px;height:2px;background:rgba(255,255,255,.25);margin-top:18px;border-radius:2px;}
+.ld-prog{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;animation:ldp 1.4s ease forwards;}
+@keyframes ldp{to{width:100%;}}
+.ld-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.8);text-transform:uppercase;margin-top:10px;}
+
+/* ═══ TOAST ═══ */
+.toast{
+  position:fixed;bottom:78px;left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:#1a1a1a;border:1px solid rgba(0,0,0,0.1);
+  color:#FFFFFF;padding:9px 18px;font-size:12px;font-weight:600;
+  opacity:0;transition:all .3s;z-index:700;
+  pointer-events:none;border-radius:30px;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="brand">
-    <svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M12 2 L18 9 L12 22 L6 9 Z" fill="#1C6E4A"/></svg>
-    La Cara de Red Vital
+<div id="load">
+  <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="Tu Red Vital" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <div class="fb" style="display:none;">TRV</div>
+  <div class="ld-bar"><div class="ld-prog"></div></div>
+  <div class="ld-lbl">Tu Red Vital · USA</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<div id="app">
+
+<!-- ════ INICIO ════ -->
+<div id="s-home" class="screen active">
+  <div class="top" style="background:#FFFFFF;border-bottom:1px solid rgba(0,0,0,0.08);box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div class="top-left">
+      <button type="button" onclick="nav('about')" style="display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:20px;background:rgba(39,174,96,0.08);border:1.5px solid rgba(39,174,96,0.3);color:#27AE60;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Nosotros
+      </button>
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" style="width:30px;height:30px;object-fit:contain;border-radius:50%;filter:drop-shadow(0 0 5px rgba(230,193,106,0.35));" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;width:30px;height:30px;background:#E6C16A;border-radius:50%;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:900;color:#0F0F0F;">V</div>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:.5px;color:#1a1a1a;">TU RED <span style="color:#27AE60;">VITAL</span></span>
+    </div>
+    <button type="button" id="btn-login" onclick="openLogin()" style="display:flex;align-items:center;gap:6px;padding:8px 15px;border-radius:22px;background:#27AE60;border:1.5px solid #27AE60;color:#FFFFFF;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:.5px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      <span id="top-name">Entrar</span>
+    </button>
   </div>
-  <a class="back-link" href="https://networkvital.com/" target="_blank" rel="noopener">networkvital.com →</a>
-</header>
+  <div class="scroll">
 
-<main class="wrap">
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="hero-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="hero-logo-fb" style="display:none;">TRV</div>
+      <div class="hero-pill">🔥 Oportunidad de negocio · USA</div>
+      <div class="hero-t">El marketing<br>lo hacemos<br><span class="g">nosotros.</span></div>
+      <div class="hero-s">Hacemos marketing nacional. Cuando llega un cliente en tu ciudad, va directo a tu WhatsApp. Tú cierras y creces tu organización.</div>
 
-  <section class="hero" style="border-top:none;">
-    <span class="eyebrow-chip">🔥 Fase 1 · Fundadores — cupo por zona</span>
-    <h1>Sé la<br><span class="accent">Cara</span><br>de nuestra Red Vital.</h1>
-    <p class="sub">Nosotros te ponemos en la red de promoción y en capacitación continua. Los interesados en tu zona de 20 millas te escriben directo a WhatsApp. Tú cierras.</p>
-
-    <div class="urgency-panel">
-      <div class="label" style="margin-bottom:10px;">⏳ Fase 1 cierra en</div>
-      <div class="clock" id="clock">
-        <div class="clock-seg"><span class="clock-num mono" id="cd-days">--</span><span class="clock-lbl">días</span></div>
-        <span class="clock-colon">:</span>
-        <div class="clock-seg"><span class="clock-num mono" id="cd-hours">--</span><span class="clock-lbl">hrs</span></div>
-        <span class="clock-colon">:</span>
-        <div class="clock-seg"><span class="clock-num mono" id="cd-mins">--</span><span class="clock-lbl">min</span></div>
-        <span class="clock-colon">:</span>
-        <div class="clock-seg"><span class="clock-num mono pulse-sec" id="cd-secs">--</span><span class="clock-lbl">seg</span></div>
-      </div>
-      <div class="cap" id="deadline-caption">Cierra el 5 de julio a las 11:59 PM</div>
-      <div class="zone-scarcity">
-        <div class="zone-scarcity-row">
-          <span class="label" style="margin:0;">🔒 Zonas fundadoras tomadas</span>
-          <span class="mono" id="zone-count" style="color:var(--gold-soft); font-weight:700;">7 / 20</span>
+      <!-- PANEL URGENCIA + COUNTDOWN -->
+      <div style="position:relative;margin-top:18px;background:linear-gradient(160deg,#0F3D2A,#1C6E4A);border-radius:14px;padding:18px 16px;overflow:hidden;z-index:1;">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 85% 0%,rgba(201,154,60,0.25),transparent 55%);pointer-events:none;"></div>
+        <div style="position:relative;">
+          <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:10px;">⏳ Fase 1 cierra el 7 de julio</div>
+          <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;margin-bottom:10px;">
+            <div style="text-align:center;min-width:46px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#F3E4C0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:3px 4px;" id="cd-days">--</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:1px;">días</div>
+            </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:rgba(255,255,255,0.4);padding-bottom:14px;">:</div>
+            <div style="text-align:center;min-width:46px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#F3E4C0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:3px 4px;" id="cd-hours">--</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:1px;">hrs</div>
+            </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:rgba(255,255,255,0.4);padding-bottom:14px;">:</div>
+            <div style="text-align:center;min-width:46px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#F3E4C0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:3px 4px;" id="cd-mins">--</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:1px;">min</div>
+            </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:rgba(255,255,255,0.4);padding-bottom:14px;">:</div>
+            <div style="text-align:center;min-width:46px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#E4572E;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:3px 4px;" id="cd-secs">--</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:1px;">seg</div>
+            </div>
+          </div>
+          <!-- BARRA ESCASEZ -->
+          <div style="border-top:1px dashed rgba(255,255,255,0.15);padding-top:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;">🔒 Zonas tomadas</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:#F3E4C0;" id="zone-count">7 / 20</span>
+            </div>
+            <div style="height:7px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;">
+              <div style="height:100%;width:35%;background:linear-gradient(90deg,#E4572E,#C99A3C);border-radius:999px;transition:width .6s ease;" id="zone-bar"></div>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:6px;">Cuando se llena una zona, se cierra para todos.</div>
+          </div>
         </div>
-        <div class="zone-bar"><div class="zone-bar-fill" id="zone-bar-fill" style="width:35%;"></div></div>
-        <div class="cap" style="margin-top:6px;">Cuando se llena una zona, se cierra para todos los demás.</div>
+      </div>
+
+      <!-- BTN STRIPE DIRECTO -->
+      <a href="https://buy.stripe.com/cNi4gy0Lw5IKfYS86X9EI05" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;padding:16px;background:#E4572E;color:#fff;border-radius:11px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;letter-spacing:.5px;text-decoration:none;box-shadow:0 10px 24px -8px rgba(228,87,46,0.55);cursor:pointer;position:relative;z-index:1;">
+        🔒 Apartar mi zona · $199/mes →
+      </a>
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;position:relative;z-index:1;">Confirmamos disponibilidad directo contigo</div>
+    </div>
+
+    <!-- ── STATS EN VIVO ── -->
+    <div style="background:#FFFFFF;border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(0,0,0,0.05);">
+        <div style="background:#FFFFFF;padding:13px 10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#27AE60;line-height:1;" id="cnt-vistas">7.5M+</div>
+          <div style="font-size:8px;color:#9CA3AF;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Vistas al mes</div>
+        </div>
+        <div style="background:#FFFFFF;padding:13px 10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#C9A84C;line-height:1;" id="cnt-msgs">—</div>
+          <div style="font-size:8px;color:#9CA3AF;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Leads generados</div>
+        </div>
+        <div style="background:#FFFFFF;padding:13px 10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#2980B9;line-height:1;" id="st-dist">—</div>
+          <div style="font-size:8px;color:#9CA3AF;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Distribuidores activos</div>
+        </div>
+        <div style="background:#FFFFFF;padding:13px 10px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#27AE60;line-height:1;">255</div>
+          <div style="font-size:8px;color:#9CA3AF;letter-spacing:1px;text-transform:uppercase;margin-top:2px;">Posiciones en USA</div>
+        </div>
       </div>
     </div>
 
-    <a class="cta alt" href="https://wa.me/12099717638?text=Quiero%20apartar%20mi%20zona%20en%20Fase%201%20Fundadores" target="_blank" rel="noopener">
-      🔒 Apartar mi zona por WhatsApp →
-    </a>
-    <span class="cta-sub">Confirmamos disponibilidad directo contigo, sin fila de espera.</span>
-  </section>
-
-  <section style="padding-top:30px; padding-bottom:30px;">
-    <div class="kicker">Respaldados por resultados reales</div>
-    <h2 style="font-size:22px;">Esto ya está pasando en Tu Red Vital</h2>
-    <div class="stat-row">
-      <div class="stat"><div class="num mono">7.5M+</div><div class="lbl">vistas totales en campañas</div></div>
-      <div class="stat"><div class="num mono">+1M</div><div class="lbl">mensajes recibidos al mes</div></div>
-      <div class="stat"><div class="num mono">+2/hr</div><div class="lbl">leads generados</div></div>
-      <div class="stat"><div class="num mono">50</div><div class="lbl">estados con presencia activa</div></div>
-    </div>
-    <p class="map-caption">255 posiciones de territorio en todo USA, 5 máximo por estado — Fase 1 abre las primeras zonas a nivel ciudad.</p>
-  </section>
-
-  <section>
-    <div class="kicker">La oferta</div>
-    <h2>$199/mes · tu zona exclusiva</h2>
-    <p class="desc">Tú eres el rostro visible de tu comunidad — con un radio de 20 millas 100% tuyo mientras dure tu membresía.</p>
-    <div class="stat-row">
-      <div class="stat"><div class="num mono">20</div><div class="lbl">mensajes proyectados de interesados</div></div>
-      <div class="stat"><div class="num mono">4</div><div class="lbl">leads agendados, proyección del mes</div></div>
-      <div class="stat"><div class="num mono">20mi</div><div class="lbl">radio exclusivo, solo tú en tu zona</div></div>
-      <div class="stat"><div class="num mono">🎓</div><div class="lbl">capacitación incluida</div></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="kicker">Cómo ganamos juntos</div>
-    <h2>Nosotros movemos la red. Tú cierras.</h2>
-    <div class="step"><span class="ico">📣</span><div><h3>Nosotros lanzamos los ads</h3><p>Campañas nacionales en Facebook e Instagram. Reducimos el costo por cliente para maximizar tu ganancia.</p></div></div>
-    <div class="step"><span class="ico">📱</span><div><h3>El cliente llega a tu WhatsApp</h3><p>Detectamos su ubicación y lo enviamos directo al distribuidor más cercano con membresía activa. Cada mensaje de tu zona de 20 millas te llega directo a ti.</p></div></div>
-    <div class="step"><span class="ico">🎓</span><div><h3>Tú te certificas y subes de nivel</h3><p>Como distribuidor de zona, tienes acceso directo a nuestras capacitaciones de venta y producto — presencial y en línea.</p></div></div>
-    <div class="step"><span class="ico">💰</span><div><h3>Tú cierras y creces tu organización</h3><p>Eres el experto de tu territorio. Atiendes, demuestras y construyes tu red de negocio.</p></div></div>
-
-    <div class="testimonial">
-      <div class="stars">★★★★★</div>
-      <p>"El 1er mes logré hacer ventas por más de $400 dólares y tener clientes que llegan directo a tu mesa es una gran oportunidad para crecer nuestro negocio."</p>
-      <div class="who">
-        <div class="avatar">LE</div>
-        <div><div class="name">Laura Espino</div><div class="loc">Distribuidora certificada · Mattawa, Washington</div></div>
+    <!-- ── SLIDER FOTOS ── -->
+    <div class="slider-wrap" style="margin:14px 14px 0;border-radius:14px;overflow:hidden;">
+      <div class="slider-track" id="slider-track">
+        <div class="slide"><img src="/images/Gemini_Generated_Image_4ai1si4ai1si4ai1.png" alt="Distribuidoras Tu Red Vital"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_302u3g302u3g302u.png" alt="Equipo Tu Red Vital"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_aux0rkaux0rkaux0.png" alt="Red Vital USA"></div>
+        <div class="slide"><img src="/images/Gemini_Generated_Image_v058phv058phv058.png" alt="Vital Health Network"></div>
+      </div>
+      <div class="slider-dots" id="slider-dots" style="background:#F7F8FA;border-radius:0 0 14px 14px;padding:8px 0;">
+        <div class="dot on" onclick="goSlide(0)"></div>
+        <div class="dot" onclick="goSlide(1)"></div>
+        <div class="dot" onclick="goSlide(2)"></div>
+        <div class="dot" onclick="goSlide(3)"></div>
       </div>
     </div>
-  </section>
 
-  <section>
-    <div class="kicker">Cómo se lanza</div>
-    <h2>Tres etapas, sin adivinar</h2>
-    <div class="phase active"><div class="idx mono">01</div><div><h3>Fundadores <span class="tag">abierto ahora</span></h3><p>$199/mes · exclusividad de 20 millas · cupos limitados por zona.</p></div></div>
-    <div class="phase"><div class="idx mono">02</div><div><h3>Expansión</h3><p>Nuevas zonas se abren según resultados de Fase 1. Condiciones pueden cambiar.</p></div></div>
-    <div class="phase"><div class="idx mono">03</div><div><h3>Red nacional</h3><p>Mismo modelo de exclusividad ciudad por ciudad, ritmo según demanda.</p></div></div>
-  </section>
-
-  <section>
-    <div class="kicker">Tu zona, en vivo</div>
-    <h2>Así se ve la demanda cerca de ti</h2>
-    <p class="desc">Cada punto es alguien que preguntó por información en tu radio de 20 millas. Nombres completos y contacto solo los ve el distribuidor dueño de esa zona.</p>
-    <div class="zone-map">
-      <div class="zone-ring r1"></div>
-      <div class="zone-ring r2"></div>
-      <div class="zone-you"></div>
-      <div class="pin" style="top:28%; left:38%;" tabindex="0"><span class="pin-tip">María R. · hace 2 días</span></div>
-      <div class="pin" style="top:62%; left:30%;" tabindex="0"><span class="pin-tip">Jorge L. · hace 5 días</span></div>
-      <div class="pin" style="top:40%; left:70%;" tabindex="0"><span class="pin-tip">Ana P. · hoy</span></div>
-      <div class="pin" style="top:70%; left:64%;" tabindex="0"><span class="pin-tip">Carlos M. · hace 1 día</span></div>
+    <!-- ── CÓMO GANAMOS JUNTOS ── -->
+    <div class="sec-lbl">Cómo ganamos juntos</div>
+    <div class="vp" style="border-color:rgba(39,174,96,0.2);">
+      <div class="vp-ic" style="background:rgba(39,174,96,0.1);border-radius:8px;padding:4px;">📣</div>
+      <div><div class="vp-t">Nosotros lanzamos los ads</div><div class="vp-s">Campañas nacionales en Facebook e Instagram. Reducimos el costo por cliente para maximizar tu ganancia.</div></div>
     </div>
-    <p class="map-caption">Vista de ejemplo. <strong>Ilustrativo, no datos reales.</strong></p>
-  </section>
-
-  <section>
-    <div class="kicker">Tu panel privado</div>
-    <h2>Nombre y contacto — solo para ti</h2>
-    <p class="desc">La lista completa de personas interesadas en tu zona vive dentro de tu panel con inicio de sesión. Así protegemos a quien confía en nosotros y protegemos tu exclusividad de zona.</p>
-    <div class="panel-preview">
-      <div class="panel-lock">🔒 Solo visible con sesión iniciada · tu zona</div>
-      <div class="lead-row"><div class="lead-avatar">MR</div><div class="info"><div class="n">María R.</div><div class="s">Interesada · zona norte</div></div><div class="status">Nuevo</div></div>
-      <div class="lead-row"><div class="lead-avatar">JL</div><div class="info"><div class="n">Jorge L.</div><div class="s">Agendado · viernes</div></div><div class="status">Agendado</div></div>
-      <div class="lead-row"><div class="lead-avatar">AP</div><div class="info"><div class="n">Ana P.</div><div class="s">Interesada · zona sur</div></div><div class="status">Nuevo</div></div>
+    <div class="vp" style="border-color:rgba(39,174,96,0.2);">
+      <div class="vp-ic" style="background:rgba(39,174,96,0.1);border-radius:8px;padding:4px;">📱</div>
+      <div><div class="vp-t">El cliente llega a tu WhatsApp</div><div class="vp-s">Detectamos su ubicación y lo enviamos directo al distribuidor más cercano con membresía activa.</div></div>
     </div>
-  </section>
+    <div class="vp" style="border-color:rgba(39,174,96,0.2);">
+      <div class="vp-ic" style="background:rgba(39,174,96,0.1);border-radius:8px;padding:4px;">💰</div>
+      <div><div class="vp-t">Tú cierras y creces tu organización</div><div class="vp-s">Eres el experto de tu territorio. Tú atiendes, demuestras y construyes tu red de negocio.</div></div>
+    </div>
 
-  <section>
-    <div class="kicker">Nuestra garantía</div>
-    <h2>La garantía somos nosotros</h2>
-    <div class="guarantee">
-      <h3>Nuestra red, nuestro trabajo</h3>
-      <p>No es un anuncio que dejamos solo. Es el mismo motor que ya mueve nuestra comunidad, trabajando específicamente tu zona.</p>
-      <div class="bonus">
-        <span class="ico">🎙️</span>
-        <p><strong>Bono de permanencia:</strong> 6 meses seguidos con nosotros y te regalamos la producción de tu propio podcast en The Master Center.</p>
+    <!-- ── ROADMAP ── -->
+    <div class="sec-lbl">Tu ruta como distribuidor</div>
+    <div style="margin:0 14px 14px;">
+      <div style="display:flex;gap:12px;margin-bottom:0;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#27AE60;">1</div>
+          <div style="width:2px;flex:1;min-height:24px;background:rgba(39,174,96,0.2);margin:4px 0;"></div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:10px;border:1px solid rgba(0,0,0,0.07);padding:12px;flex:1;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px;">Registro y activación</div>
+          <div style="font-size:11px;color:#6B7280;line-height:1.5;">Pagas $199/mes y aseguras tu posición exclusiva. Solo 5 distribuidores por estado en todo USA.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#27AE60;">2</div>
+          <div style="width:2px;flex:1;min-height:24px;background:rgba(39,174,96,0.2);margin:4px 0;"></div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:10px;border:1px solid rgba(0,0,0,0.07);padding:12px;flex:1;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px;">Nosotros lanzamos los ads</div>
+          <div style="font-size:11px;color:#6B7280;line-height:1.5;">Campañas nacionales en Facebook e Instagram que traen clientes a tu zona.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#27AE60;">3</div>
+          <div style="width:2px;flex:1;min-height:24px;background:rgba(39,174,96,0.2);margin:4px 0;"></div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:10px;border:1px solid rgba(0,0,0,0.07);padding:12px;flex:1;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px;">Los clientes llegan a tu WhatsApp</div>
+          <div style="font-size:11px;color:#6B7280;line-height:1.5;">Detectamos su ubicación. El lead va directo a ti. Promedio 20 contactos al mes en tu zona.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#27AE60;">4</div>
+          <div style="width:2px;flex:1;min-height:24px;background:rgba(39,174,96,0.2);margin:4px 0;"></div>
+        </div>
+        <div style="background:#FFFFFF;border-radius:10px;border:1px solid rgba(0,0,0,0.07);padding:12px;flex:1;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px;">Tú atiendes, demuestras y cierras</div>
+          <div style="font-size:11px;color:#6B7280;line-height:1.5;">Eres el experto de tu territorio. Presentas el producto y construyes tu red.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div style="width:32px;height:32px;border-radius:50%;background:#27AE60;border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:900;color:#fff;">5</div>
+        </div>
+        <div style="background:rgba(39,174,96,0.08);border-radius:10px;border:1.5px solid rgba(39,174,96,0.3);padding:12px;flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#27AE60;margin-bottom:3px;">Creces con la red nacional</div>
+          <div style="font-size:11px;color:#27AE60;opacity:.8;line-height:1.5;">Más ventas, más equipo, más territorio. Juntos dominamos el mercado.</div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <section style="text-align:center;">
-    <div class="kicker">Actúa ahora</div>
-    <h2>Posiciones limitadas · Solo 5 por estado</h2>
-    <p class="desc" style="margin:0 auto;">Cuando se llena tu zona, se cierra para todos. Asegura tu territorio hoy.</p>
-    <a class="cta alt" href="https://wa.me/12099717638?text=Quiero%20apartar%20mi%20zona%20en%20Fase%201%20Fundadores" target="_blank" rel="noopener" style="margin-top:24px;">
-      Escríbenos ahora →
-    </a>
-  </section>
+    <!-- ── MAPA DE ZONA ── -->
+    <div class="sec-lbl">Así se ve la demanda en tu zona</div>
+    <div style="margin:0 14px 6px;position:relative;height:200px;background:rgba(39,174,96,0.06);border:1px solid rgba(39,174,96,0.15);border-radius:14px;overflow:hidden;">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(circle,rgba(28,110,74,0.14) 1px,transparent 1.5px);background-size:20px 20px;"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:85%;height:85%;border-radius:50%;border:1.5px dashed rgba(39,174,96,0.3);"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:55%;height:55%;border-radius:50%;border:1.5px dashed rgba(39,174,96,0.3);"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:13px;height:13px;border-radius:50%;background:#27AE60;box-shadow:0 0 0 6px rgba(39,174,96,0.18);z-index:3;"></div>
+      <div style="position:absolute;top:27%;left:37%;width:10px;height:10px;border-radius:50%;background:#E4572E;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.15);animation:pinPulse 2.4s ease-out infinite;"></div>
+      <div style="position:absolute;top:63%;left:29%;width:10px;height:10px;border-radius:50%;background:#E4572E;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.15);animation:pinPulse 2.4s ease-out infinite .6s;"></div>
+      <div style="position:absolute;top:40%;left:68%;width:10px;height:10px;border-radius:50%;background:#E4572E;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.15);animation:pinPulse 2.4s ease-out infinite 1.2s;"></div>
+      <div style="position:absolute;top:72%;left:63%;width:10px;height:10px;border-radius:50%;background:#E4572E;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.15);animation:pinPulse 2.4s ease-out infinite 1.8s;"></div>
+      <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:10px;color:#6B7280;">Ilustrativo · Demanda real en tu zona</div>
+    </div>
+    <div style="margin:0 14px 14px;display:flex;gap:12px;">
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6B7280;"><div style="width:8px;height:8px;border-radius:50%;background:#27AE60;"></div>Tú</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#6B7280;"><div style="width:8px;height:8px;border-radius:50%;background:#E4572E;"></div>Clientes potenciales</div>
+    </div>
 
-</main>
+    <!-- ── PANEL PRIVADO PREVIEW ── -->
+    <div class="sec-lbl">Tu panel privado de leads</div>
+    <div style="margin:0 14px 14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+      <div style="background:rgba(39,174,96,0.08);border-bottom:1px solid rgba(39,174,96,0.15);padding:10px 14px;display:flex;align-items:center;gap:7px;">
+        <span style="font-size:12px;">🔒</span>
+        <span style="font-size:11px;font-weight:700;color:#1a472a;">Solo visible con sesión iniciada · tu zona</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(0,0,0,0.06);">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(39,174,96,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#27AE60;flex-shrink:0;">MR</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#1a1a1a;">María R.</div><div style="font-size:11px;color:#9CA3AF;">Interesada · zona norte</div></div>
+        <div style="font-size:10px;font-weight:700;color:#C9A84C;background:rgba(201,168,76,0.1);padding:3px 8px;border-radius:999px;">Nuevo</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(0,0,0,0.06);">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(39,174,96,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#27AE60;flex-shrink:0;">JL</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#1a1a1a;">Jorge L.</div><div style="font-size:11px;color:#9CA3AF;">Agendado · viernes</div></div>
+        <div style="font-size:10px;font-weight:700;color:#27AE60;background:rgba(39,174,96,0.1);padding:3px 8px;border-radius:999px;">Agendado</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(39,174,96,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#27AE60;flex-shrink:0;">AP</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#1a1a1a;">Ana P.</div><div style="font-size:11px;color:#9CA3AF;">Interesada · zona sur</div></div>
+        <div style="font-size:10px;font-weight:700;color:#C9A84C;background:rgba(201,168,76,0.1);padding:3px 8px;border-radius:999px;">Nuevo</div>
+      </div>
+    </div>
 
-<footer>
-  <div class="brand" style="justify-content:center;">
-    <svg class="leaf" viewBox="0 0 24 24" fill="none"><path d="M12 2 L18 9 L12 22 L6 9 Z" fill="#1C6E4A"/></svg>
-    Tu Red Vital
+    <!-- ── FASES ── -->
+    <div class="sec-lbl">Cómo se lanza</div>
+    <div style="margin:0 14px 14px;">
+      <div style="display:flex;gap:14px;padding:14px;background:rgba(228,87,46,0.06);border:1px solid rgba(228,87,46,0.2);border-radius:10px;margin-bottom:8px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:#E4572E;min-width:28px;">01</div>
+        <div><div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">Fundadores <span style="background:rgba(228,87,46,0.1);color:#E4572E;font-size:9px;font-weight:700;padding:2px 7px;border-radius:999px;letter-spacing:.5px;vertical-align:middle;">ABIERTO AHORA</span></div><div style="font-size:11px;color:#6B7280;">$199/mes · posición exclusiva · cierra 7 de julio o antes si se llenan.</div></div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;margin-bottom:8px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:#27AE60;min-width:28px;">02</div>
+        <div><div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">Expansión</div><div style="font-size:11px;color:#6B7280;">Nuevas zonas se abren según resultados de Fase 1.</div></div>
+      </div>
+      <div style="display:flex;gap:14px;padding:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:10px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:#27AE60;min-width:28px;">03</div>
+        <div><div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;">Red nacional</div><div style="font-size:11px;color:#6B7280;">Mismo modelo de exclusividad ciudad por ciudad, a escala.</div></div>
+      </div>
+    </div>
+
+    <!-- ── TESTIMONIO LAURA ── -->
+    <div class="sec-lbl">El sistema funciona</div>
+    <div style="margin:0 14px 14px;padding:18px;background:#FFFFFF;border-radius:12px;border:1px solid rgba(39,174,96,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <div style="margin-bottom:10px;"><span style="color:#C9A84C;font-size:16px;">★★★★★</span></div>
+      <p style="font-size:14px;color:#374151;margin:0 0 16px;line-height:1.7;font-style:italic;">"El 1er mes logré hacer ventas por más de $400 dólares y tener clientes que llegan directo a tu mesa es una gran oportunidad para crecer nuestro negocio."</p>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(39,174,96,0.12);border:2px solid #27AE60;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#27AE60;flex-shrink:0;">LE</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Laura Espino</div>
+          <div style="font-size:11px;color:#9CA3AF;">Distribuidora certificada · Mattawa, Washington</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GARANTÍA ── -->
+    <div style="margin:0 14px 14px;padding:18px;background:#FFFFFF;border:1.5px solid #C9A84C;border-radius:12px;">
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:6px;">La garantía somos nosotros</div>
+      <div style="font-size:12px;color:#6B7280;line-height:1.6;margin-bottom:12px;">No es un anuncio que dejamos solo. Es el mismo motor que ya mueve nuestra comunidad, trabajando específicamente tu zona.</div>
+      <div style="padding-top:12px;border-top:1px dashed rgba(0,0,0,0.1);display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:20px;">🎙️</span>
+        <div style="font-size:12px;color:#6B7280;line-height:1.5;"><strong style="color:#1a1a1a;">Bono de permanencia:</strong> 6 meses seguidos y te regalamos la producción de tu propio podcast en The Master Center, Modesto CA.</div>
+      </div>
+    </div>
+
+    <!-- ── CTA FINAL ── -->
+    <div style="margin:14px 14px;padding:22px 16px;background:linear-gradient(160deg,#1a472a,#27AE60);border-radius:14px;text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:8px;">Juntos dominamos el mercado</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#FFFFFF;line-height:1.1;margin-bottom:6px;">¿Listo para asegurar<br>tu territorio?</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-bottom:16px;line-height:1.5;">Solo 5 posiciones por estado · 255 en USA · Cancela cuando quieras</div>
+      <a href="https://buy.stripe.com/cNi4gy0Lw5IKfYS86X9EI05" target="_blank" rel="noopener"
+        style="display:block;background:#F0D084;color:#1a1a1a;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;padding:14px;border-radius:10px;text-decoration:none;letter-spacing:.5px;">
+        🔒 Asegurar mi territorio · $199/mes
+      </a>
+    </div>
+
+    <div style="height:70px;"></div>
   </div>
-  <p>The Master Center · 1424 Mitchell Rd, Modesto, CA</p>
-  <p>WhatsApp: (209) 971-7638</p>
-</footer>
-
-<div class="sticky-cta">
-  <a class="cta alt" href="https://wa.me/12099717638?text=Quiero%20apartar%20mi%20zona%20en%20Fase%201%20Fundadores" target="_blank" rel="noopener">
-    Apartar mi zona · $199/mes →
-  </a>
+  <nav class="bnav bnav-3">
+    <button class="bn on" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Territorios</button>
+    <button class="bn" onclick="nav('join')" style="color:#27AE60;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
 </div>
 
+<!-- ════ MAPA ════ -->
+<div id="s-map" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="nav('home')">←</button>
+      <span class="top-brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
+  </div>
+  <div class="scroll">
+        <!-- HERO MAPA PERSUASIVO -->
+    <div style="background:linear-gradient(160deg,#1a472a,#27AE60);padding:18px 16px 14px;border-bottom:1px solid rgba(0,0,0,0.08);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.7);text-transform:uppercase;margin-bottom:6px;">🔥 Posiciones exclusivas · USA</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#FFFFFF;line-height:1.1;margin-bottom:5px;">Elige tu estado.<br>Asegura tu territorio.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.8);margin-bottom:10px;">Solo 5 distribuidores por estado. Cuando se llena, se cierra. Los clientes de tu zona van directo a tu WhatsApp.</div>
+      <div style="display:flex;gap:8px;">
+        <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:8px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#F0D084;">255</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.7);">posiciones en USA</div>
+        </div>
+        <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:8px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#F0D084;">$199</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.7);">al mes</div>
+        </div>
+        <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:8px;text-align:center;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#F0D084;">5</div>
+          <div style="font-size:8px;color:rgba(255,255,255,0.7);">máx. por estado</div>
+        </div>
+      </div>
+    </div>
+    <div class="map-search" style="margin-top:12px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7A8FA6" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Busca tu estado..." oninput="filterStates(this.value)">
+    </div>
+    <div class="map-leg">
+      <div class="leg"><div class="leg-d" style="background:var(--gold);"></div>Completo</div>
+      <div class="leg"><div class="leg-d" style="background:rgba(201,162,75,.35);"></div>Disponible</div>
+      <div class="leg"><div class="leg-d" style="border:1.5px solid rgba(255,255,255,.18);"></div>Abierto</div>
+    </div>
+    <div class="states-wrap">
+      <div class="states-grid" id="sg"></div>
+    </div>
+    <div class="pop" id="pop">
+      <div class="pop-hd"><div class="pop-title" id="pop-name">—</div><button class="pop-x" onclick="closePop()">✕</button></div>
+      <div class="pop-slots" id="pop-slots"></div>
+      <div class="pop-status" id="pop-status"></div>
+      <div id="pop-reps"></div>
+      <button class="pop-cta" id="pop-cta">—</button>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-3">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn on" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Territorios</button>
+    <button class="bn" onclick="nav('join')" style="color:#27AE60;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ════ ÚNETE ════ -->
+<div id="s-join" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="nav('home')">←</button>
+      <span class="top-brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Entrar</span></div>
+  </div>
+  <div class="scroll">
+    <div class="phero">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" class="ph-logo" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ph-logo-fb" style="display:none;">TRV</div>
+      <div class="ph-lbl">Tu posición en el mercado</div>
+      <div class="ph-num">$199</div>
+      <div class="ph-per">dólares / mes</div>
+      <div class="ph-note">Cancela cuando quieras · Posición exclusiva · Sin contratos</div>
+    </div>
+    <div class="bens">
+      <div class="ben"><div class="ben-ic">🗺️</div><div><div class="ben-t">Perfil en el mapa USA</div><div class="ben-s">Tu nombre y WhatsApp visibles en tu estado para clientes de tu zona.</div></div></div>
+      <div class="ben"><div class="ben-ic">📣</div><div><div class="ben-t">Campaña en tu ciudad</div><div class="ben-s">Creamos campañas locales para atraer clientes a tu comunidad.</div></div></div>
+      <div class="ben"><div class="ben-ic">🎓</div><div><div class="ben-t">Capacitación incluida</div><div class="ben-s">Sistema de venta presencial y en línea con soporte completo.</div></div></div>
+      <div class="ben"><div class="ben-ic">📊</div><div><div class="ben-t">Dashboard personal</div><div class="ben-s">Panel con pagos, prospectos y estadísticas de tu zona.</div></div></div>
+    </div>
+    <div class="urg"><div style="font-size:18px;">⚡</div><div><div class="urg-t">Espacios limitados</div><div class="urg-s">⚡ Solo 5 por estado · 255 en USA · Actúa ahora</div></div></div>
+    <div class="fbody" style="padding-top:4px;">
+      <div class="fg"><label class="fl">Nombre completo</label><input class="fi" id="j-nombre" type="text" placeholder="Como aparecerá en el mapa" autocomplete="name"></div>
+      <div class="fg"><label class="fl">Tu estado</label><select class="fs" id="j-estado"><option value="">Selecciona tu estado</option></select></div>
+      <div class="fg"><label class="fl">Tu ciudad</label><input class="fi" id="j-ciudad" type="text" placeholder="Ciudad donde operas"></div>
+      <div class="fg"><label class="fl">Tu WhatsApp</label><input class="fi" id="j-wa" type="tel" placeholder="+1 (555) 000-0000"></div>
+      <div class="fg"><label class="fl">Tu email</label><input class="fi" id="j-email" type="email" placeholder="Para acceso a tu panel" autocomplete="email"></div>
+      <button class="btn-gold" onclick="doJoin()">🔒 Asegurar mi territorio · $199/mes</button>
+      <div class="fnote">🔐 Pago seguro · Stripe · Visa · MC · Apple Pay<br>Al pagar aparecerás en el mapa y recibirás tu panel.</div>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-3">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Territorios</button>
+    <button class="bn on" style="color:#27AE60;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+  </nav>
+</div>
+
+<!-- ════ DASHBOARD DISTRIBUIDOR ════ -->
+<div id="s-dist" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="nav('home')">←</button>
+      <span class="top-brand">TU RED <span>VITAL</span></span>
+    </div>
+    <div class="top-user" onclick="openLogin()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg><span class="uname">Salir</span></div>
+  </div>
+  <div class="scroll">
+    <div class="dist-hero">
+      <div class="dist-top">
+        <div class="dist-av" id="d-av">?</div>
+        <div>
+          <div class="dist-name" id="d-nombre">—</div>
+          <div class="dist-loc" id="d-loc">—</div>
+          <div class="spill" id="d-pill">—</div>
+        </div>
+      </div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-l">Último pago</div><div class="kpi-v green" id="d-lastpay">—</div><div class="kpi-sub" id="d-lastamt">—</div></div>
+      <div class="kpi"><div class="kpi-l">Próximo cobro</div><div class="kpi-v gold" id="d-nextpay">—</div><div class="kpi-sub">Renovación mensual</div></div>
+      <div class="kpi"><div class="kpi-l">Tu posición</div><div class="kpi-v gold" id="d-slot">—</div><div class="kpi-sub">de 5 en tu estado</div></div>
+      <div class="kpi"><div class="kpi-l">Prospectos</div><div class="kpi-v gold" id="d-prosp">0</div><div class="kpi-sub">En tu zona</div></div>
+    </div>
+    <div class="dsec">
+      <div class="dsec-hd">Historial de pagos</div>
+      <div id="pagos-list"><div class="empty">Cargando pagos…</div></div>
+    </div>
+    <div class="dsec">
+      <div class="dsec-hd">Prospectos en tu estado</div>
+      <div id="contactos-list"><div class="empty">Cargando prospectos…</div></div>
+    </div>
+    <div class="wa-big" style="margin:0 14px 14px;" onclick="waOpen(WA_MAIN,'Hola! Soy distribuidor de Tu Red Vital, necesito soporte.')">
+      <div class="wa-big-ic">💬</div>
+      <div><div class="wa-big-t">Soporte Distribuidores</div><div class="wa-big-s">Línea directa · Tu Red Vital</div></div>
+    </div>
+    <!-- BOTÓN CAMPANAS DIST -->
+    <div onclick="nav('camp')" style="margin:0 14px 14px;padding:15px;background:linear-gradient(135deg,#1C3252,#0B1A2E);border:1px solid rgba(201,168,76,0.4);border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:13px;">
+      <div style="width:44px;height:44px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">🔔</div>
+      <div style="flex:1;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#E8C96A;margin-bottom:2px;">Patrocinio de Campanas</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);">Impulsa tu zona · Desde $250</div>
+      </div>
+      <div style="color:#C9A24B;font-size:20px;">→</div>
+    </div>
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-3">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Territorios</button>
+    <button class="bn on" style="color:#27AE60;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Mi Panel</button>
+  </nav>
+</div>
+
+
+<!-- ════ CAMPANAS ════ -->
+<div id="s-camp" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="top-brand">🔔 <span>Campanas</span></span>
+    </div>
+  </div>
+  <div class="scroll">
+    <!-- HERO TIMER -->
+    <div style="background:linear-gradient(160deg,#04090f 0%,#0d1e33 100%);padding:20px 16px 16px;border-bottom:1px solid rgba(201,168,76,0.15);">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:10px;">⚡ Patrocinio activo — tiempo restante</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;">
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-d">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">días</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-h">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">horas</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-m">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">min</div>
+        </div>
+        <div style="color:#C9A84C;font-size:28px;font-weight:900;padding-top:6px;">:</div>
+        <div style="background:#0B1A2E;border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:10px 14px;text-align:center;min-width:60px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#E8C96A;line-height:1;" id="c2-s">--</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">seg</div>
+        </div>
+      </div>
+      <!-- BARRA PROGRESO -->
+      <div style="height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;margin-bottom:6px;">
+        <div style="height:100%;background:linear-gradient(90deg,#C9A84C,#E8C96A);border-radius:4px;transition:width .5s;" id="c2-bar"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;">
+        <span style="color:#E8C96A;font-weight:700;" id="c2-total">$0 recaudados</span>
+        <span style="color:rgba(255,255,255,0.35);">Meta: $5,000</span>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div style="display:flex;border-bottom:1px solid rgba(201,168,76,0.12);">
+      <div id="tab-p" onclick="campTab('p')" style="flex:1;padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:#E8C96A;border-bottom:2px solid #C9A84C;cursor:pointer;">PATROCINAR</div>
+      <div id="tab-f" onclick="campTab('f')" style="flex:1;padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;">PATROCINADORES</div>
+    </div>
+
+    <!-- TAB: PATROCINAR -->
+    <div id="camp-p" style="padding:16px;">
+      <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#E8C96A;margin-bottom:6px;">🚀 ¿Qué incluye tu ADS Pack?</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7;">Tu aportación financia las campañas que hacen crecer Tu Red Vital. Como patrocinador tu nombre aparece en la lista de patrocinadores y recibes beneficios exclusivos.</div>
+      </div>
+      <!-- ADS PACKS -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+
+        <!-- NETWORKER -->
+        <div onclick="pagarCampMonto(250,'networker')" style="background:var(--bg2);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(201,162,75,0.1);border:1px solid rgba(201,162,75,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8"><circle cx="12" cy="5" r="3"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="4" cy="16" r="2"/><circle cx="20" cy="16" r="2"/><path d="M6 16h-2M20 16h-2" stroke-linecap="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Networker</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$250</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Ads básicos en tu zona · Visibilidad local</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;">→</div>
+        </div>
+
+        <!-- PRO -->
+        <div onclick="pagarCampMonto(500,'pro')" style="background:rgba(201,162,75,0.08);border:1.5px solid rgba(201,162,75,0.45);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;position:relative;">
+          <div style="position:absolute;top:-9px;right:14px;background:#C9A84C;color:#0B1A2E;font-size:8px;font-weight:900;padding:2px 10px;border-radius:10px;letter-spacing:1px;">⭐ MÁS POPULAR</div>
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(201,162,75,0.18);border:1px solid rgba(201,162,75,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8C96A" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:#C9A84C;text-transform:uppercase;margin-bottom:3px;">Pro</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$500</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Ads de video + zona + grupo · Mayor alcance</div>
+          </div>
+          <div style="color:#C9A84C;font-size:20px;">→</div>
+        </div>
+
+        <!-- MASTER -->
+        <div onclick="pagarCampMonto(1000,'master')" style="background:var(--bg2);border:1px solid rgba(201,162,75,0.2);border-radius:12px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:14px;">
+          <div style="width:50px;height:50px;border-radius:10px;background:rgba(83,74,183,0.15);border:1px solid rgba(83,74,183,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">Master</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:#E8C96A;line-height:1;margin-bottom:4px;">$1,000</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.5;">Dominio total · Ads personalizados · Máximo impacto</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;">→</div>
+        </div>
+
+      </div>
+      <div style="text-align:center;font-size:10px;color:rgba(255,255,255,0.18);line-height:1.6;">🔐 Pago seguro · Stripe · Tu nombre aparece en la lista</div>
+    </div>
+
+        <!-- TAB: FEED -->
+    <div id="camp-f" style="padding:16px;display:none;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:#C9A84C;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        Patrocinadores activos
+        <div style="flex:1;height:1px;background:rgba(201,168,76,0.12);"></div>
+      </div>
+      <div id="camp-feed-list">
+        <div style="text-align:center;padding:24px;color:rgba(255,255,255,0.25);font-size:12px;">Sé el primero en patrocinar 🔔</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🤝</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Independent Distributors</div>
+        <div style="font-size:10px;color:var(--muted);">Red nacional USA</div>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-4">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mapa</button>
+    <button class="bn" onclick="nav('join')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>Únete</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Campanas</button>
+  </nav>
+</div>
+
+
+<!-- ════ ACERCA DE NOSOTROS ════ -->
+<div id="s-about" class="screen">
+  <div class="top">
+    <div class="top-left">
+      <button class="back-btn" onclick="back()">←</button>
+      <span class="top-brand">TU RED <span>VITAL</span></span>
+    </div>
+  </div>
+  <div class="scroll">
+
+    <!-- HERO -->
+    <div style="padding:24px 16px 20px;background:linear-gradient(160deg,#040810 0%,#0a1929 100%);border-bottom:1px solid var(--border);">
+      <img src="/images/Logo%20oficial%20Tu%20Red%20vital.png" alt="logo" style="width:60px;height:60px;object-fit:contain;margin-bottom:12px;display:block;" onerror="this.style.display='none'">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;">Tu Red Vital · USA</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1.1;margin-bottom:8px;">La red de marketing<br>de salud más grande<br><span style="color:var(--gold);">de Estados Unidos.</span></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6;">La Red de Bienestar más popular en Estados Unidos.</div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:14px 16px 8px;display:flex;align-items:center;gap:8px;">Contacto<div style="flex:1;height:1px;background:var(--border);"></div></div>
+
+    <div style="margin:0 14px 8px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div onclick="waOpen('12099717638','Hola Tu Red Vital! Necesito información.')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="width:38px;height:38px;border-radius:50%;background:#25D36622;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">📱</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Teléfono / WhatsApp</div>
+          <div style="font-size:15px;font-weight:600;color:var(--text);">(209) 971-7638</div>
+        </div>
+        <div style="margin-left:auto;color:#25D366;font-size:18px;">→</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">📍</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Dirección</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);">1424 Mitchell Rd</div>
+          <div style="font-size:12px;color:var(--muted);">Modesto, CA · The Master Center</div>
+        </div>
+      </div>
+      <div onclick="window.open('https://networkvital.com','_blank')" style="display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🌐</div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Sitio web</div>
+          <div style="font-size:14px;font-weight:600;color:var(--gold);">networkvital.com</div>
+        </div>
+        <div style="margin-left:auto;color:var(--muted);font-size:18px;">→</div>
+      </div>
+    </div>
+
+    <!-- EQUIPO LIDERAZGO -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:14px 16px 8px;display:flex;align-items:center;gap:8px;">Liderazgo<div style="flex:1;height:1px;background:var(--border);"></div></div>
+
+    <!-- CEO -->
+    <div style="margin:0 14px 8px;background:linear-gradient(135deg,rgba(201,162,75,0.12),rgba(201,162,75,0.04));border:1px solid rgba(201,162,75,0.3);border-radius:10px;padding:16px;display:flex;align-items:center;gap:13px;">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--golda);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:var(--gold);flex-shrink:0;">OO</div>
+      <div style="flex:1;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:var(--text);margin-bottom:2px;">Oscar Ochoa</div>
+        <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:2px;">CEO · Fundador</div>
+        <div style="font-size:10px;color:var(--muted);">Tecnología · Ads · Finanzas · Legal · Podcasts</div>
+      </div>
+    </div>
+
+    <!-- EQUIPO CARDS -->
+    <div style="padding:0 14px;">
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:12px 0 8px;">Mercadeo y Redes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--gold);margin-bottom:8px;">WC</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Walter Cungachi</div>
+          <div style="font-size:10px;color:var(--muted);">Líder de Mercadeo</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--golda);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--gold);margin-bottom:8px;">JS</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Josue · Marco</div>
+          <div style="font-size:10px;color:var(--muted);">Jefferson · Fidel</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Capacitación</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--green);margin-bottom:8px;">LE</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Laura Espino</div>
+          <div style="font-size:10px;color:var(--muted);">Capacitación · Punto Venta VH</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--green);margin-bottom:8px;">SR</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Sarai</div>
+          <div style="font-size:10px;color:var(--muted);">Capacitación · Modesto CA</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:4px 0 8px;">Liderazgo Regional · CRM · Estudio</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">CS</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Carolina Santos</div>
+          <div style="font-size:10px;color:var(--muted);">Líder Modesto, CA</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">RA</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Raúl · Alexa</div>
+          <div style="font-size:10px;color:var(--muted);">CRM y Soporte Admin</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;color:var(--blue);margin-bottom:8px;">MM</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;">Miguel · Martina</div>
+          <div style="font-size:10px;color:var(--muted);">Estudio y Eventos</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ALIANZAS -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;padding:0 16px 8px;display:flex;align-items:center;gap:8px;">Alianzas y Productos<div style="flex:1;height:1px;background:var(--border);"></div></div>
+    <div style="margin:0 14px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🏛️</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">The Master Center</div>
+        <div style="font-size:10px;color:var(--muted);">Media &amp; Advertising</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🌿</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Vital Health Global</div>
+        <div style="font-size:10px;color:var(--muted);">Productos de bienestar
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🤝</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;">Independent Distributors</div>
+        <div style="font-size:10px;color:var(--muted);">Red nacional USA</div>
+      </div>
+    </div>
+
+    <div style="height:12px;"></div>
+  </div>
+  <nav class="bnav bnav-3">
+    <button class="bn" onclick="nav('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L12 3l9 9"/><path d="M5 10v9h4v-4h4v4h4v-9" stroke-linecap="round"/></svg>Inicio</button>
+    <button class="bn" onclick="nav('map')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" stroke-linecap="round" stroke-linejoin="round"/></svg>Territorios</button>
+    <button class="bn on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke-linecap="round"/></svg>Nosotros</button>
+  </nav>
+</div>
+
+</div><!-- /app -->
+
 <script>
-  function pad(n){ return n.toString().padStart(2,'0'); }
-  function updateCountdown(){
-    var deadline = new Date("2026-07-05T23:59:59-07:00");
-    var now = new Date();
-    var diffMs = deadline - now;
-    var cap = document.getElementById('deadline-caption');
-    var dEl = document.getElementById('cd-days');
-    var hEl = document.getElementById('cd-hours');
-    var mEl = document.getElementById('cd-mins');
-    var sEl = document.getElementById('cd-secs');
-    if(diffMs <= 0){
-      dEl.textContent="00"; hEl.textContent="00"; mEl.textContent="00"; sEl.textContent="00";
-      cap.textContent="Fase 1 cerrada"; return;
+const {createClient} = supabase;
+const sb = createClient(SB_URL, SB_KEY);
+
+const US = [
+  {c:'AL',n:'Alabama'},{c:'AK',n:'Alaska'},{c:'AZ',n:'Arizona'},{c:'AR',n:'Arkansas'},
+  {c:'CA',n:'California'},{c:'CO',n:'Colorado'},{c:'CT',n:'Connecticut'},{c:'DE',n:'Delaware'},
+  {c:'FL',n:'Florida'},{c:'GA',n:'Georgia'},{c:'HI',n:'Hawaii'},{c:'ID',n:'Idaho'},
+  {c:'IL',n:'Illinois'},{c:'IN',n:'Indiana'},{c:'IA',n:'Iowa'},{c:'KS',n:'Kansas'},
+  {c:'KY',n:'Kentucky'},{c:'LA',n:'Louisiana'},{c:'ME',n:'Maine'},{c:'MD',n:'Maryland'},
+  {c:'MA',n:'Massachusetts'},{c:'MI',n:'Michigan'},{c:'MN',n:'Minnesota'},{c:'MS',n:'Mississippi'},
+  {c:'MO',n:'Missouri'},{c:'MT',n:'Montana'},{c:'NE',n:'Nebraska'},{c:'NV',n:'Nevada'},
+  {c:'NH',n:'New Hampshire'},{c:'NJ',n:'New Jersey'},{c:'NM',n:'New Mexico'},{c:'NY',n:'New York'},
+  {c:'NC',n:'North Carolina'},{c:'ND',n:'North Dakota'},{c:'OH',n:'Ohio'},{c:'OK',n:'Oklahoma'},
+  {c:'OR',n:'Oregon'},{c:'PA',n:'Pennsylvania'},{c:'RI',n:'Rhode Island'},{c:'SC',n:'South Carolina'},
+  {c:'SD',n:'South Dakota'},{c:'TN',n:'Tennessee'},{c:'TX',n:'Texas'},{c:'UT',n:'Utah'},
+  {c:'VT',n:'Vermont'},{c:'VA',n:'Virginia'},{c:'WA',n:'Washington'},{c:'WV',n:'West Virginia'},
+  {c:'WI',n:'Wisconsin'},{c:'WY',n:'Wyoming'}
+];
+
+let reps=[], smap={}, user=null, cur='home';
+
+// ── NAVEGACIÓN ──────────────────────────────────────────
+let prevScreen = 'home';
+function back() { nav(prevScreen); }
+function nav(to) {
+  if(cur===to) return;
+  prevScreen = cur;
+  const fromEl = document.getElementById('s-'+cur);
+  const toEl   = document.getElementById('s-'+to);
+  fromEl.classList.add('leaving');
+  toEl.classList.add('active');
+  setTimeout(()=>{ fromEl.classList.remove('active','leaving'); }, 300);
+  cur = to;
+  if(to==='dist') loadDist();
+}
+
+// ── DATOS ───────────────────────────────────────────────
+async function loadData() {
+  try {
+    const p1 = sb.from('membresias').select('*').eq('status','activa');
+    const p2 = sb.from('solicitudes_scanner').select('id',{count:'exact',head:true});
+    const t  = new Promise((_,r)=>setTimeout(()=>r('t'),3000));
+    const [m,s] = await Promise.race([Promise.all([p1,p2]), t.then(()=>[{data:[]},{count:0}])]);
+    reps = m?.data||[];
+    document.getElementById('st-dist').textContent = reps.length;
+    // st-cli reemplazado por cnt-scan
+  } catch(e){ reps=[]; }
+  smap={};
+  reps.forEach(r=>{ if(!smap[r.estado_codigo]) smap[r.estado_codigo]=[]; smap[r.estado_codigo].push(r); });
+  buildMap();
+  fillSelects();
+}
+
+// ── MAPA ────────────────────────────────────────────────
+function buildMap() {
+  const g = document.getElementById('sg');
+  g.innerHTML = US.map(s=>{
+    const r=smap[s.c]||[];
+    const cls=r.length>=5?'full':r.length>0?'some':'';
+    const pips=Array.from({length:5},(_,i)=>`<div class="spip${i<r.length?' on':''}"></div>`).join('');
+    return `<div class="sb ${cls}" data-n="${s.n.toLowerCase()}" onclick="showPop('${s.c}')"><div class="sc">${s.c}</div><div class="spips">${pips}</div></div>`;
+  }).join('');
+}
+
+function filterStates(q) {
+  const v=q.toLowerCase();
+  document.querySelectorAll('.sb').forEach(el=>{
+    el.classList.toggle('hidden', v.length>0 && !el.dataset.n.includes(v) && !el.querySelector('.sc').textContent.toLowerCase().includes(v));
+  });
+}
+
+function showPop(code) {
+  const r=smap[code]||[], name=US.find(s=>s.c===code)?.n||code, avail=5-r.length;
+  document.getElementById('pop-name').textContent=name;
+  document.getElementById('pop-slots').innerHTML=Array.from({length:5},(_,i)=>`<div class="pop-slot ${i<r.length?'on':'off'}">${i<r.length?'✓':''}</div>`).join('');
+  document.getElementById('pop-status').textContent=avail===0?'✓ TERRITORIO PROTEGIDO · 5 distribuidores activos':`⚡ ${avail} posición${avail>1?'es':''} disponible${avail>1?'s':''}  — Actúa ahora`;
+  const waIcon = `<svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+  document.getElementById('pop-reps').innerHTML = r.length
+    ? r.map(x=>`<div class="rep-row"><div class="rep-av">${ini(x.nombre)}</div><div style="flex:1"><div class="rep-nm">${x.nombre}</div><div class="rep-ci">${x.ciudad||''}</div></div><button class="wa-btn" onclick="waOpen('${x.whatsapp}','Hola ${x.nombre.replace(/'/g,"\\'")}! Vi tu perfil en Tu Red Vital 🌿')">${waIcon}</button></div>`).join('')
+    : `<div class="pop-empty">Sé el primero en ${name}<br>$199/mes · ${avail} espacios disponibles</div>`;
+  const cta=document.getElementById('pop-cta');
+  cta.textContent=avail>0?`🔒 Asegurar mi territorio en ${name} · $199/mes`:`✓ Zona completa — Ver lista de espera`;
+  cta.onclick=function(){ closePop(); nav(avail>0?'join':'home'); };
+  const pop=document.getElementById('pop');
+  pop.classList.add('vis');
+  setTimeout(()=>pop.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+}
+function closePop(){ document.getElementById('pop').classList.remove('vis'); }
+
+// ── DASHBOARD DISTRIBUIDOR ───────────────────────────────
+async function loadDist() {
+  if(!user) return;
+  try {
+    const {data:m} = await sb.from('membresias').select('*').eq('email',user.email).single();
+    if(!m){ showToast('No tienes membresía activa'); return; }
+    document.getElementById('d-av').textContent      = ini(m.nombre);
+    document.getElementById('d-nombre').textContent  = m.nombre;
+    document.getElementById('d-loc').textContent     = `${m.estado_nombre||''} · ${m.ciudad||''}`;
+    document.getElementById('d-slot').textContent    = `#${m.slot||'—'}`;
+    document.getElementById('d-nextpay').textContent = m.fecha_renovacion ? fmtDate(m.fecha_renovacion) : '—';
+    const pill = document.getElementById('d-pill');
+    pill.className = 'spill '+(m.status==='activa'?'sp-active':m.status==='pendiente'?'sp-pending':'sp-cancelled');
+    pill.textContent = m.status==='activa'?'● Membresía Activa':m.status==='pendiente'?'⏳ Pendiente':'✕ Cancelada';
+    const {data:pagos} = await sb.from('pagos').select('*').eq('membresia_id',m.id).order('created_at',{ascending:false}).limit(10);
+    if(pagos?.length) {
+      document.getElementById('d-lastpay').textContent = fmtDate(pagos[0].created_at);
+      document.getElementById('d-lastamt').textContent = `$${pagos[0].monto_usd} USD`;
+      document.getElementById('pagos-list').innerHTML = pagos.map(p=>`
+        <div class="prow"><span class="pdate">${fmtDate(p.created_at)}</span>
+        <div class="pright"><span class="pbadge ${p.status==='exitoso'?'ok':'fail'}">${p.status==='exitoso'?'Pagado':'Fallido'}</span>
+        <span class="pamnt">$${p.monto_usd}</span></div></div>`).join('');
+    } else {
+      document.getElementById('pagos-list').innerHTML = '<div class="empty">Sin pagos registrados aún.</div>';
     }
-    var days=Math.floor(diffMs/86400000);
-    var hours=Math.floor((diffMs%86400000)/3600000);
-    var mins=Math.floor((diffMs%3600000)/60000);
-    var secs=Math.floor((diffMs%60000)/1000);
-    dEl.textContent=pad(days); hEl.textContent=pad(hours);
-    mEl.textContent=pad(mins); sEl.textContent=pad(secs);
-    cap.textContent="Quedan "+days+" día"+(days===1?"":"s")+" · posiciones limitadas";
+    const {data:cx} = await sb.from('solicitudes_scanner').select('*').eq('estado_codigo',m.estado_codigo).order('created_at',{ascending:false}).limit(20);
+    document.getElementById('d-prosp').textContent = cx?.length||0;
+    if(cx?.length) {
+      const waIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+      document.getElementById('contactos-list').innerHTML = cx.map(c=>`
+        <div class="crow"><div class="cav">${ini(c.nombre)}</div>
+        <div style="flex:1"><div class="cnm">${c.nombre}</div><div class="cinfo">${c.ciudad||''} · ${c.objetivo||''} · ${fmtDate(c.created_at)}</div></div>
+        ${c.telefono?`<button class="cwa" onclick="waOpen('${c.telefono}','Hola ${c.nombre.replace(/'/g,"\\'")}! Te contacto desde Tu Red Vital 🌿')">${waIcon}</button>`:''}</div>`).join('');
+    } else {
+      document.getElementById('contactos-list').innerHTML = '<div class="empty">Los prospectos de tu estado aparecerán aquí cuando soliciten un escáner.</div>';
+    }
+  } catch(e){ console.error(e); }
+}
+
+// ── DASHBOARD CLIENTE ─────────────────────────────────
+function loadClient() {
+  if(!user) return;
+  const name = user.user_metadata?.full_name||user.email||'';
+  document.getElementById('cl-av').textContent    = ini(name)||'?';
+  document.getElementById('cl-name').textContent  = name.split('@')[0]||'—';
+  document.getElementById('cl-email').textContent = user.email||'';
+}
+
+// ── JOIN → STRIPE ──────────────────────────────────────
+async function doJoin() {
+  const n=document.getElementById('j-nombre').value.trim();
+  const e=document.getElementById('j-estado').value;
+  const c=document.getElementById('j-ciudad').value.trim();
+  const w=document.getElementById('j-wa').value.trim();
+  const em=document.getElementById('j-email').value.trim();
+  if(!n||!e||!c||!w||!em){ showToast('⚠️ Completa todos los campos'); return; }
+  if(!em.includes('@')){ showToast('⚠️ Email inválido'); return; }
+  const en=US.find(s=>s.c===e)?.n||e;
+  try{ await sb.from('membresias').upsert({nombre:n,email:em,whatsapp:w.replace(/\D/g,''),ciudad:c,estado_codigo:e,estado_nombre:en,slot:(smap[e]||[]).length+1,status:'pendiente'},{onConflict:'email'}); }catch(ex){}
+  window.location.href=`${STRIPE}?prefilled_email=${encodeURIComponent(em)}`;
+}
+
+// ── AUTH ───────────────────────────────────────────────
+function openLogin() {
+  if(user){
+    // Si ya está en su dashboard, ofrecer cerrar sesión
+    if(cur==='dist'||cur==='client'){
+      if(confirm(`Sesión: ${user.email}\n\n¿Cerrar sesión?`))
+        sb.auth.signOut().then(()=>{ user=null; updateUI(); nav('home'); showToast('✓ Sesión cerrada'); });
+    } else {
+      // Si no está en dashboard, abrir modal de rol
+      openModal('modal-rol');
+    }
+    return;
   }
-  updateCountdown();
-  setInterval(updateCountdown,1000);
+  openModal('modal-login');
+}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchModal(a,b){ closeModal(a); openModal(b); }
+
+async function loginGoogle(){
+  const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin}});
+  if(error) showToast('Error con Google');
+}
+async function loginEmail(){
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  const errEl=document.getElementById('l-err'), btn=document.getElementById('l-btn');
+  errEl.style.display='none';
+  if(!email||!pass){ errEl.textContent='Escribe email y contraseña.'; errEl.style.display='block'; return; }
+  btn.textContent='Entrando…'; btn.disabled=true;
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.textContent='Entrar'; btn.disabled=false;
+  if(error){ errEl.textContent='Email o contraseña incorrectos.'; errEl.style.display='block'; return; }
+  closeModal('modal-login'); user=data.user; updateUI();
+  openModal('modal-rol');
+}
+async function doReg(){
+  const email=document.getElementById('r-email').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  const errEl=document.getElementById('r-err'), okEl=document.getElementById('r-ok'), btn=document.getElementById('r-btn');
+  errEl.style.display='none'; okEl.style.display='none';
+  if(!email.includes('@')){ errEl.textContent='Email inválido.'; errEl.style.display='block'; return; }
+  if(pass.length<6){ errEl.textContent='Mínimo 6 caracteres.'; errEl.style.display='block'; return; }
+  btn.textContent='Creando…'; btn.disabled=true;
+  const {error}=await sb.auth.signUp({email,password:pass});
+  btn.textContent='Crear cuenta'; btn.disabled=false;
+  if(error){ errEl.textContent=error.message; errEl.style.display='block'; return; }
+  okEl.style.display='block';
+  setTimeout(()=>{ closeModal('modal-reg'); showToast('✓ Revisa tu email para confirmar'); },2200);
+}
+function setRol(r){
+  closeModal('modal-rol');
+  if(!user){ openModal('modal-login'); return; }
+  nav('dist');
+}
+function updateUI(){
+  const name=user?(user.user_metadata?.full_name||user.email||'').split(/[@\s]/)[0]:'Entrar';
+  document.getElementById('top-name').textContent=name;
+  document.querySelectorAll('.uname').forEach(el=>el.textContent=name);
+}
+async function checkSession(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session?.user){
+    user=session.user;
+    updateUI();
+    // Si viene de redirect de Google OAuth, limpiar URL y abrir modal-rol
+    const isOAuthRedirect = window.location.hash.includes('access_token') || window.location.search.includes('code=');
+    if(isOAuthRedirect){
+      history.replaceState(null,'',window.location.pathname);
+      setTimeout(()=>openModal('modal-rol'), 800);
+    }
+  }
+  sb.auth.onAuthStateChange((event,s)=>{
+    const wasLoggedOut = !user;
+    user=s?.user||null;
+    updateUI();
+    // Solo abrir modal-rol si el evento es un login nuevo por Google OAuth
+    if(event==='SIGNED_IN' && wasLoggedOut && user && window.location.search.includes('code=')){
+      setTimeout(()=>openModal('modal-rol'), 500);
+    }
+  });
+}
+
+// ── HELPERS ────────────────────────────────────────────
+function ini(n=''){ return n.split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}); }
+function waOpen(num,msg){ window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank'); }
+function fillSelects(){
+  const opts=US.map(s=>`<option value="${s.c}">${s.n}</option>`).join('');
+  const jEl = document.getElementById('j-estado'); if(jEl) jEl.innerHTML='<option value="">Selecciona tu estado</option>'+opts;
+}
+let tt;
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),3000); }
+
+// ── SLIDER ───────────────────────────────────────────────
+let slideIdx = 0;
+const SLIDE_COUNT = 4;
+
+function goSlide(n) {
+  slideIdx = n;
+  document.getElementById('slider-track').style.transform = `translateX(-${n * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === n));
+}
+
+function nextSlide() {
+  goSlide((slideIdx + 1) % SLIDE_COUNT);
+}
+
+setInterval(nextSlide, 4000);
+
+// ── CAMPANAS ──────────────────────────────────────────────
+let campPatrocinadores = [];
+let campTotal = 0;
+
+// Timer cuenta regresiva
+function tickCamp() {
+  const now = Date.now();
+  const diff = Math.max(0, CAMP_END - now);
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  const pad = n => String(n).padStart(2,'0');
+  // Banner home
+  const bd=document.getElementById('b-d'); if(bd) bd.textContent=pad(d);
+  const bh=document.getElementById('b-h'); if(bh) bh.textContent=pad(h);
+  const bm=document.getElementById('b-m'); if(bm) bm.textContent=pad(m);
+  // Pantalla campanas
+  const c2d=document.getElementById('c2-d'); if(c2d) c2d.textContent=pad(d);
+  const c2h=document.getElementById('c2-h'); if(c2h) c2h.textContent=pad(h);
+  const c2m=document.getElementById('c2-m'); if(c2m) c2m.textContent=pad(m);
+  const c2s=document.getElementById('c2-s'); if(c2s) c2s.textContent=pad(s);
+  if(diff===0) {
+    ['b-d','b-h','b-m','c2-d','c2-h','c2-m','c2-s'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='00'; });
+  }
+}
+setInterval(tickCamp, 1000);
+tickCamp();
+
+// Actualizar barra y totales
+function updateCampUI() {
+  const pct = Math.min(100, (campTotal/CAMP_META)*100);
+  const fmt = '$'+campTotal.toLocaleString()+' recaudados';
+  const bar1=document.getElementById('b-bar'); if(bar1) bar1.style.width=pct+'%';
+  const bar2=document.getElementById('c2-bar'); if(bar2) bar2.style.width=pct+'%';
+  const t1=document.getElementById('b-total'); if(t1) t1.textContent=fmt;
+  const t2=document.getElementById('c2-total'); if(t2) t2.textContent=fmt;
+  // Banner feed pills
+  const bf=document.getElementById('b-feed');
+  if(bf && campPatrocinadores.length) {
+    bf.innerHTML=campPatrocinadores.slice(0,3).map(p=>
+      `<div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:#E8C96A;white-space:nowrap;display:flex;align-items:center;gap:4px;"><div style="width:5px;height:5px;border-radius:50%;background:#2ECC8A;"></div>🔔 ${p.short}</div>`
+    ).join('');
+  }
+}
+
+// Cargar patrocinadores desde Supabase
+async function loadCampPatrocinadores() {
+  try {
+    const {data} = await sb.from('patrocinadores_camp').select('*').order('created_at',{ascending:false}).limit(20);
+    if(data && data.length) {
+      campPatrocinadores = data;
+      campTotal = data.reduce((s,p)=>s+(p.monto||0),0);
+      updateCampUI();
+      renderFeed();
+    }
+  } catch(e){}
+}
+
+function renderFeed() {
+  const list = document.getElementById('camp-feed-list');
+  if(!list) return;
+  if(!campPatrocinadores.length) {
+    list.innerHTML='<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.25);font-size:12px;">Sé el primero en patrocinar 🔔</div>';
+    return;
+  }
+  const colors = ['rgba(46,204,138,0.15)','rgba(201,168,76,0.15)','rgba(59,130,246,0.15)','rgba(224,82,82,0.15)'];
+  const tcolors = ['#2ECC8A','#E8C96A','#60a5fa','#f87171'];
+  list.innerHTML = campPatrocinadores.map((p,i)=>{
+    const ci = i%4;
+    const ini = (p.nombre||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+    const hace = timeAgo(p.created_at);
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+      <div style="width:36px;height:36px;border-radius:50%;background:${colors[ci]};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:${tcolors[ci]};flex-shrink:0;">${ini}</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:600;">${p.nombre||'Anónimo'}</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px;">${p.ciudad||''} · ${hace}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#E8C96A;">$${(p.monto||0).toLocaleString()}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function timeAgo(d) {
+  if(!d) return '';
+  const diff = Date.now() - new Date(d).getTime();
+  const h = Math.floor(diff/3600000);
+  if(h<1) return 'hace menos de 1h';
+  if(h<24) return `hace ${h}h`;
+  return `hace ${Math.floor(h/24)}d`;
+}
+
+// Slider y montos rápidos
+let campAmtVal = 100;
+function updateCampAmt(v) {
+  campAmtVal = parseInt(v);
+  const el=document.getElementById('camp-amt'); if(el) el.textContent=campAmtVal.toLocaleString();
+  const pv=document.getElementById('pay-val'); if(pv) pv.textContent=campAmtVal.toLocaleString();
+  const pv2=document.getElementById('pay-val2'); if(pv2) pv2.textContent=campAmtVal.toLocaleString();
+  const r=document.getElementById('camp-range');
+  if(r) r.style.background=`linear-gradient(90deg,#C9A84C ${(campAmtVal/1000)*100}%,rgba(255,255,255,0.1) ${(campAmtVal/1000)*100}%)`;
+}
+function setCampAmt(v) {
+  campAmtVal=v;
+  const r=document.getElementById('camp-range'); if(r){ r.value=v; }
+  updateCampAmt(v);
+}
+
+// ADS Packs — links de precio fijo en Stripe
+const STRIPE_PACKS = {
+  networker: 'https://buy.stripe.com/3cIdR8cue7QScMGbj99EI02',
+  pro:       'https://buy.stripe.com/6oU3cu9i21su28272T9EI03',
+  master:    'https://buy.stripe.com/eVqeVc0Lw6MOcMGgDt9EI04'
+};
+
+function pagarCampMonto(monto, pack) {
+  if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada!'); return; }
+  if(CAMP_END - Date.now() <= 0){ showToast('El período ADS ha terminado.'); return; }
+  const url = STRIPE_PACKS[pack] || STRIPE_PACKS.networker;
+  window.open(url, '_blank');
+}
+
+
+
+// Pago → Stripe
+async function pagarCamp() {
+  if(campTotal >= CAMP_META){ showToast('¡Meta alcanzada! Gracias a todos los patrocinadores.'); return; }
+  const diff = CAMP_END - Date.now();
+  if(diff <= 0){ showToast('El período de patrocinio ha terminado.'); return; }
+  try {
+    await sb.from('patrocinadores_camp').insert({
+      monto: campAmtVal,
+      nombre: user ? (user.user_metadata?.full_name||user.email||'Anónimo') : 'Anónimo',
+      email: user ? user.email : '',
+      ciudad: '',
+      status: 'pendiente'
+    });
+  } catch(e){}
+  // Abrir Stripe — persona escribe el monto que ya eligió
+  // prefilled_amount en centavos para Stripe 'cliente elige precio'
+  window.open(STRIPE_CAMP + '?prefilled_amount=' + (campAmtVal * 100), '_blank');
+}
+
+// Tabs
+function campTab(t) {
+  const p=document.getElementById('camp-p'), f=document.getElementById('camp-f');
+  const tp=document.getElementById('tab-p'), tf=document.getElementById('tab-f');
+  if(t==='p'){
+    if(p) p.style.display='block'; if(f) f.style.display='none';
+    if(tp){ tp.style.color='#E8C96A'; tp.style.borderBottom='2px solid #C9A84C'; }
+    if(tf){ tf.style.color='var(--muted)'; tf.style.borderBottom='2px solid transparent'; }
+  } else {
+    if(p) p.style.display='none'; if(f) f.style.display='block';
+    if(tf){ tf.style.color='#E8C96A'; tf.style.borderBottom='2px solid #C9A84C'; }
+    if(tp){ tp.style.color='var(--muted)'; tp.style.borderBottom='2px solid transparent'; }
+    renderFeed();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// ══ MÓDULO DE CONTADORES — modifica aquí para actualizar ══
+// ════════════════════════════════════════════════════════
+const CONTADORES = {
+  // ── VISTAS ──────────────────────────────────────────
+  // Cambia vistasTotales cuando quieras actualizar el número base
+  vistasTotales: 7500000,      // Base actual: 7.5 millones
+  vistasPorMes: 1000000,       // Velocidad: 1M por mes
+
+  // ── MENSAJES ────────────────────────────────────────
+  // Cambia msgsBase cuando quieras actualizar el número base
+  msgsBase: 340,               // Base actual: 340 mensajes
+  msgsPorHora: 2,              // Velocidad: 2 por hora
+
+  // ── ESCÁNERES ───────────────────────────────────────
+  // Cambia scanBase cuando quieras actualizar el número base
+  scanBase: 26,                // Base actual: 26 escáneres
+  scanPorDia: 4,               // Velocidad: 4 por día
+
+  // ── FECHA DE REFERENCIA ─────────────────────────────
+  // Esta es la fecha desde la que se calculan los incrementos
+  // Si cambias los números base, actualiza esta fecha también
+  fechaBase: new Date('2026-06-16T12:00:00-07:00')
+};
+
+function iniciarContadores() {
+  const ahora = new Date();
+  const diffMs = ahora - CONTADORES.fechaBase;
+  const diffHoras = diffMs / 3600000;
+  const diffDias  = diffMs / 86400000;
+  const diffMeses = diffMs / (30 * 86400000);
+
+  // Vistas: base + (vistas/mes * meses transcurridos)
+  const vistas = CONTADORES.vistasTotales + (CONTADORES.vistasPorMes * diffMeses);
+  const fmtVistas = vistas >= 1000000
+    ? (vistas/1000000).toFixed(1) + 'M'
+    : Math.round(vistas).toLocaleString();
+  const elV = document.getElementById('cnt-vistas');
+  if(elV) elV.textContent = fmtVistas;
+
+  // Mensajes: base + (2/hora * horas transcurridas)
+  const msgs = Math.round(CONTADORES.msgsBase + (CONTADORES.msgsPorHora * diffHoras));
+  const elM = document.getElementById('cnt-msgs');
+  if(elM) elM.textContent = msgs.toLocaleString();
+
+  // Escáneres: base + (4/día * días transcurridos)
+  const leads2 = Math.round(CONTADORES.msgsBase + (CONTADORES.msgsPorHora * diffHoras));
+  const elS = document.getElementById('cnt-leads');
+  if(elS) elS.textContent = leads2.toLocaleString();
+
+  // Actualizar cada segundo para movimiento en tiempo real
+  setTimeout(iniciarContadores, 1000);
+}
+
+// ── INICIO ─────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',async()=>{
+  const hide=()=>document.getElementById('load').classList.add('gone');
+  const timer=setTimeout(hide,2500);
+  try{
+    iniciarContadores();
+  // Countdown landing
+  function pad2(n){ return n.toString().padStart(2,'0'); }
+  function tickCountdown(){
+    var deadline = new Date("2026-07-07T23:59:59-07:00");
+    var diff = deadline - new Date();
+    if(diff <= 0){ return; }
+    var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000),
+        m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
+    var dEl=document.getElementById('cd-days'),hEl=document.getElementById('cd-hours'),
+        mEl=document.getElementById('cd-mins'),sEl=document.getElementById('cd-secs');
+    if(dEl) dEl.textContent=pad2(d);
+    if(hEl) hEl.textContent=pad2(h);
+    if(mEl) mEl.textContent=pad2(m);
+    if(sEl) sEl.textContent=pad2(s);
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+  await Promise.race([
+      Promise.all([loadData(),checkSession(),loadCampPatrocinadores()]),
+      new Promise(r=>setTimeout(r,2000))
+    ]);
+  }catch(e){}
+  clearTimeout(timer);
+  hide();
+});
 </script>
+<!-- ════ MODAL: LOGIN ════ -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">Iniciar sesión</div><button class="modal-x" onclick="closeModal('modal-login')">✕</button></div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuar con Google
+    </button>
+    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="m-input" id="l-email" type="email" placeholder="tu@email.com" autocomplete="email">
+    <input class="m-input" id="l-pass" type="password" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')loginEmail()">
+    <div class="m-err" id="l-err"></div>
+    <button class="m-btn" id="l-btn" onclick="loginEmail()">Entrar</button>
+    <div class="m-switch">¿No tienes cuenta? <a onclick="switchModal('modal-login','modal-reg')">Regístrate →</a></div>
+  </div>
+</div>
+
+<!-- ════ MODAL: REGISTRO ════ -->
+<div class="modal-overlay" id="modal-reg">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">Crear cuenta</div><button class="modal-x" onclick="closeModal('modal-reg')">✕</button></div>
+    <button class="g-btn" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Registrarse con Google
+    </button>
+    <div class="or-sep"><div class="or-line"></div><span class="or-txt">o con email</span><div class="or-line"></div></div>
+    <input class="m-input" id="r-email" type="email" placeholder="tu@email.com" autocomplete="email">
+    <input class="m-input" id="r-pass" type="password" placeholder="Contraseña (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter')doReg()">
+    <div class="m-err" id="r-err"></div>
+    <div class="m-ok" id="r-ok">✓ ¡Cuenta creada! Revisa tu email para confirmar.</div>
+    <button class="m-btn" id="r-btn" onclick="doReg()">Crear cuenta</button>
+    <div class="m-switch">¿Ya tienes cuenta? <a onclick="switchModal('modal-reg','modal-login')">Inicia sesión →</a></div>
+  </div>
+</div>
+
+<!-- ════ MODAL: ROL ════ -->
+<div class="modal-overlay" id="modal-rol">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-t">¿Cómo quieres entrar?</div><button class="modal-x" onclick="closeModal('modal-rol')">✕</button></div>
+    <div class="rol-cards" style="grid-template-columns:1fr;">
+      <div class="rol-card" onclick="setRol('distribuidor')" style="border-color:#27AE60;">
+        <div class="rol-ic">🚀</div>
+        <div class="rol-name" style="color:#27AE60;">Acceder a mi panel</div>
+        <div class="rol-desc">Distribuidor activo · Ver mis prospectos y estadísticas</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
